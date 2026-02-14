@@ -1,2 +1,11 @@
 # locksmith
-Password manager written in C.
+**Locksmith** is an incredibly unsafe password manager written in C.
+
+## Install
+```sh
+make
+```
+## Run
+```sh
+./locksmith
+```
