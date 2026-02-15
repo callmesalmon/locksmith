@@ -256,7 +256,7 @@ int main(int argc, char **argv) {
            "[3]: Delete password\n");
 
     int command;
-    printf(">");
+    printf("> ");
     scanf("%d", &command);
 
 
@@ -266,14 +266,14 @@ int main(int argc, char **argv) {
 
     switch (command) {
         case 1:
-            printf("What service is your password related to? (ex. Github, Google Drive)\n>");
+            printf("What service is your password related to? (ex. Github, Google Drive)\n> ");
             scanf("%s", service);
 
-            printf("Enter password.\n>");
+            printf("Enter password.\n> ");
             scanf("%s", password);
 
             printf("Enter key. (A number preferably 100-300, preferably global,"
-                   "that is used to encrypt/decrypt passwords)\n>");
+                   "that is used to encrypt/decrypt passwords)\n> ");
             scanf("%d", &key);
 
             create_password(service, password, key);
@@ -284,10 +284,10 @@ int main(int argc, char **argv) {
             printf("What password do you want to get?\n"
                    "List of passwords:\n");
             list_passwords();
-            printf(">");
+            printf("> ");
             scanf("%s", service);
 
-            printf("Enter key.\n>");
+            printf("Enter key.\n> ");
             scanf("%d", &key);
 
             printf("Password: %s\n", get_password(service, key));
@@ -298,7 +298,7 @@ int main(int argc, char **argv) {
             printf("What password do you want to delete?\n"
                    "List of passwords:\n");
             list_passwords();
-            printf(">");
+            printf("> ");
             scanf("%s", service);
 
             delete_password(service);
