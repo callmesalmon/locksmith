@@ -160,6 +160,39 @@ int decrypt(char fname[], int key) {
     return 0;
 }
 
+// We don't really have any use for returning the value as it's always
+// printed anyways...
+void gen_rand_password(int n) {
+    int i = 0;
+    int randomizer = 0;
+
+    char numbers[] = "0123456789";
+    char letter_low[] = "abcdefghijklmnoqprstuvwyzx";
+    char letter_up[] = "ABCDEFGHIJKLMNOQPRSTUYWVZX";
+
+    char password[n];
+
+    randomizer = rand() % 3;
+
+    for (i = 0; i < n; i++) {
+        if (randomizer == 1) {
+            password[i] = numbers[rand() % 10];
+            randomizer = rand() % 4;
+            printf("%c", password[i]);
+        }
+        else if (randomizer == 2) {
+            password[i] = letter_up[rand() % 26];
+            randomizer = rand() % 4;
+            printf("%c", password[i]);
+        }
+        else {
+            password[i] = letter_low[rand() % 26];
+            randomizer = rand() % 3;
+            printf("%c", password[i]);
+        }
+    }
+}
+
 int create_password(char name[], char password[], int key) {
     char *fname = get_locksmith_dir_filepath(name);
 
@@ -269,11 +302,13 @@ int main(int argc, char **argv) {
             printf("What service is your password related to? (ex. Github, Google Drive)\n> ");
             scanf("%s", service);
 
-            printf("Enter password.\n> ");
+            printf("Enter password.\n");
+            printf("(Suggested password: ");
+            gen_rand_password(8); // Generally passwords are circa 8 chars.
+            printf(")\n> ");
             scanf("%s", password);
 
-            printf("Enter key. (A number preferably 100-300, preferably global,"
-                   "that is used to encrypt/decrypt passwords)\n> ");
+            printf("Enter key. (Integer used to encrypt/decrypt passwords)\n> ");
             scanf("%d", &key);
 
             create_password(service, password, key);
