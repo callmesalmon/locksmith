@@ -220,7 +220,8 @@ int list_passwords() {
     DIR *dir = opendir(get_locksmith_dir());
 
     if (dir == NULL) {
-        perror("opendir");
+        printf("ERROR: Couldn't list passwords.\n");
+        return 200;
     }
 
     while ((de = readdir(dir)) != NULL) {
