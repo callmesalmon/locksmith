@@ -160,9 +160,12 @@ int decrypt(char fname[], int key) {
     return 0;
 }
 
-// We don't really have any use for returning the value as it's always
-// printed anyways...
-void gen_rand_password(int n) {
+char *gen_rand_password(int n) {
+    // 30 is our max password length
+    if (n > 30) {
+        printf("ERROR: Couldn't generate random password due to length being more than 30.\n");
+    }
+
     int i = 0;
     int randomizer = 0;
 
@@ -170,27 +173,20 @@ void gen_rand_password(int n) {
     char letter_low[] = "abcdefghijklmnoqprstuvwyzx";
     char letter_up[] = "ABCDEFGHIJKLMNOQPRSTUYWVZX";
 
-    char password[n];
+    static char password[30];
 
     randomizer = rand() % 3;
 
     for (i = 0; i < n; i++) {
-        if (randomizer == 1) {
+        if (randomizer == 1)
             password[i] = numbers[rand() % 10];
-            randomizer = rand() % 4;
-            printf("%c", password[i]);
-        }
-        else if (randomizer == 2) {
+        else if (randomizer == 2)
             password[i] = letter_up[rand() % 26];
-            randomizer = rand() % 4;
-            printf("%c", password[i]);
-        }
-        else {
+        else
             password[i] = letter_low[rand() % 26];
-            randomizer = rand() % 3;
-            printf("%c", password[i]);
-        }
     }
+
+    return password;
 }
 
 int create_password(char name[], char password[], int key) {
@@ -304,7 +300,7 @@ int main(int argc, char **argv) {
 
             printf("Enter password.\n");
             printf("(Suggested password: ");
-            gen_rand_password(8); // Generally passwords are circa 8 chars.
+            printf("%s", gen_rand_password(8)); // Generally passwords are circa 8 chars.
             printf(")\n> ");
             scanf("%s", password);
 
