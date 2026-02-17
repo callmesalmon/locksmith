@@ -23,6 +23,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <dirent.h>
+#include <errno.h>
+#include <stdarg.h>
 
 #define VERBOSE 0 // Change to 1 to turn on debug/verbose mode.
 #define IFVERBOSE(...) if (VERBOSE == 1) printf(__VA_ARGS__);
@@ -53,6 +55,21 @@ int rand_range(int min, int max) {
     return rand_r(&seed) % (max - min + 1) + min;
 }
 
+void die(char *format, ...) {
+    va_list args;
+
+    va_start(args, format);
+    vprintf(format, args);
+    va_end(args);
+
+    if(errno) {
+        perror(format);
+    } else {
+        vprintf(format, args);
+    }
+    exit(1); // We exit, not return.
+}
+
 int encrypt(char fname[], int key) {
     IFVERBOSE("Encrypting %s...\n", fname);
 
@@ -61,12 +78,12 @@ int encrypt(char fname[], int key) {
     
     fps = fopen(fname, "r");
     if (fps == NULL) {
-        printf("ERROR: Couldn't encrypt password. Failed to open file.\n");
+        die("Couldn't encrypt password. Failed to open file.");
         return 200;
     }
     fpt = fopen(".temp.txt", "w");
     if (fpt == NULL) {
-        printf("ERROR: Couldn't encrypt password. Failed to open tempfile.\n");
+        die("Couldn't encrypt password. Failed to open tempfile.");
         return 200;
     }
     
@@ -82,12 +99,12 @@ int encrypt(char fname[], int key) {
     
     fps = fopen(fname, "w");
     if (fps == NULL) {
-        printf("ERROR: Couldn't encrypt password. Failed to open file.\n");
+        die("Couldn't encrypt password. Failed to open file.");
         return 200;
     }
     fpt = fopen(".temp.txt", "r");
     if (fpt == NULL) {
-        printf("ERROR: Couldn't encrypt password. Failed to open tempfile.\n");
+        die("Couldn't encrypt password. Failed to open tempfile.");
         return 200;
     }
  
@@ -113,12 +130,12 @@ int decrypt(char fname[], int key) {
 
     fps = fopen(fname, "r");
     if (fps == NULL) {
-        printf("ERROR: Couldn't decrypt password. Failed to open file.\n");
+        die("Couldn't decrypt password. Failed to open file.");
         return 200;
     }
     fpt = fopen(".temp.txt", "w");
     if (fpt == NULL) {
-        printf("ERROR: Couldn't decrypt password. Failed to open tempfile.\n");
+        die("Couldn't decrypt password. Failed to open tempfile.");
         return 200;
     }
 
@@ -137,12 +154,12 @@ int decrypt(char fname[], int key) {
 
     fps = fopen(fname, "w");
     if (fps == NULL) {
-        printf("ERROR: Couldn't decrypt password. Failed to open file.\n");
+        die("Couldn't decrypt password. Failed to open file.");
         return 200;
     }
     fpt = fopen(".temp.txt", "r");
     if (fpt == NULL) {
-        printf("ERROR: Couldn't decrypt password. Failed to open tempfile.\n");
+        die("Couldn't decrypt password. Failed to open tempfile.");
         return 200;
     }
 
@@ -163,7 +180,7 @@ int decrypt(char fname[], int key) {
 char *gen_rand_password(int n) {
     // 30 is our max password length
     if (n > 30) {
-        printf("ERROR: Couldn't generate random password due to length being more than 30.\n");
+        die("Couldn't generate random password due to length being more than 30.");
     }
 
     int i = 0;
@@ -196,7 +213,7 @@ int create_password(char name[], char password[], int key) {
 
     fptr = fopen(fname, "w");
     if (fptr == NULL) {
-        printf("ERROR: Couldn't create password. Failed to write to file.\n");
+        die("Couldn't create password. Failed to write to file.");
         return 200;
     }
     fprintf(fptr, "%s", password);
@@ -216,7 +233,7 @@ char *get_password(char name[], int key) {
     decrypt(fname, key);
     fptr = fopen(fname, "r");
     if (fptr == NULL) {
-        printf("ERROR: Couldn't get password. Failed to read file.\n");
+        die("Couldn't get password. Failed to read file.");
         return NULL;
     }
 
@@ -249,7 +266,7 @@ int list_passwords() {
     DIR *dir = opendir(get_locksmith_dir());
 
     if (dir == NULL) {
-        printf("ERROR: Couldn't list passwords.\n");
+        die("Couldn't list passwords.");
         return 200;
     }
 
