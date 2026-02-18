@@ -21,6 +21,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+#include <sys/time.h>
 #include <dirent.h>
 #include <stdarg.h>
 
@@ -123,8 +124,10 @@ int verify_master_password(char* password, unsigned char* hash) {
 }
 
 int main(int argc, char **argv) {
-    // TODO: Make more secure
-    srand(time(0));
+    int pid = getpid();
+    struct timeval t;
+    gettimeofday(&t, NULL);
+    srand(t.tv_usec ^ t.tv_sec ^ pid);
 
     mkdirifnotexist(locksmith_dir);
     mkdirifnotexist(locksmith_passw_dir);
