@@ -1,5 +1,3 @@
-#include "commons.h"
-
 #include <stdio.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -8,6 +6,8 @@
 #include <time.h>
 #include <errno.h>
 #include <stdarg.h>
+
+#include "commons.h"
 
 char *get_home_dir() {
     return getpwuid(getuid())->pw_dir;
