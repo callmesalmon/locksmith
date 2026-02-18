@@ -4,6 +4,7 @@
 #include <pwd.h>
 #include <stdlib.h>
 #include <time.h>
+#include <sys/time.h>
 #include <errno.h>
 #include <stdarg.h>
 #include <string.h>
@@ -48,6 +49,15 @@ int get_input(char buff[]) {
 int get_iinput(int *num) {
     char buff[MAX_STRING_LEN];
     get_input(buff);
+
+    return 0;
+}
+
+int safe_srand() {
+    int pid = getpid();
+    struct timeval t;
+    gettimeofday(&t, NULL);
+    srand(t.tv_usec ^ t.tv_sec ^ pid);
 
     return 0;
 }

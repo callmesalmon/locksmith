@@ -10,6 +10,7 @@ int rand_range(int min, int max);
 int mkdirifnotexist(char *dirname);
 int get_input(char buff[]);
 int get_iinput(int *num);
+int safe_srand();
 void die(char *format, ...);
 
 #endif

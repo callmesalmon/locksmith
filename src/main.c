@@ -28,6 +28,16 @@
 #include "commons.h"
 #include "crypto.h"
 
+#define locksmith_title \
+"88                                88                                     88         88         \n" \
+"88                                88                                     \"\"   ,d    88         \n" \
+"88                                88                                          88    88         \n" \
+"88          ,adPPYba,   ,adPPYba, 88   ,d8  ,adPPYba, 88,dPYba,,adPYba,  88 MM88MMM 88,dPPYba, \n" \
+"88         a8\"     \"8a a8\"     \"\" 88 ,a8\"   I8[    \"\" 88P'   \"88\"    \"8a 88   88    88P'    \"8a\n" \
+"88         8b       d8 8b         8888[      `\"Y8ba,  88      88      88 88   88    88       88\n" \
+"88         \"8a,   ,a8\" \"8a,   ,aa 88`\"Yba,  aa    ]8I 88      88      88 88   88,   88       88\n" \
+"88888888888 `\"YbbdP\"'   \"Ybbd8\"' 88   `Y8a `\"YbbdP\"' 88      88      88 88   \"Y888 88       88\n\n" \
+
 #define locksmith_dir strcat(get_home_dir(), "/.locksmith/")
 #define locksmith_passw_dir strcat(locksmith_dir, "passwords/")
 #define locksmith_hash_key_dir strcat(locksmith_dir, "hashed_keys/")
@@ -171,8 +181,43 @@ int cmd_delete_password() {
     return 0;
 }
 
+int verify_master_password_interface() {
+    unsigned char master_password_hash[MAX_HASH_LEN];
+    char master_password[MAX_STRING_LEN];
+
+    FILE* fptr = fopen(locksmith_master_passw_file, "rb");
+    if (fptr == NULL) {
+        printf("Create master password:\n> ");
+        get_input(master_password);
+        hash_password(master_password, master_password_hash);
+
+        fptr = fopen(locksmith_master_passw_file, "wb");
+        fwrite(master_password_hash, 1, MAX_HASH_LEN, fptr);
+        fclose(fptr);
+    }
+    else {
+        unsigned char master_pass_actual_hash[MAX_HASH_LEN];
+        fread(master_pass_actual_hash, 1, MAX_HASH_LEN, fptr);
+
+        int password_verified = 0;
+        while (!password_verified) {
+            printf("Enter master password (0 to exit):\n> ");
+            get_input(master_password);
+
+            if (!strcmp(master_password, "0")) exit(0);
+            if (verify_master_password(master_password, master_pass_actual_hash)) break;
+
+            printf("Wrong password!\n");
+        }
+
+        fclose(fptr);
+    }
+
+    return 0;
+}
+
 int cmd_interface() {
-    printf("Enter a command:\n"
+    printf("\nEnter a command:\n"
            "[1]: Create password\n"
            "[2]: Get password\n"
            "[3]: Delete password\n"
@@ -209,54 +254,14 @@ int cmd_interface() {
 }
 
 int main(int argc, char **argv) {
-    int pid = getpid();
-    struct timeval t;
-    gettimeofday(&t, NULL);
-    srand(t.tv_usec ^ t.tv_sec ^ pid);
+    safe_srand();
 
     mkdirifnotexist(locksmith_dir);
     mkdirifnotexist(locksmith_passw_dir);
 
-    printf(                                                                                              
-"88                                88                                     88         88         \n"  
-"88                                88                                     \"\"   ,d    88         \n"  
-"88                                88                                          88    88         \n" 
-"88          ,adPPYba,   ,adPPYba, 88   ,d8  ,adPPYba, 88,dPYba,,adPYba,  88 MM88MMM 88,dPPYba, \n" 
-"88         a8\"     \"8a a8\"     \"\" 88 ,a8\"   I8[    \"\" 88P'   \"88\"    \"8a 88   88    88P'    \"8a\n" 
-"88         8b       d8 8b         8888[      `\"Y8ba,  88      88      88 88   88    88       88\n" 
-"88         \"8a,   ,a8\" \"8a,   ,aa 88`\"Yba,  aa    ]8I 88      88      88 88   88,   88       88\n" 
-"88888888888 `\"YbbdP\"'   \"Ybbd8\"' 88   `Y8a `\"YbbdP\"' 88      88      88 88   \"Y888 88       88\n\n");
+    printf(locksmith_title);
 
-    unsigned char master_password_hash[MAX_HASH_LEN];
-    char master_password[MAX_STRING_LEN];
-
-    FILE* fptr = fopen(locksmith_master_passw_file, "rb");
-    if (fptr == NULL) {
-        printf("Create master password:\n> ");
-        get_input(master_password);
-        hash_password(master_password, master_password_hash);
-
-        fptr = fopen(locksmith_master_passw_file, "wb");
-        fwrite(master_password_hash, 1, MAX_HASH_LEN, fptr);
-        fclose(fptr);
-    }
-    else {
-        unsigned char master_pass_actual_hash[MAX_HASH_LEN];
-        fread(master_pass_actual_hash, 1, MAX_HASH_LEN, fptr);
-
-        int password_verified = 0;
-        while (!password_verified) {
-            printf("Enter master password (0 to exit):\n> ");
-            get_input(master_password);
-
-            if (!strcmp(master_password, "0")) exit(0);
-            if (verify_master_password(master_password, master_pass_actual_hash)) break;
-
-            printf("Wrong password!\n");
-        }
-
-        fclose(fptr);
-    }
+    verify_master_password_interface();
 
     exit_cmd = 0;
     while (!exit_cmd) {
