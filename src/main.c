@@ -37,6 +37,9 @@
 
 #define format_password_filename(site, user) strcat(strcat(site, ":"), user)
 
+// TODO: move this somewhere
+int exit_cmd;
+
 int create_password(char name[], char password[]) {
     char *fname = get_locksmith_passw_dir_filepath(name);
 
@@ -123,6 +126,88 @@ int verify_master_password(char* password, unsigned char* hash) {
     return 1;
 }
 
+int cmd_create_password() {
+    char site_name[MAX_STRING_LEN], user_name[MAX_STRING_LEN], password[MAX_STRING_LEN];
+
+    printf("Site:\n> ");
+    scanf("%s", site_name);
+
+    printf("Username:\n> ");
+    scanf("%s", user_name);
+
+    printf("Password:\n> ");
+    scanf("%s", password);
+
+    create_password(format_password_filename(site_name, user_name), password);
+
+    return 0;
+}
+
+int cmd_get_password() {
+    char pass_name[MAX_STRING_LEN];
+
+    printf("What password do you want to get?\n"
+            "List of passwords:\n");
+    list_passwords();
+    printf("> ");
+    scanf("%s", pass_name);
+
+    printf("Password: %s\n", get_password(pass_name));
+
+    return 0;
+}
+
+int cmd_delete_password() {
+    char pass_name[MAX_STRING_LEN];
+
+    printf("What password do you want to delete?\n"
+            "List of passwords:\n");
+    list_passwords();
+    printf("> ");
+    scanf("%s", pass_name);
+
+    delete_password(pass_name);
+    
+    return 0;
+}
+
+int cmd_interface() {
+    printf("Enter a command:\n"
+           "[1]: Create password\n"
+           "[2]: Get password\n"
+           "[3]: Delete password\n"
+           "[4]: Exit program\n");
+
+    int command;
+    printf("> ");
+    scanf("%d", &command);
+
+    char site_name[MAX_STRING_LEN];
+    char user_name[MAX_STRING_LEN];
+    char password[MAX_STRING_LEN];
+
+    switch (command) {
+        case 1:
+            cmd_create_password();
+            break;
+        case 2:
+            cmd_get_password();
+            break;
+        case 3:
+            cmd_delete_password();
+            break;
+        case 4:
+            printf("Exiting...\n");
+            exit_cmd = 1;
+            break;
+        default:
+            printf("Invalid command! Exiting...\n");
+            exit_cmd = 1;
+    }
+
+    return 0;
+}
+
 int main(int argc, char **argv) {
     int pid = getpid();
     struct timeval t;
@@ -173,59 +258,9 @@ int main(int argc, char **argv) {
         fclose(fptr);
     }
 
-    printf("Enter a command:\n"
-           "[1]: Create password\n"
-           "[2]: Get password\n"
-           "[3]: Delete password\n");
-
-    int command;
-    printf("> ");
-    scanf("%d", &command);
-
-    char site_name[MAX_STRING_LEN];
-    char user_name[MAX_STRING_LEN];
-    char password[MAX_STRING_LEN];
-
-    // TODO: Move this code out of the switch statement for the love of god
-    switch (command) {
-        case 1:
-            printf("Site:\n> ");
-            scanf("%s", site_name);
-
-            printf("Username:\n> ");
-            scanf("%s", user_name);
-
-            printf("Password:\n> ");
-            scanf("%s", password);
-
-            create_password(format_password_filename(site_name, user_name), password);
-
-            break;
-
-        case 2:
-            printf("What password do you want to get?\n"
-                   "List of passwords:\n");
-            list_passwords();
-            printf("> ");
-            scanf("%s", password);
-
-            printf("Password: %s\n", get_password(password));
-
-            break;
-
-        case 3:
-            printf("What password do you want to delete?\n"
-                   "List of passwords:\n");
-            list_passwords();
-            printf("> ");
-            scanf("%s", password);
-
-            delete_password(site_name);
-
-            break;
-
-        default:
-            printf("Invalid command! Exiting...\n");
+    exit_cmd = 0;
+    while (!exit_cmd) {
+        cmd_interface();
     }
 
     return 0;
