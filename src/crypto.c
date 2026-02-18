@@ -37,7 +37,7 @@ int encrypt_decrypt(char *fname) {
     return 0;
 }
 
-unsigned char *hash_password(char *password, unsigned char *hash) {
+int hash_password(char *password, unsigned char *hash) {
     unsigned int hash_val = 0;
     int i = 0;
     while (password[i] != '\0') {
@@ -49,4 +49,6 @@ unsigned char *hash_password(char *password, unsigned char *hash) {
     for (i = 0; i < sizeof(unsigned int); i++) {
         hash[i] = (hash_val >> (i * 8)) & 0xFF;
     }
+
+    return 0;
 }
