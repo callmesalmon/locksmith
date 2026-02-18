@@ -130,13 +130,13 @@ int cmd_create_password() {
     char site_name[MAX_STRING_LEN], user_name[MAX_STRING_LEN], password[MAX_STRING_LEN];
 
     printf("Site:\n> ");
-    scanf("%s", site_name);
+    get_input(site_name);
 
     printf("Username:\n> ");
-    scanf("%s", user_name);
+    get_input(user_name);
 
     printf("Password:\n> ");
-    scanf("%s", password);
+    get_input(password);
 
     create_password(format_password_filename(site_name, user_name), password);
 
@@ -150,7 +150,7 @@ int cmd_get_password() {
             "List of passwords:\n");
     list_passwords();
     printf("> ");
-    scanf("%s", pass_name);
+    get_input(pass_name);
 
     printf("Password: %s\n", get_password(pass_name));
 
@@ -164,7 +164,7 @@ int cmd_delete_password() {
             "List of passwords:\n");
     list_passwords();
     printf("> ");
-    scanf("%s", pass_name);
+    get_input(pass_name);
 
     delete_password(pass_name);
     
@@ -180,7 +180,7 @@ int cmd_interface() {
 
     int command;
     printf("> ");
-    scanf("%d", &command);
+    get_iinput(&command);
 
     char site_name[MAX_STRING_LEN];
     char user_name[MAX_STRING_LEN];
@@ -233,7 +233,7 @@ int main(int argc, char **argv) {
     FILE* fptr = fopen(locksmith_master_passw_file, "rb");
     if (fptr == NULL) {
         printf("Create master password:\n> ");
-        scanf("%s", master_password);
+        get_input(master_password);
         hash_password(master_password, master_password_hash);
 
         fptr = fopen(locksmith_master_passw_file, "wb");
@@ -247,7 +247,7 @@ int main(int argc, char **argv) {
         int password_verified = 0;
         while (!password_verified) {
             printf("Enter master password (0 to exit):\n> ");
-            scanf("%s", master_password);
+            get_input(master_password);
 
             if (!strcmp(master_password, "0")) exit(0);
             if (verify_master_password(master_password, master_pass_actual_hash)) break;

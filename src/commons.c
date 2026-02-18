@@ -6,8 +6,10 @@
 #include <time.h>
 #include <errno.h>
 #include <stdarg.h>
+#include <string.h>
 
 #include "commons.h"
+#include "crypto.h"
 
 char *get_home_dir() {
     return getpwuid(getuid())->pw_dir;
@@ -30,6 +32,22 @@ int mkdirifnotexist(char *dirname) {
     if (directory_exists(dirname) == 0) {
         mkdir(dirname, 0755);
     }
+
+    return 0;
+}
+
+int get_input(char buff[]) {
+    if (!fgets(buff, MAX_STRING_LEN, stdin)) {
+        die("Something went wrong when using fgets!");
+    }
+    buff[strcspn(buff, "\n")] = 0; // Remove newline
+
+    return 0;
+}
+
+int get_iinput(int *num) {
+    char buff[MAX_STRING_LEN];
+    get_input(buff);
 
     return 0;
 }

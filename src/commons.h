@@ -8,6 +8,8 @@ char *get_home_dir();
 int directory_exists(char *dirname);
 int rand_range(int min, int max);
 int mkdirifnotexist(char *dirname);
+int get_input(char buff[]);
+int get_iinput(int *num);
 void die(char *format, ...);
 
 #endif
