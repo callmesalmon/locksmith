@@ -37,20 +37,23 @@ int mkdirifnotexist(char *dirname) {
     return 0;
 }
 
-int get_input(char buff[]) {
-    if (!fgets(buff, MAX_STRING_LEN, stdin)) {
-        die("Something went wrong when using fgets!");
+// Size Aware scanf()
+int sa_scanf(int limit, const char *format, ...) {
+    va_list args;
+
+    va_start(args, format);
+    va_end(args);
+
+    char buff[limit];
+
+    if (!fgets(buff, limit, stdin)) {
+        errno = 2;
+        return -1;
     }
+    fflush(stdin); // fgets() doesn't flush excess chars
+
     buff[strcspn(buff, "\n")] = 0; // Remove newline
-
-    return 0;
-}
-
-int get_iinput(int *num) {
-    char buff[MAX_STRING_LEN];
-    get_input(buff);
-
-    sscanf(buff, "%d", num);
+    vsscanf(buff, format, args);
 
     return 0;
 }

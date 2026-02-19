@@ -18,13 +18,13 @@ int cmd_create_password() {
     char site_name[MAX_STRING_LEN], user_name[MAX_STRING_LEN], password[MAX_STRING_LEN];
 
     printf("Site:\n> ");
-    get_input(site_name);
+    sa_scanf(MAX_STRING_LEN, "%s", site_name);
 
     printf("Username:\n> ");
-    get_input(user_name);
+    sa_scanf(MAX_STRING_LEN, "%s", user_name);
 
     printf("Password:\n> ");
-    get_input(password);
+    sa_scanf(MAX_STRING_LEN, "%s", password);
 
     create_password(format_password_filename(site_name, user_name), password);
 
@@ -38,7 +38,7 @@ int cmd_get_password() {
             "List of passwords:\n");
     list_passwords();
     printf("> ");
-    get_input(pass_name);
+    sa_scanf(MAX_STRING_LEN, "%s", pass_name);
 
     printf("Password: %s\n", get_password(pass_name));
 
@@ -52,7 +52,7 @@ int cmd_delete_password() {
             "List of passwords:\n");
     list_passwords();
     printf("> ");
-    get_input(pass_name);
+    sa_scanf(MAX_STRING_LEN, "%s", pass_name);
 
     delete_password(pass_name);
     
@@ -66,7 +66,7 @@ int verify_master_password_interface() {
     FILE* fptr = fopen(locksmith_master_passw_file, "rb");
     if (fptr == NULL) {
         printf("Create master password:\n> ");
-        get_input(master_password);
+        sa_scanf(MAX_STRING_LEN, "%s", master_password);
         hash_password(master_password, master_password_hash);
 
         fptr = fopen(locksmith_master_passw_file, "wb");
@@ -80,7 +80,7 @@ int verify_master_password_interface() {
         int password_verified = 0;
         while (!password_verified) {
             printf("Enter master password (0 to exit):\n> ");
-            get_input(master_password);
+            sa_scanf(MAX_STRING_LEN, "%s", master_password);
 
             if (!strcmp(master_password, "0")) exit(0);
             if (verify_master_password(master_password, master_pass_actual_hash)) break;
@@ -102,8 +102,9 @@ int cmd_interface(int *exit) {
            "[4]: Exit program\n");
 
     int command;
+    int command_len = sizeof(int);
     printf("> ");
-    get_iinput(&command);
+    sa_scanf(command_len, "%d", &command);
 
     char site_name[MAX_STRING_LEN];
     char user_name[MAX_STRING_LEN];
