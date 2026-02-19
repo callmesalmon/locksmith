@@ -50,6 +50,8 @@ int get_iinput(int *num) {
     char buff[MAX_STRING_LEN];
     get_input(buff);
 
+    sscanf(buff, "%d", num);
+
     return 0;
 }
 

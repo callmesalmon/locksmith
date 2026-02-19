@@ -27,6 +27,7 @@
 
 #include "commons.h"
 #include "crypto.h"
+#include "password.h"
 
 #define locksmith_title \
 "88                                88                                     88         88         \n" \
@@ -38,103 +39,10 @@
 "88         \"8a,   ,a8\" \"8a,   ,aa 88`\"Yba,  aa    ]8I 88      88      88 88   88,   88       88\n" \
 "88888888888 `\"YbbdP\"'   \"Ybbd8\"' 88   `Y8a `\"YbbdP\"' 88      88      88 88   \"Y888 88       88\n\n" \
 
-#define locksmith_dir strcat(get_home_dir(), "/.locksmith/")
-#define locksmith_passw_dir strcat(locksmith_dir, "passwords/")
-#define locksmith_hash_key_dir strcat(locksmith_dir, "hashed_keys/")
-#define locksmith_master_passw_file strcat(locksmith_dir, "master_password.txt")
-#define get_locksmith_passw_dir_filepath(name) strcat(locksmith_passw_dir, strcat(name, ".txt"))
-#define get_locksmith_hash_key_dir_filepath(name) strcat(locksmith_hash_key_dir, strcat(name, ".txt"))
-
 #define format_password_filename(site, user) strcat(strcat(site, ":"), user)
 
 // TODO: move this somewhere
 int exit_cmd;
-
-int create_password(char name[], char password[]) {
-    char *fname = get_locksmith_passw_dir_filepath(name);
-
-    FILE *fptr;
-
-    fptr = fopen(fname, "w");
-    if (fptr == NULL) {
-        die("Couldn't create password. Failed to write to file.");
-        return 200;
-    }
-    fprintf(fptr, "%s", password);
-    fclose(fptr); 
-
-    encrypt_decrypt(fname);
-
-    return 0;
-}
-
-char *get_password(char name[]) {
-    char *fname = get_locksmith_passw_dir_filepath(name);
-    IFVERBOSE("get_locksmith_passw_dir_filepath: %s\n", fname);
-
-    FILE *fptr;
-
-    encrypt_decrypt(fname);
-    fptr = fopen(fname, "r");
-    if (fptr == NULL) {
-        die("Couldn't get password. Failed to read file.");
-        return NULL;
-    }
-
-    fseek(fptr, 0, SEEK_END);
-    long filesize = ftell(fptr);
-    IFVERBOSE("File size: %ld bytes\n", filesize);
-    rewind(fptr);
-
-    static char fcontent[100]; // Return values NEED to be global, due to how the stack works.
-    fgets(fcontent, 100, fptr);
-
-    IFVERBOSE("Read value: \"%s\"\n", fcontent);
-
-    fclose(fptr);
-    encrypt_decrypt(fname);
-
-    return fcontent;
-}
-
-int delete_password(char name[]) {
-    char *fname = get_locksmith_passw_dir_filepath(name);
-    remove(fname);
-
-    return 0;
-}
-
-int list_passwords() {
-    struct dirent *de;
-
-    DIR *dir = opendir(locksmith_passw_dir);
-
-    if (dir == NULL) {
-        die("Couldn't list passwords.");
-        return 200;
-    }
-
-    while ((de = readdir(dir)) != NULL) {
-        char *pname = strtok(de->d_name, ".");
-        if (pname != NULL) printf("%s\n", pname);
-    }
-
-    closedir(dir);    
-
-    return 0;
-}
-
-int verify_master_password(char* password, unsigned char* hash) {
-    unsigned char password_hash[MAX_HASH_LEN];
-    hash_password(password, password_hash);
-
-    for (int i = 0; password[i] != '\0'; i++) {
-        if (password_hash[i] != hash[i])
-            return 0;
-    }
-
-    return 1;
-}
 
 int cmd_create_password() {
     char site_name[MAX_STRING_LEN], user_name[MAX_STRING_LEN], password[MAX_STRING_LEN];
