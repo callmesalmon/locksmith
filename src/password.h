@@ -1,6 +1,8 @@
 #ifndef PASSWORD_H
 #define PASSWORD_H
 
+#include <string.h> // strcat
+
 #include "commons.h"
 
 #define locksmith_dir strcat(get_home_dir(), "/.locksmith/")

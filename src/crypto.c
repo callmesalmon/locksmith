@@ -25,6 +25,7 @@ int encrypt_decrypt(char *fname) {
         die("Couldn't encrypt password. Failed to open file.");
     }
     fgets(buff, MAX_STRING_LEN, fptr);
+    xor_cipher(buff);
 
     fptr = fopen(fname, "w");
     if (fptr == NULL) {
