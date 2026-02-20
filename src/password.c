@@ -17,7 +17,6 @@ int create_password(char name[], char password[], unsigned char key[crypto_secre
     fptr = fopen(fname, "w");
     if (fptr == NULL) {
         die("Couldn't create password. Failed to write to file.");
-        return 200;
     }
     fprintf(fptr, "%s", password);
     fclose(fptr); 
@@ -52,7 +51,6 @@ int list_passwords() {
 
     if (dir == NULL) {
         die("Couldn't list passwords.");
-        return 200;
     }
 
     while ((de = readdir(dir)) != NULL) {
