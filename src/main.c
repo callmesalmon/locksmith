@@ -50,6 +50,8 @@ int main(int argc, char **argv) {
 
     printf(locksmith_title);
 
+    verify_master_password_interface();
+
     int exit_cmd = 0;
     while (!exit_cmd) {
         cmd_interface(&exit_cmd);

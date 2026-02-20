@@ -10,7 +10,6 @@
 #include <string.h>
 
 #include "commons.h"
-#include "crypto.h"
 
 char *get_home_dir() {
     return getpwuid(getuid())->pw_dir;

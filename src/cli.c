@@ -104,3 +104,38 @@ int cmd_interface(int *exit) {
 
     return 0;
 }
+
+int verify_master_password_interface() {
+    unsigned char master_password_hash[MAX_HASH_LEN];
+    char master_password[MAX_STRING_LEN];
+
+    FILE* fptr = fopen(locksmith_master_passw_file, "rb");
+    if (fptr == NULL) {
+        printf("Create master password:\n> ");
+        sa_scanf(MAX_STRING_LEN, "%s", master_password);
+        hash_password(master_password, master_password_hash);
+
+        fptr = fopen(locksmith_master_passw_file, "wb");
+        fwrite(master_password_hash, 1, MAX_HASH_LEN, fptr);
+        fclose(fptr);
+    }
+    else {
+        unsigned char master_pass_actual_hash[MAX_HASH_LEN];
+        fread(master_pass_actual_hash, 1, MAX_HASH_LEN, fptr);
+
+        int password_verified = 0;
+        while (!password_verified) {
+            printf("Enter master password (0 to exit):\n> ");
+            sa_scanf(MAX_STRING_LEN, "%s", master_password);
+
+            if (!strcmp(master_password, "0")) exit(0);
+            if (verify_master_password(master_password, master_pass_actual_hash)) break;
+
+            printf("Wrong password!\n");
+        }
+
+        fclose(fptr);
+    }
+
+    return 0;
+}

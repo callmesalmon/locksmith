@@ -31,29 +31,11 @@ char *get_password(char name[], unsigned char key[crypto_secretstream_xchacha20p
     char *fname = get_locksmith_passw_dir_filepath(name);
     IFVERBOSE("get_locksmith_passw_dir_filepath: %s\n", fname);
 
-    FILE *fptr;
+    unsigned char *buf = decrypt(fname, key);
 
-    decrypt(fname, key);
-    fptr = fopen(fname, "r");
-    if (fptr == NULL) {
-        die("Couldn't get password. Failed to read file.");
-        return NULL;
-    }
+    encrypt(fname, buf, key);
 
-    fseek(fptr, 0, SEEK_END);
-    long filesize = ftell(fptr);
-    IFVERBOSE("File size: %ld bytes\n", filesize);
-    rewind(fptr);
-
-    static char fcontent[100]; // Return values NEED to be global, due to how the stack works.
-    fgets(fcontent, 100, fptr);
-
-    IFVERBOSE("Read value: \"%s\"\n", fcontent);
-
-    fclose(fptr);
-    encrypt(fname, fcontent, key);
-
-    return fcontent;
+    return buf;
 }
 
 int delete_password(char name[]) {
@@ -95,3 +77,14 @@ int get_key(unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
     return 0;
 }
 
+int verify_master_password(char* password, unsigned char* hash) {
+    unsigned char password_hash[MAX_HASH_LEN];
+    hash_password(password, password_hash);
+
+    for (int i = 0; password[i] != '\0'; i++) {
+        if (password_hash[i] != hash[i])
+            return 0;
+    }
+
+    return 1;
+}

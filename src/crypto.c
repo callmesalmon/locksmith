@@ -59,23 +59,22 @@ int encrypt(const char *fname, const char *password, const unsigned char key[cry
     return 0;
 }
 
-int decrypt(const char *source_file, const unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
+unsigned char *decrypt(const char *source_file, const unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
     unsigned char buf_in[MAX_STRING_LEN + crypto_secretstream_xchacha20poly1305_ABYTES];
-    unsigned char buf_out[MAX_STRING_LEN];
+    static unsigned char buf_out[MAX_STRING_LEN];
     unsigned char header[crypto_secretstream_xchacha20poly1305_HEADERBYTES];
 
     crypto_secretstream_xchacha20poly1305_state st;
 
     unsigned long long out_len;
     int eof;
-    int ret = -1;
     unsigned char tag;
 
     FILE *fp_s = fopen(source_file, "rb");
     fread(header, 1, sizeof(header), fp_s);
     
     if (crypto_secretstream_xchacha20poly1305_init_pull(&st, header, key) != 0) {
-        goto ret;
+        return NULL;
     }
 
     do {
@@ -84,22 +83,18 @@ int decrypt(const char *source_file, const unsigned char key[crypto_secretstream
         eof = feof(fp_s);
         
         if (crypto_secretstream_xchacha20poly1305_pull(&st, buf_out, &out_len, &tag, buf_in, rlen, NULL, 0) != 0) {
-            goto ret;
+            return NULL;
         }
 
         if (tag == crypto_secretstream_xchacha20poly1305_TAG_FINAL && ! eof) {
-            goto ret;
+            return NULL;
         }
 
-        fwrite(buf_out, 1, (size_t)out_len, stdout);
-        fwrite("\n", 1, (size_t)1, stdout);
     } while (!eof);
 
-    ret = 0;
-ret:
     fclose(fp_s);
     
-    return ret;
+    return buf_out;
 }
 
 int create_key(const char *key_file)  {
