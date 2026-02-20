@@ -4,11 +4,12 @@
 #include <dirent.h>
 #include <stdarg.h>
 #include <stdio.h>
+#include <errno.h>
 
 #include "password.h"
 #include "crypto.h"
 
-int create_password(char name[], char password[]) {
+int create_password(char name[], char password[], unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
     char *fname = get_locksmith_passw_dir_filepath(name);
 
     FILE *fptr;
@@ -21,18 +22,18 @@ int create_password(char name[], char password[]) {
     fprintf(fptr, "%s", password);
     fclose(fptr); 
 
-    encrypt_decrypt(fname);
+    encrypt(fname, password, key);
 
     return 0;
 }
 
-char *get_password(char name[]) {
+char *get_password(char name[], unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
     char *fname = get_locksmith_passw_dir_filepath(name);
     IFVERBOSE("get_locksmith_passw_dir_filepath: %s\n", fname);
 
     FILE *fptr;
 
-    encrypt_decrypt(fname);
+    decrypt(fname, key);
     fptr = fopen(fname, "r");
     if (fptr == NULL) {
         die("Couldn't get password. Failed to read file.");
@@ -50,7 +51,7 @@ char *get_password(char name[]) {
     IFVERBOSE("Read value: \"%s\"\n", fcontent);
 
     fclose(fptr);
-    encrypt_decrypt(fname);
+    encrypt(fname, fcontent, key);
 
     return fcontent;
 }
@@ -82,14 +83,15 @@ int list_passwords() {
     return 0;
 }
 
-int verify_master_password(char* password, unsigned char* hash) {
-    unsigned char password_hash[MAX_HASH_LEN];
-    hash_password(password, password_hash);
-
-    for (int i = 0; password[i] != '\0'; i++) {
-        if (password_hash[i] != hash[i])
-            return 0;
+int get_key(unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
+    FILE *key_fd = fopen(locksmith_key_file, "r");
+    if (key_fd == NULL) {
+        errno = 2;
+        exit(2);
     }
 
-    return 1;
+    fread(&key, crypto_secretstream_xchacha20poly1305_KEYBYTES, 1, key_fd);
+
+    return 0;
 }
+

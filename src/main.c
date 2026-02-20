@@ -21,10 +21,12 @@
 #include <sys/time.h>
 #include <dirent.h>
 #include <stdarg.h>
+#include <sodium.h>
 
 #include "commons.h"
 #include "password.h"
 #include "cli.h"
+#include "crypto.h"
 
 #define locksmith_title \
 "88                                88                                     88         88         \n" \
@@ -36,17 +38,17 @@
 "88         \"8a,   ,a8\" \"8a,   ,aa 88`\"Yba,  aa    ]8I 88      88      88 88   88,   88       88\n" \
 "88888888888 `\"YbbdP\"'   \"Ybbd8\"' 88   `Y8a `\"YbbdP\"' 88      88      88 88   \"Y888 88       88\n\n" \
 
-
-
 int main(int argc, char **argv) {
     safe_srand();
 
     mkdirifnotexist(locksmith_dir);
     mkdirifnotexist(locksmith_passw_dir);
 
-    printf(locksmith_title);
+    create_key(locksmith_key_file);
 
-    verify_master_password_interface();
+    cli_init();
+
+    printf(locksmith_title);
 
     int exit_cmd = 0;
     while (!exit_cmd) {
