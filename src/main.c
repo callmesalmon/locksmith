@@ -53,8 +53,8 @@ int main(int argc, char **argv) {
     printf(locksmith_title);
 
     printf("Locksmith version %s\n", locksmith_version);
-    printf("License: GPLv2-or-later <https://spdx.org/licenses/GPL-2.0-or-later.html> (original code), "
-           "BSD2-Clause license (password encryption) <https://opensource.org/license/bsd-2-clause>\n");
+    printf("License: GPLv2-or-later <https://spdx.org/licenses/GPL-2.0-or-later.html> (original code),\n"
+           "BSD2-Clause license <https://opensource.org/license/bsd-2-clause> (password encryption)\n");
 
     int exit_cmd = 0;
     while (!exit_cmd) {
