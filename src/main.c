@@ -29,14 +29,15 @@
 #include "crypto.h"
 
 #define locksmith_title \
-"88                                88                                     88         88         \n" \
+"\n88                                88                                     88         88         \n" \
 "88                                88                                     \"\"   ,d    88         \n" \
 "88                                88                                          88    88         \n" \
 "88          ,adPPYba,   ,adPPYba, 88   ,d8  ,adPPYba, 88,dPYba,,adPYba,  88 MM88MMM 88,dPPYba, \n" \
 "88         a8\"     \"8a a8\"     \"\" 88 ,a8\"   I8[    \"\" 88P'   \"88\"    \"8a 88   88    88P'    \"8a\n" \
 "88         8b       d8 8b         8888[      `\"Y8ba,  88      88      88 88   88    88       88\n" \
 "88         \"8a,   ,a8\" \"8a,   ,aa 88`\"Yba,  aa    ]8I 88      88      88 88   88,   88       88\n" \
-"88888888888 `\"YbbdP\"'   \"Ybbd8\"' 88   `Y8a `\"YbbdP\"' 88      88      88 88   \"Y888 88       88\n\n" \
+"88888888888 `\"YbbdP\"'   \"Ybbd8\"' 88   `Y8a `\"YbbdP\"' 88      88      88 88   \"Y888 88       88\n\n"
+#define locksmith_version "1.0"
 
 int main(int argc, char **argv) {
     safe_srand();
@@ -47,10 +48,13 @@ int main(int argc, char **argv) {
     create_key(locksmith_key_file);
 
     cli_init();
+    verify_master_password_interface();
 
     printf(locksmith_title);
 
-    verify_master_password_interface();
+    printf("Locksmith version %s\n", locksmith_version);
+    printf("License: GPLv2-or-later <https://spdx.org/licenses/GPL-2.0-or-later.html> (original code), "
+           "BSD2-Clause license (password encryption) <https://opensource.org/license/bsd-2-clause>\n");
 
     int exit_cmd = 0;
     while (!exit_cmd) {
