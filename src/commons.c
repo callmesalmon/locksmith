@@ -36,8 +36,7 @@ int mkdirifnotexist(char *dirname) {
     return 0;
 }
 
-// Size Aware scanf()
-int sa_scanf(int limit, const char *format, ...) {
+int safe_scanf(int limit, const char *format, ...) {
     va_list args;
 
     va_start(args, format);
@@ -77,5 +76,6 @@ void die(char *format, ...) {
     } else {
         vprintf(format, args);
     }
+
     exit(1); // We exit, not return.
 }

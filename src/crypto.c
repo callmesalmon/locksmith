@@ -50,7 +50,8 @@ int encrypt(const char *fname, const char *password, const unsigned char key[cry
     size_t pass_len = strlen(password);
     do {
         tag = EOF ? crypto_secretstream_xchacha20poly1305_TAG_FINAL : 0;
-        crypto_secretstream_xchacha20poly1305_push(&st, buf_out, &out_len, password, pass_len, NULL, 0, tag);
+        crypto_secretstream_xchacha20poly1305_push(
+            &st, buf_out, &out_len, (unsigned char *)password, pass_len, NULL, 0, tag);
         fwrite(buf_out, 1, (size_t)out_len, fptr);
     } while (!EOF);
 

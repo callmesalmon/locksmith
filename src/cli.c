@@ -15,7 +15,6 @@
 
 static unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES];
 
-// high skill code amiright
 int cli_init() {
     get_key(key);
 
@@ -26,13 +25,13 @@ int cmd_create_password() {
     char site_name[MAX_STRING_LEN], user_name[MAX_STRING_LEN], password[MAX_STRING_LEN];
 
     printf("Site:\n> ");
-    sa_scanf(MAX_STRING_LEN, "%s", site_name);
+    safe_scanf(MAX_STRING_LEN, "%s", site_name);
 
     printf("Username:\n> ");
-    sa_scanf(MAX_STRING_LEN, "%s", user_name);
+    safe_scanf(MAX_STRING_LEN, "%s", user_name);
 
     printf("Password:\n> ");
-    sa_scanf(MAX_STRING_LEN, "%s", password);
+    safe_scanf(MAX_STRING_LEN, "%s", password);
 
     create_password(format_password_filename(site_name, user_name), password, key);
 
@@ -46,7 +45,7 @@ int cmd_get_password() {
             "List of passwords:\n");
     list_passwords();
     printf("> ");
-    sa_scanf(MAX_STRING_LEN, "%s", pass_name);
+    safe_scanf(MAX_STRING_LEN, "%s", pass_name);
 
     printf("Password: %s\n", get_password(pass_name, key));
 
@@ -60,7 +59,7 @@ int cmd_delete_password() {
             "List of passwords:\n");
     list_passwords();
     printf("> ");
-    sa_scanf(MAX_STRING_LEN, "%s", pass_name);
+    safe_scanf(MAX_STRING_LEN, "%s", pass_name);
 
     delete_password(pass_name);
     
@@ -77,7 +76,7 @@ int cmd_interface(int *exit) {
     int command;
     int command_len = sizeof(int);
     printf("> ");
-    sa_scanf(command_len, "%d", &command);
+    safe_scanf(command_len, "%d", &command);
 
     char site_name[MAX_STRING_LEN];
     char user_name[MAX_STRING_LEN];
@@ -112,7 +111,7 @@ int verify_master_password_interface() {
     FILE* fptr = fopen(locksmith_master_passw_file, "rb");
     if (fptr == NULL) {
         printf("Create master password:\n> ");
-        sa_scanf(MAX_STRING_LEN, "%s", master_password);
+        safe_scanf(MAX_STRING_LEN, "%s", master_password);
         hash_password(master_password, master_password_hash);
 
         fptr = fopen(locksmith_master_passw_file, "wb");
@@ -126,7 +125,7 @@ int verify_master_password_interface() {
         int password_verified = 0;
         while (!password_verified) {
             printf("Enter master password (0 to exit):\n> ");
-            sa_scanf(MAX_STRING_LEN, "%s", master_password);
+            safe_scanf(MAX_STRING_LEN, "%s", master_password);
 
             if (!strcmp(master_password, "0")) exit(0);
             if (verify_master_password(master_password, master_pass_actual_hash)) break;

@@ -28,13 +28,12 @@ int create_password(char name[], char password[], unsigned char key[crypto_secre
 
 char *get_password(char name[], unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
     char *fname = get_locksmith_passw_dir_filepath(name);
-    IFVERBOSE("get_locksmith_passw_dir_filepath: %s\n", fname);
 
     unsigned char *buf = decrypt(fname, key);
 
-    encrypt(fname, buf, key);
+    encrypt(fname, (char *)buf, key);
 
-    return buf;
+    return (char *)buf;
 }
 
 int delete_password(char name[]) {
