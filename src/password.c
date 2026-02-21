@@ -1,10 +1,10 @@
 #include <unistd.h>
 #include <pwd.h>
-#include <string.h>
 #include <dirent.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <errno.h>
+#include <string.h>
 
 #include "password.h"
 #include "crypto.h"
@@ -53,8 +53,11 @@ int list_passwords() {
     }
 
     while ((de = readdir(dir)) != NULL) {
-        char *pname = strtok(de->d_name, ".");
-        if (pname != NULL) printf("%s\n", pname);
+        char *fname = de->d_name;
+        strip_ext(fname);
+
+        // fname != "." is for the "." (cwd) and ".." ""files""
+        if (fname != NULL && strcmp(fname, ".") != 0) printf("%s\n", fname);
     }
 
     closedir(dir);    

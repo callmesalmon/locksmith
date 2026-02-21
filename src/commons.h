@@ -7,6 +7,7 @@ int rand_range(int min, int max);
 int mkdirifnotexist(char *dirname);
 int safe_scanf(int limit, const char *format, ...);
 int safe_srand();
+int strip_ext(char *fname);
 void die(char *format, ...);
 
 #endif

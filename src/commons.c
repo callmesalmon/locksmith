@@ -65,6 +65,20 @@ int safe_srand() {
     return 0;
 }
 
+int strip_ext(char *fname) {
+    char *end = fname + strlen(fname);
+
+    while (end > fname && *end != '.' && *end != '\\' && *end != '/') {
+        --end;
+    }
+    if ((end > fname && *end == '.') &&
+        (*(end - 1) != '\\' && *(end - 1) != '/')) {
+        *end = '\0';
+    }
+
+    return 0;
+}
+
 void die(char *format, ...) {
     va_list args;
 
