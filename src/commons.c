@@ -3,7 +3,6 @@
 #include <unistd.h>
 #include <pwd.h>
 #include <stdlib.h>
-#include <time.h>
 #include <sys/time.h>
 #include <errno.h>
 #include <stdarg.h>
@@ -21,11 +20,6 @@ int directory_exists(char *dirname) {
         return 1;
     }
     return 0;
-}
-
-int rand_range(int min, int max) {
-    unsigned int seed = time(0);
-    return rand_r(&seed) % (max - min + 1) + min;
 }
 
 int mkdirifnotexist(char *dirname) {
