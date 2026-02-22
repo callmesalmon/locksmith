@@ -1,10 +1,10 @@
 # locksmith
-``locksmith`` is a password manager written in C. Its aims are being simple, and fast, with
+``locksmith`` is a password manager written in C. It aims at being simple and fast with
 no unnessecary bloat.
 
 ## Requirements
-- [CC/GCC](https://gcc.gnu.org/)
-- [Make](https://www.gnu.org/software/make/)
+- [cc/gcc](https://gcc.gnu.org/)
+- [make](https://www.gnu.org/software/make/)
 - [libsodium](https://github.com/jedisct1/libsodium)
 
 ## Install
