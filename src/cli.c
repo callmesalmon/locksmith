@@ -130,7 +130,7 @@ int verify_master_password_interface() {
             if (!strcmp(master_password, "0")) exit(0);
             if (verify_master_password(master_password, master_pass_actual_hash)) break;
 
-            printf("Wrong password!\n");
+            printf("Wrong password!\n\n");
         }
 
         fclose(fptr);
