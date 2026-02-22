@@ -28,7 +28,7 @@
 #include "cli.h"
 #include "crypto.h"
 
-#define locksmith_title "\n" \
+#define locksmith_title "\n\n" \
 "      :::        ::::::::   ::::::::  :::    ::: ::::::::    :::   :::   ::::::::::: ::::::::::: :::    :::\n"   \
 "     :+:       :+:    :+: :+:    :+: :+:   :+: :+:    :+:  :+:+: :+:+:      :+:         :+:     :+:    :+: \n"   \
 "    +:+       +:+    +:+ +:+        +:+  +:+  +:+        +:+ +:+:+ +:+     +:+         +:+     +:+    +:+  \n"   \
@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
     cli_init();
     verify_master_password_interface();
 
-    printf(locksmith_title);
+    printf_color(CYAN, locksmith_title);
 
     printf("Locksmith version %s\n", locksmith_version);
     printf("License: GPLv2-or-later <https://spdx.org/licenses/GPL-2.0-or-later.html> (original code),\n"

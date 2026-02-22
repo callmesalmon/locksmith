@@ -73,6 +73,20 @@ int strip_ext(char *fname) {
     return 0;
 }
 
+int printf_color(char *color, const char *format, ...) {
+    va_list args;
+
+    va_start(args, format);
+    va_end(args);
+
+    
+    printf("%s", color);
+    vprintf(format, args);
+    printf("%s", DEFAULT_COLOR);
+
+    return 0;
+}
+
 void die(char *format, ...) {
     va_list args;
 

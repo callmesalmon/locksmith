@@ -11,7 +11,13 @@
 #include "crypto.h"
 #include "password.h"
 
-#define format_password_filename(site, user) strcat(strcat(site, ":"), user)
+#define LIST_ITEM_NUMBER(n) CYAN "[" BOLD_YELLOW n CYAN "]" DEFAULT_COLOR " "
+#define FORMAT_PASSWORD_FILENAME(site, user) strcat(strcat(site, ":"), user)
+
+#define LOCKSMITH_PROMPT "\nlocksmith> "
+
+#define QUESTION_COLOR UNDERLINE_GREEN
+#define LISTPASSWORDS_COLOR BOLD_CYAN
 
 static unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES];
 
@@ -24,16 +30,19 @@ int cli_init() {
 int cmd_create_password() {
     char site_name[MAX_STRING_LEN], user_name[MAX_STRING_LEN], password[MAX_STRING_LEN];
 
-    printf("Site:\n> ");
+    printf_color(QUESTION_COLOR, "\nSite:");
+    printf_color(BOLD_RED, LOCKSMITH_PROMPT);
     safe_scanf(MAX_STRING_LEN, "%s", site_name);
 
-    printf("Username:\n> ");
+    printf_color(QUESTION_COLOR, "\nUsername:");
+    printf_color(BOLD_RED, LOCKSMITH_PROMPT);
     safe_scanf(MAX_STRING_LEN, "%s", user_name);
 
-    printf("Password:\n> ");
+    printf_color(QUESTION_COLOR, "\nPassword:");
+    printf_color(BOLD_RED, LOCKSMITH_PROMPT);
     safe_scanf(MAX_STRING_LEN, "%s", password);
 
-    create_password(format_password_filename(site_name, user_name), password, key);
+    create_password(FORMAT_PASSWORD_FILENAME(site_name, user_name), password, key);
 
     return 0;
 }
@@ -41,13 +50,14 @@ int cmd_create_password() {
 int cmd_get_password() {
     char pass_name[MAX_STRING_LEN];
 
-    printf("What password do you want to get?\n"
-            "List of passwords:\n");
+    printf_color(QUESTION_COLOR, "\nWhat password do you want to get?\n");
+    printf_color(LISTPASSWORDS_COLOR, "List of passwords:\n");
     list_passwords();
-    printf("> ");
+    printf_color(BOLD_RED, LOCKSMITH_PROMPT);
     safe_scanf(MAX_STRING_LEN, "%s", pass_name);
 
-    printf("Password: %s\n", get_password(pass_name, key));
+    printf_color(UNDERLINE_YELLOW, "Password:");
+    printf(" %s\n", get_password(pass_name, key));
 
     return 0;
 }
@@ -55,10 +65,10 @@ int cmd_get_password() {
 int cmd_delete_password() {
     char pass_name[MAX_STRING_LEN];
 
-    printf("What password do you want to delete?\n"
-            "List of passwords:\n");
+    printf_color(QUESTION_COLOR, "\nWhat password do you want to delete?\n");
+    printf_color(LISTPASSWORDS_COLOR, "List of passwords:\n");
     list_passwords();
-    printf("> ");
+    printf_color(BOLD_RED, LOCKSMITH_PROMPT);
     safe_scanf(MAX_STRING_LEN, "%s", pass_name);
 
     delete_password(pass_name);
@@ -67,15 +77,16 @@ int cmd_delete_password() {
 }
 
 int cmd_interface(int *exit) {
-    printf("\nEnter a command:\n"
-           "[1] Create password\n"
-           "[2] Get password\n"
-           "[3] Delete password\n"
-           "[4] Exit program\n");
+    printf_color(UNDERLINE_RED, "\nEnter a command:\n");
+    printf(
+           LIST_ITEM_NUMBER("1") "Create password\n"
+           LIST_ITEM_NUMBER("2") "Get password\n"
+           LIST_ITEM_NUMBER("3") "Delete password\n"
+           LIST_ITEM_NUMBER("4") "Exit program\n");
 
     int command;
     int command_len = sizeof(int);
-    printf("> ");
+    printf_color(BOLD_RED, LOCKSMITH_PROMPT);
     safe_scanf(command_len, "%d", &command);
 
     char site_name[MAX_STRING_LEN];
