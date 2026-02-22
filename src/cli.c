@@ -68,10 +68,10 @@ int cmd_delete_password() {
 
 int cmd_interface(int *exit) {
     printf("\nEnter a command:\n"
-           "[1]: Create password\n"
-           "[2]: Get password\n"
-           "[3]: Delete password\n"
-           "[4]: Exit program\n");
+           "[1] Create password\n"
+           "[2] Get password\n"
+           "[3] Delete password\n"
+           "[4] Exit program\n");
 
     int command;
     int command_len = sizeof(int);
