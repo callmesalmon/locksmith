@@ -42,7 +42,7 @@ char *format_password_filename(char *site, char *user) {
 // We need to check if passname + .txt exists
 int passname_handler(char *passname) {
     static char full_filename[MAX_STRING_LEN];
-    snprintf(full_filename, sizeof(full_filename), "%s%s.txt", LOCKSMITH_PASSW_DIR, passname);
+    snprintf(full_filename, MAX_STRING_LEN, "%s%s.txt", LOCKSMITH_PASSW_DIR, passname);
 
     if (fexists(full_filename)) {
         return 1;
@@ -65,14 +65,18 @@ int cmd_create_password() {
     printf(LOCKSMITH_PROMPT2);
     safe_scanf(MAX_STRING_LEN, "%s", password);
 
+    // This is not a good implementation. In reality we should just remove
+    // the automatic prepending of LOCKSMITH_DIR* to all filenames.
     char *full_filename = format_password_filename(site_name, user_name);
-
-    if (fexists(full_filename)) {
+    char full_filename_with_dir[MAX_STRING_LEN];
+    snprintf(full_filename_with_dir, MAX_STRING_LEN, "%s%s.txt", LOCKSMITH_PASSW_DIR, full_filename);
+    
+    if (fexists(full_filename_with_dir)) {
         printf_color(YELLOW, "WARNING: Password file already exists!\n");
         printf_color(YELLOW, "Are you sure you want to overwrite this password? [y/N] ");
 
-        char *overwrite_pass;
-        scanf("%s", overwrite_pass);
+        char overwrite_pass[MAX_STRING_LEN];
+        safe_scanf(MAX_STRING_LEN, "%s", overwrite_pass);
         
         if (strcmp(overwrite_pass, "y") != 0) return 0;
     }
