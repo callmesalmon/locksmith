@@ -12,6 +12,8 @@
 #include "password.h"
 
 #define LIST_ITEM_NUMBER(n) "[" CYAN n DEFAULT_COLOR "] "
+#define LIST_ITEM_STRING(s) CYAN s DEFAULT_COLOR
+
 #define FORMAT_PASSWORD_FILENAME(site, user) strcat(strcat(site, ":"), user)
 
 #define LOCKSMITH_PROMPT1 "\n[" RED "locksmith" DEFAULT_COLOR "]$ "
@@ -79,10 +81,10 @@ int cmd_delete_password() {
 int cmd_interface(int *exit) {
     printf_color(ENTER_CMD_COLOR, "\nEnter a command:\n");
     printf(
-           LIST_ITEM_NUMBER("1") "Create password\n"
-           LIST_ITEM_NUMBER("2") "Get password\n"
-           LIST_ITEM_NUMBER("3") "Delete password\n"
-           LIST_ITEM_NUMBER("4") "Exit program\n");
+           LIST_ITEM_NUMBER("1") LIST_ITEM_STRING("Create password\n")
+           LIST_ITEM_NUMBER("2") LIST_ITEM_STRING("Get password\n")
+           LIST_ITEM_NUMBER("3") LIST_ITEM_STRING("Delete password\n")
+           LIST_ITEM_NUMBER("4") LIST_ITEM_STRING("Exit program\n"));
 
     int command;
     int command_len = sizeof(int);
