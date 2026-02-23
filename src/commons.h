@@ -1,6 +1,8 @@
 #ifndef COMMONS_H
 #define COMMONS_H
 
+#include <stdio.h>
+
 #define BLACK               "\033[0;30m"
 #define RED                 "\033[0;31m"
 #define GREEN               "\033[0;32m"
@@ -73,6 +75,7 @@ int safe_scanf(int limit, const char *format, ...);
 int safe_srand();
 int strip_ext(char *fname);
 int printf_color(char *color, const char *format, ...);
+int fexists(char *fname);
 void die(char *format, ...);
 
 #endif

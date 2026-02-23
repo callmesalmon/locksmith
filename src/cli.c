@@ -14,8 +14,6 @@
 #define LIST_ITEM_NUMBER(n) "[" CYAN n DEFAULT_COLOR "] "
 #define LIST_ITEM_STRING(s) CYAN s DEFAULT_COLOR
 
-#define FORMAT_PASSWORD_FILENAME(site, user) strcat(strcat(site, ":"), user)
-
 #define LOCKSMITH_PROMPT1 "\n[" RED "locksmith" DEFAULT_COLOR "]$ "
 #define LOCKSMITH_PROMPT2 "\n> "
 
@@ -28,6 +26,27 @@ static unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES];
 int cli_init() {
     get_key(key);
 
+    return 0;
+}
+
+char *format_password_filename(char *site, char *user) {
+    char *local_site = site;
+    char *local_user = user;
+    static char full_filename[MAX_STRING_LEN];
+
+    snprintf(full_filename, sizeof(full_filename), "%s:%s", site, user);
+
+    return full_filename;
+}
+
+// We need to check if passname + .txt exists
+int passname_handler(char *passname) {
+    static char full_filename[MAX_STRING_LEN];
+    snprintf(full_filename, sizeof(full_filename), "%s%s.txt", LOCKSMITH_PASSW_DIR, passname);
+
+    if (fexists(full_filename)) {
+        return 1;
+    }
     return 0;
 }
 
@@ -46,7 +65,19 @@ int cmd_create_password() {
     printf(LOCKSMITH_PROMPT2);
     safe_scanf(MAX_STRING_LEN, "%s", password);
 
-    create_password(FORMAT_PASSWORD_FILENAME(site_name, user_name), password, key);
+    char *full_filename = format_password_filename(site_name, user_name);
+
+    if (fexists(full_filename)) {
+        printf_color(YELLOW, "WARNING: Password file already exists!\n");
+        printf_color(YELLOW, "Are you sure you want to overwrite this password? [y/N] ");
+
+        char *overwrite_pass;
+        scanf("%s", overwrite_pass);
+        
+        if (strcmp(overwrite_pass, "y") != 0) return 0;
+    }
+
+    create_password(full_filename, password, key);
 
     return 0;
 }
@@ -58,6 +89,12 @@ int cmd_get_password() {
     list_passwords();
     printf(LOCKSMITH_PROMPT2);
     safe_scanf(MAX_STRING_LEN, "%s", pass_name);
+
+    if (!passname_handler(pass_name)) {
+        printf_color(YELLOW, "WARNING: Password file not accessible!\n");
+        printf_color(YELLOW, "Returning to command interface...\n");
+        return 1;
+    }
 
     printf_color(GETPASS_COLOR, "Password:");
     printf(" %s\n", get_password(pass_name, key));
@@ -72,6 +109,12 @@ int cmd_delete_password() {
     list_passwords();
     printf(LOCKSMITH_PROMPT2);
     safe_scanf(MAX_STRING_LEN, "%s", pass_name);
+
+    if (!passname_handler(pass_name)) {
+        printf_color(YELLOW, "WARNING: Password file not accessible!\n");
+        printf_color(YELLOW, "Returning to command interface...\n");
+        return 1;
+    }
 
     delete_password(pass_name);
     

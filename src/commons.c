@@ -87,6 +87,11 @@ int printf_color(char *color, const char *format, ...) {
     return 0;
 }
 
+int fexists(char *fname) {
+  struct stat   buffer;   
+  return (stat (fname, &buffer) == 0);
+}
+
 void die(char *format, ...) {
     va_list args;
 
