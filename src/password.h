@@ -6,7 +6,7 @@
 
 #include "commons.h"
 
-#define LOCKSMITH_DIR strcat(get_home_dir(), "/.LOCKSMITH/")
+#define LOCKSMITH_DIR strcat(get_home_dir(), "/.locksmith/")
 #define LOCKSMITH_PASSW_DIR strcat(LOCKSMITH_DIR, "passwords/")
 #define LOCKSMITH_MASTER_PASSW_FILE strcat(LOCKSMITH_DIR, "master_password.txt")
 #define LOCKSMITH_KEY_FILE strcat(LOCKSMITH_DIR, "key.txt")
