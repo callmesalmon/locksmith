@@ -28,7 +28,7 @@
 #include "cli.h"
 #include "crypto.h"
 
-#define locksmith_title "\n\n" \
+#define LOCKSMITH_TITLE "\n\n" \
 "      :::        ::::::::   ::::::::  :::    ::: ::::::::    :::   :::   ::::::::::: ::::::::::: :::    :::\n"   \
 "     :+:       :+:    :+: :+:    :+: :+:   :+: :+:    :+:  :+:+: :+:+:      :+:         :+:     :+:    :+: \n"   \
 "    +:+       +:+    +:+ +:+        +:+  +:+  +:+        +:+ +:+:+ +:+     +:+         +:+     +:+    +:+  \n"   \
@@ -37,23 +37,22 @@
 " #+#       #+#    #+# #+#    #+# #+#   #+# #+#    #+# #+#       #+#     #+#         #+#     #+#    #+#     \n"   \
 "########## ########   ########  ###    ### ########  ###       ### ###########     ###     ###    ###      \n\n" \
 
-
-#define locksmith_version "1.0"
+#define LOCKSMITH_VERSION "1.0"
 
 int main(int argc, char **argv) {
     safe_srand();
 
-    mkdirifnotexist(locksmith_dir);
-    mkdirifnotexist(locksmith_passw_dir);
+    mkdirifnotexist(LOCKSMITH_DIR);
+    mkdirifnotexist(LOCKSMITH_PASSW_DIR);
 
-    create_key(locksmith_key_file);
+    create_key(LOCKSMITH_KEY_FILE);
 
     cli_init();
     verify_master_password_interface();
 
-    printf_color(CYAN, locksmith_title);
+    printf_color(CYAN, LOCKSMITH_TITLE);
 
-    printf("Locksmith version %s\n", locksmith_version);
+    printf("Locksmith version %s\n", LOCKSMITH_VERSION);
     printf("License: GPLv2-or-later <https://spdx.org/licenses/GPL-2.0-or-later.html> (original code),\n"
            "BSD2-Clause license <https://opensource.org/license/bsd-2-clause> (password encryption)\n");
 

@@ -6,13 +6,11 @@
 
 #include "commons.h"
 
-#define locksmith_dir strcat(get_home_dir(), "/.locksmith/")
-#define locksmith_passw_dir strcat(locksmith_dir, "passwords/")
-#define locksmith_hash_key_dir strcat(locksmith_dir, "hashed_keys/")
-#define locksmith_master_passw_file strcat(locksmith_dir, "master_password.txt")
-#define locksmith_key_file strcat(locksmith_dir, "key.txt")
-#define get_locksmith_passw_dir_filepath(name) strcat(locksmith_passw_dir, strcat(name, ".txt"))
-#define get_locksmith_hash_key_dir_filepath(name) strcat(locksmith_hash_key_dir, strcat(name, ".txt"))
+#define LOCKSMITH_DIR strcat(get_home_dir(), "/.LOCKSMITH/")
+#define LOCKSMITH_PASSW_DIR strcat(LOCKSMITH_DIR, "passwords/")
+#define LOCKSMITH_MASTER_PASSW_FILE strcat(LOCKSMITH_DIR, "master_password.txt")
+#define LOCKSMITH_KEY_FILE strcat(LOCKSMITH_DIR, "key.txt")
+#define GET_LOCKSMITH_PASSW_DIR_FILEPATH(name) strcat(LOCKSMITH_PASSW_DIR, strcat(name, ".txt"))
 
 int create_password(char name[], char password[], unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]);
 char *get_password(char name[], unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]);

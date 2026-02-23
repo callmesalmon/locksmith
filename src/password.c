@@ -10,7 +10,7 @@
 #include "crypto.h"
 
 int create_password(char name[], char password[], unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
-    char *fname = get_locksmith_passw_dir_filepath(name);
+    char *fname = GET_LOCKSMITH_PASSW_DIR_FILEPATH(name);
 
     FILE *fptr;
 
@@ -27,7 +27,7 @@ int create_password(char name[], char password[], unsigned char key[crypto_secre
 }
 
 char *get_password(char name[], unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
-    char *fname = get_locksmith_passw_dir_filepath(name);
+    char *fname = GET_LOCKSMITH_PASSW_DIR_FILEPATH(name);
 
     unsigned char *buf = decrypt(fname, key);
 
@@ -37,7 +37,7 @@ char *get_password(char name[], unsigned char key[crypto_secretstream_xchacha20p
 }
 
 int delete_password(char name[]) {
-    char *fname = get_locksmith_passw_dir_filepath(name);
+    char *fname = GET_LOCKSMITH_PASSW_DIR_FILEPATH(name);
     remove(fname);
 
     return 0;
@@ -46,7 +46,7 @@ int delete_password(char name[]) {
 int list_passwords() {
     struct dirent *de;
 
-    DIR *dir = opendir(locksmith_passw_dir);
+    DIR *dir = opendir(LOCKSMITH_PASSW_DIR);
 
     if (dir == NULL) {
         die("Couldn't list passwords.");
@@ -66,7 +66,7 @@ int list_passwords() {
 }
 
 int get_key(unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
-    FILE *key_fd = fopen(locksmith_key_file, "r");
+    FILE *key_fd = fopen(LOCKSMITH_KEY_FILE, "r");
     if (key_fd == NULL) {
         errno = 2;
         exit(2);
