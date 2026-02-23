@@ -35,7 +35,7 @@
 " / /___/ /_/ / /__/ ,< (__  ) / / / / / / /_/ / / /    \n" \
 "/_____/\\____/\\___/_/|_/____/_/ /_/ /_/_/\\__/_/ /_/  \n\n" 
 
-#define LOCKSMITH_VERSION "1.0"
+#define LOCKSMITH_VERSION "1.1"
 
 int main(int argc, char **argv) {
     safe_srand();

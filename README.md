@@ -2,7 +2,8 @@
 ``locksmith`` is a password manager written in C. It aims at being simple and fast with
 no unnessecary bloat.
 
-[![Locksmith image](https://github.com/callmesalmon/locksmith/raw/main/screenshot.png)](https://github.com/callmesalmon/locksmith)
+[![Locksmith image](https://github.com/callmesalmon/locksmith/raw/main/screenshot.png)](https://github.com/callmesalmon/locksmith)  
+Locksmith in action! _(screenshot may be outdated)_
 
 ## Requirements
 If you want to build locksmith from source, you need:
