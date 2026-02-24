@@ -53,6 +53,7 @@ int main(int argc, char **argv) {
     printf("Locksmith version %s\n", LOCKSMITH_VERSION);
     printf("License: GPLv2-or-later <https://spdx.org/licenses/GPL-2.0-or-later.html> (original code),\n"
            "BSD2-Clause license <https://opensource.org/license/bsd-2-clause> (password encryption)\n");
+    printf("Type 'help' for a list of commands.\n");
 
     int exit_cmd = 0;
     while (!exit_cmd) {

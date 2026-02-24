@@ -20,7 +20,33 @@
 #define LOCKSMITH_PROMPT1 "\n[" RED "locksmith" DEFAULT_COLOR "]$ "
 #define LOCKSMITH_PROMPT2 "\n> "
 
+#define LIST_OF_COMMANDS          \
+"new - create new password\n"     \
+"get - get password\n"            \
+"del - delete password\n"      \
+"exit - exit command interface\n" \
+"help - show this text\n"         \
+
 static unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES];
+
+typedef enum {
+    CMD_NEW,
+    CMD_GET,
+    CMD_DEL,
+    CMD_EXIT,
+    CMD_HELP,
+
+    INVALID,
+} CommandList;
+
+CommandList get_cmd_value(char str[MAX_STRING_LEN]) {
+    if (!strcmp(str, "new"))  return CMD_NEW;
+    if (!strcmp(str, "get"))  return CMD_GET;
+    if (!strcmp(str, "del"))  return CMD_DEL;
+    if (!strcmp(str, "exit")) return CMD_EXIT;
+    if (!strcmp(str, "help")) return CMD_HELP;
+    return INVALID;
+}
 
 int cli_init() {
     get_key(key);
@@ -136,39 +162,32 @@ int cmd_delete_password() {
 }
 
 int cmd_interface(int *exit) {
-    printf_color(UNDERLINE_RED, "\nEnter a command:\n");
-    printf(
-           LIST_ITEM_NUMBER("1") LIST_ITEM_STRING("Create password\n")
-           LIST_ITEM_NUMBER("2") LIST_ITEM_STRING("Get password\n")
-           LIST_ITEM_NUMBER("3") LIST_ITEM_STRING("Delete password\n")
-           LIST_ITEM_NUMBER("4") LIST_ITEM_STRING("Exit program\n"));
-
-    int command;
-    int command_len = sizeof(int);
     printf(LOCKSMITH_PROMPT1);
-    safe_scanf(command_len, "%d", &command);
+    char command[MAX_STRING_LEN];
+    safe_scanf(MAX_STRING_LEN, "%s", command);
 
-    char site_name[MAX_STRING_LEN];
-    char user_name[MAX_STRING_LEN];
-    char password[MAX_STRING_LEN];
-
-    switch (command) {
-        case 1:
+    switch (get_cmd_value(command)) {
+        case CMD_NEW:
             cmd_create_password();
             break;
-        case 2:
+        case CMD_GET:
             cmd_get_password();
             break;
-        case 3:
+        case CMD_DEL:
             cmd_delete_password();
             break;
-        case 4:
+        case CMD_HELP:
+            printf(LIST_OF_COMMANDS);
+            break;
+        case CMD_EXIT:
             printf("Exiting...\n");
             *exit = 1;
             break;
+        case INVALID:
+            cli_error("Invalid command!");
+            break;
         default:
-            printf("Invalid command! Exiting...\n");
-            *exit = 1;
+            die("Something went wrong while handling user input.");
     }
 
     return 0;
