@@ -153,7 +153,10 @@ int cmd_delete_password() {
 
 int cmd_interface(int *exit) {
     printf(LOCKSMITH_PROMPT1);
+
     char command[MAX_STRING_LEN];
+    snprintf(command, MAX_STRING_LEN, ""); // make sure "command" is an empty string
+
     safe_scanf(MAX_STRING_LEN, "%s", command);
 
     switch (get_cmd_value(command)) {
