@@ -10,6 +10,7 @@
 #include "commons.h"
 #include "crypto.h"
 #include "password.h"
+#include "colors.h"
 
 #define LOCKSMITH_PROMPT1 "\n[" RED "locksmith" DEFAULT_COLOR "]$ "
 

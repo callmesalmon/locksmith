@@ -27,6 +27,7 @@
 #include "password.h"
 #include "cli.h"
 #include "crypto.h"
+#include "colors.h"
 
 #define LOCKSMITH_TITLE "\n" \
 "    __               __                  _ __  __      \n" \
