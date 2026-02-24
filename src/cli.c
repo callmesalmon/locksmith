@@ -49,6 +49,17 @@ int passname_handler(char *passname) {
     return 0;
 }
 
+int cli_error(char *message) {
+    printf_color(RED, "ERROR: %s", message);
+    return 0;
+}
+
+
+int cli_warning(char *message) {
+    printf_color(YELLOW, "WARNING: %s", message);
+    return 0;
+}
+
 int cmd_create_password() {
     char site_name[MAX_STRING_LEN], user_name[MAX_STRING_LEN], password[MAX_STRING_LEN];
 
@@ -71,8 +82,8 @@ int cmd_create_password() {
     snprintf(full_filename_with_dir, MAX_STRING_LEN, "%s%s.txt", LOCKSMITH_PASSW_DIR, full_filename);
     
     if (fexists(full_filename_with_dir)) {
-        printf_color(YELLOW, "WARNING: Password file already exists!\n");
-        printf_color(YELLOW, "Are you sure you want to overwrite this password? [y/N] ");
+        cli_warning("Password file already exists!\n"
+                    "Are you sure you want to overwrite this password? [y/N] ");
 
         char overwrite_pass[MAX_STRING_LEN];
         safe_scanf(MAX_STRING_LEN, "%s", overwrite_pass);
@@ -94,8 +105,8 @@ int cmd_get_password() {
     safe_scanf(MAX_STRING_LEN, "%s", pass_name);
 
     if (!passname_handler(pass_name)) {
-        printf_color(YELLOW, "WARNING: Password file not accessible!\n");
-        printf_color(YELLOW, "Returning to command interface...\n");
+        cli_error("Password file not accessible!\n"
+                  "Returning to command interface...\n");
         return 1;
     }
 
@@ -114,8 +125,8 @@ int cmd_delete_password() {
     safe_scanf(MAX_STRING_LEN, "%s", pass_name);
 
     if (!passname_handler(pass_name)) {
-        printf_color(YELLOW, "WARNING: Password file not accessible!\n");
-        printf_color(YELLOW, "Returning to command interface...\n");
+        cli_error("Password file not accessible!\n"
+                  "Returning to command interface...\n");
         return 1;
     }
 
