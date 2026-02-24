@@ -8,6 +8,5 @@ int cmd_create_password();
 int cmd_get_password();
 int cmd_delete_password();
 int cmd_interface(int *exit);
-int verify_master_password_interface();
 
 #endif

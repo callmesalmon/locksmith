@@ -23,6 +23,7 @@
 #include <stdarg.h>
 #include <sodium.h>
 
+#include "auth.h"
 #include "commons.h"
 #include "password.h"
 #include "cli.h"
@@ -47,7 +48,7 @@ int main(int argc, char **argv) {
     create_key(LOCKSMITH_KEY_FILE);
 
     cli_init();
-    verify_master_password_interface();
+    auth_master_password();
 
     printf_color(CYAN, LOCKSMITH_TITLE);
 
