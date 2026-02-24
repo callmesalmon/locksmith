@@ -11,12 +11,6 @@
 #include "crypto.h"
 #include "password.h"
 
-// e.g:
-// printf(LIST_ITEM_NUMBER(1) LIST_ITEM_STRING("do thing\n"))
-// -> [\CYAN1\DEFAULT] \CYANdo thing\n\DEFAULT
-#define LIST_ITEM_NUMBER(n) "[" CYAN n DEFAULT_COLOR "] "
-#define LIST_ITEM_STRING(s) CYAN s DEFAULT_COLOR
-
 #define LOCKSMITH_PROMPT1 "\n[" RED "locksmith" DEFAULT_COLOR "]$ "
 
 #define LIST_OF_COMMANDS          \
