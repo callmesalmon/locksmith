@@ -18,7 +18,6 @@
 #define LIST_ITEM_STRING(s) CYAN s DEFAULT_COLOR
 
 #define LOCKSMITH_PROMPT1 "\n[" RED "locksmith" DEFAULT_COLOR "]$ "
-#define LOCKSMITH_PROMPT2 "\n> "
 
 #define LIST_OF_COMMANDS          \
 "new - create new password\n"     \
@@ -89,16 +88,13 @@ int cli_warning(char *message) {
 int cmd_create_password() {
     char site_name[MAX_STRING_LEN], user_name[MAX_STRING_LEN], password[MAX_STRING_LEN];
 
-    printf_color(UNDERLINE_CYAN, "\nSite:");
-    printf(LOCKSMITH_PROMPT2);
+    printf("Sitename: ");
     safe_scanf(MAX_STRING_LEN, "%s", site_name);
 
-    printf_color(UNDERLINE_CYAN, "\nUsername:");
-    printf(LOCKSMITH_PROMPT2);
+    printf("Username: ");
     safe_scanf(MAX_STRING_LEN, "%s", user_name);
 
-    printf_color(UNDERLINE_CYAN, "\nPassword:");
-    printf(LOCKSMITH_PROMPT2);
+    printf("Password: ");
     safe_scanf(MAX_STRING_LEN, "%s", password);
 
     // This is not a good implementation. In reality we should just remove
@@ -125,9 +121,9 @@ int cmd_create_password() {
 int cmd_get_password() {
     char pass_name[MAX_STRING_LEN];
 
-    printf_color(UNDERLINE_CYAN, "\nWhat password do you want to get?\n");
+    printf("\nWhat password do you want to get?\n");
     list_passwords();
-    printf(LOCKSMITH_PROMPT2);
+    printf(">");
     safe_scanf(MAX_STRING_LEN, "%s", pass_name);
 
     if (!passname_handler(pass_name)) {
@@ -145,9 +141,9 @@ int cmd_get_password() {
 int cmd_delete_password() {
     char pass_name[MAX_STRING_LEN];
 
-    printf_color(UNDERLINE_CYAN, "\nWhat password do you want to delete?\n");
+    printf("\nWhat password do you want to delete?\n");
     list_passwords();
-    printf(LOCKSMITH_PROMPT2);
+    printf(">");
     safe_scanf(MAX_STRING_LEN, "%s", pass_name);
 
     if (!passname_handler(pass_name)) {
