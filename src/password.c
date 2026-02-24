@@ -81,6 +81,10 @@ int verify_master_password(char* password, unsigned char* hash) {
     unsigned char password_hash[MAX_HASH_LEN];
     hash_password(password, password_hash);
 
+    if (!strcmp(password, "")) {
+        return 0;
+    }
+
     for (int i = 0; password[i] != '\0'; i++) {
         if (password_hash[i] != hash[i])
             return 0;
