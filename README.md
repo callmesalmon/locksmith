@@ -1,5 +1,5 @@
 # locksmith
-``locksmith`` is a password manager written in C. It aims at being simple and fast with
+``locksmith`` is a password manager for Unix-like systems written in C. It aims at being simple and fast with
 no unnessecary bloat.
 
 [![Locksmith image](https://github.com/callmesalmon/locksmith/raw/main/screenshot.png)](https://github.com/callmesalmon/locksmith)  
