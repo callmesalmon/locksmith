@@ -24,19 +24,18 @@
 #include <sodium.h>
 
 #include "auth.h"
+#include "colors.h"
 #include "commons.h"
 #include "password.h"
 #include "cli.h"
 #include "crypto.h"
-#include "colors.h"
 
-#define LOCKSMITH_TITLE "\n" \
-"    __               __                  _ __  __      \n" \
-"   / /   ____  _____/ /___________ ___  (_) /_/ /_     \n" \
-"  / /   / __ \\/ ___/ //_/ ___/ __ `__ \\/ / __/ __ \\ \n" \
-" / /___/ /_/ / /__/ ,< (__  ) / / / / / / /_/ / / /    \n" \
+#define LOCKSMITH_TITLE "\n"                                  \
+"    __               __                  _ __  __      \n"   \
+"   / /   ____  _____/ /___________ ___  (_) /_/ /_     \n"   \
+"  / /   / __ \\/ ___/ //_/ ___/ __ `__ \\/ / __/ __ \\ \n"   \
+" / /___/ /_/ / /__/ ,< (__  ) / / / / / / /_/ / / /    \n"   \
 "/_____/\\____/\\___/_/|_/____/_/ /_/ /_/_/\\__/_/ /_/  \n\n" 
-
 #define LOCKSMITH_VERSION "1.1"
 
 int main(int argc, char **argv) {

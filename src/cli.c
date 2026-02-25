@@ -12,7 +12,8 @@
 #include "password.h"
 #include "colors.h"
 
-#define LOCKSMITH_PROMPT1 "\n[" RED "locksmith" DEFAULT_COLOR "]$ "
+#define LOCKSMITH_PROMPT1 PURPLE "\nlocksmith> " DEFAULT_COLOR
+#define LOCKSMITH_PROMPT2 "\n> "
 
 #define LIST_OF_COMMANDS          \
 "new - create new password\n"     \
@@ -84,12 +85,15 @@ int cmd_create_password() {
     char site_name[MAX_STRING_LEN], user_name[MAX_STRING_LEN], password[MAX_STRING_LEN];
 
     printf("Sitename: ");
+    printf(LOCKSMITH_PROMPT2);
     safe_scanf(MAX_STRING_LEN, "%s", site_name);
 
     printf("Username: ");
+    printf(LOCKSMITH_PROMPT2);
     safe_scanf(MAX_STRING_LEN, "%s", user_name);
 
     printf("Password: ");
+    printf(LOCKSMITH_PROMPT2);
     safe_scanf(MAX_STRING_LEN, "%s", password);
 
     // This is not a good implementation. In reality we should just remove
@@ -118,7 +122,7 @@ int cmd_get_password() {
 
     printf("\nWhat password do you want to get?\n");
     list_passwords();
-    printf(">");
+    printf(LOCKSMITH_PROMPT2);
     safe_scanf(MAX_STRING_LEN, "%s", pass_name);
 
     if (!passname_handler(pass_name)) {
@@ -138,6 +142,7 @@ int cmd_delete_password() {
 
     printf("\nWhat password do you want to delete?\n");
     list_passwords();
+    printf(LOCKSMITH_PROMPT2);
     printf(">");
     safe_scanf(MAX_STRING_LEN, "%s", pass_name);
 
