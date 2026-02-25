@@ -31,6 +31,7 @@ typedef enum {
     CMD_EXIT,
     CMD_HELP,
 
+    EMPTY,
     INVALID,
 } CommandList;
 
@@ -40,6 +41,7 @@ CommandList get_cmd_value(char str[MAX_STRING_LEN]) {
     if (!strcmp(str, "del"))  return CMD_DEL;
     if (!strcmp(str, "exit")) return CMD_EXIT;
     if (!strcmp(str, "help")) return CMD_HELP;
+    if (!strcmp(str, ""))     return EMPTY;
     return INVALID;
 }
 
@@ -128,7 +130,7 @@ int cmd_get_password() {
         return 1;
     }
 
-    printf_color(UNDERLINE_RED, "Password:");
+    printf_color(UNDERLINE_WHITE, "Password:");
     printf(" %s\n", get_password(pass_name, key));
 
     return 0;
@@ -178,6 +180,8 @@ int cmd_interface(int *exit) {
         case CMD_EXIT:
             printf("Exiting...\n");
             *exit = 1;
+            break;
+        case EMPTY:
             break;
         case INVALID:
             cli_error("Invalid command!");
