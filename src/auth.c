@@ -32,6 +32,11 @@ int check_master_password() {
 
     int password_verified = 0;
     while (!password_verified) {
+        if (mpa.num_tries >= 5) {
+            die("Exceeded number of tries allowed for master password!\n"
+                "Please try again later.\n");
+        }
+
         printf("Enter master password (0 to exit):\n> ");
         safe_scanf(MAX_STRING_LEN, "%s", mpa.password);
 
@@ -39,6 +44,7 @@ int check_master_password() {
         if (verify_master_password(mpa.password, mpa.hash)) break;
 
         printf("Wrong password!\n\n");
+        mpa.num_tries++;
     }
 
     fclose(mpa.fptr);
