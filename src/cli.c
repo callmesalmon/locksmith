@@ -81,15 +81,15 @@ int cli_warning(char *message) {
 int cmd_create_password() {
     char site_name[MAX_STRING_LEN], user_name[MAX_STRING_LEN], password[MAX_STRING_LEN];
 
-    printf("Sitename: ");
+    printf("\nSitename: ");
     printf(LOCKSMITH_PROMPT2);
     safe_scanf(MAX_STRING_LEN, "%s", site_name);
 
-    printf("Username: ");
+    printf("\nUsername: ");
     printf(LOCKSMITH_PROMPT2);
     safe_scanf(MAX_STRING_LEN, "%s", user_name);
 
-    printf("Password: ");
+    printf("\nPassword: ");
     printf(LOCKSMITH_PROMPT2);
     safe_scanf(MAX_STRING_LEN, "%s", password);
 
