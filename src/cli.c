@@ -4,16 +4,12 @@
 #include <pwd.h>
 #include <sys/time.h>
 #include <stdarg.h>
-#include <string.h>
 
 #include "cli.h"
 #include "commons.h"
 #include "crypto.h"
 #include "password.h"
 #include "colors.h"
-
-#define LOCKSMITH_PROMPT1 PURPLE "\nlocksmith> " DEFAULT_COLOR
-#define LOCKSMITH_PROMPT2 "\n> "
 
 #define LIST_OF_COMMANDS          \
 "new - create new password\n"     \
@@ -24,16 +20,21 @@
 
 static unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES];
 
-typedef enum {
-    CMD_NEW,
-    CMD_GET,
-    CMD_DEL,
-    CMD_EXIT,
-    CMD_HELP,
+int cli_init() {
+    get_key(key);
 
-    EMPTY,
-    INVALID,
-} CommandList;
+    return 0;
+}
+
+int cli_error(char *message) {
+    printf_color(RED, "ERROR: %s", message);
+    return 0;
+}
+
+int cli_warning(char *message) {
+    printf_color(YELLOW, "WARNING: %s", message);
+    return 0;
+}
 
 CommandList get_cmd_value(char str[MAX_STRING_LEN]) {
     if (!strcmp(str, "new"))  return CMD_NEW;
@@ -43,12 +44,6 @@ CommandList get_cmd_value(char str[MAX_STRING_LEN]) {
     if (!strcmp(str, "help")) return CMD_HELP;
     if (!strcmp(str, ""))     return EMPTY;
     return INVALID;
-}
-
-int cli_init() {
-    get_key(key);
-
-    return 0;
 }
 
 char *format_password_filename(char *site, char *user) {
@@ -66,17 +61,6 @@ int passname_handler(char *passname) {
     if (fexists(full_filename)) {
         return 1;
     }
-    return 0;
-}
-
-int cli_error(char *message) {
-    printf_color(RED, "ERROR: %s", message);
-    return 0;
-}
-
-
-int cli_warning(char *message) {
-    printf_color(YELLOW, "WARNING: %s", message);
     return 0;
 }
 
