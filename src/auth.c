@@ -40,8 +40,10 @@ int check_master_password() {
         printf("Enter master password (0 to exit):\n> ");
         safe_scanf(MAX_STRING_LEN, "%s", mpa.password);
 
-        if (!strcmp(mpa.password, "0")) exit(0);
-        if (verify_master_password(mpa.password, mpa.hash)) break;
+        if (!strcmp(mpa.password, "0"))
+            exit(0);
+        if (verify_master_password(mpa.password, mpa.hash))
+            password_verified = 1;
 
         printf("Wrong password!\n\n");
         mpa.num_tries++;
