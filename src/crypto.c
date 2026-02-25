@@ -32,7 +32,6 @@
 */
 
 int encrypt(const char *fname, const char *password, const unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
-    unsigned char buf_in[MAX_STRING_LEN];
     unsigned char buf_out[MAX_STRING_LEN + crypto_secretstream_xchacha20poly1305_ABYTES];
     unsigned char header[crypto_secretstream_xchacha20poly1305_HEADERBYTES];
 
@@ -122,7 +121,7 @@ int hash_password(char *password, unsigned char *hash) {
         i++;
     }
 
-    for (i = 0; i < sizeof(unsigned int); i++) {
+    for (i = 0; i < (int)sizeof(unsigned int); i++) {
         hash[i] = (hash_val >> (i * 8)) & 0xFF;
     }
 

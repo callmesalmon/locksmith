@@ -50,10 +50,7 @@ int cli_init() {
 }
 
 char *format_password_filename(char *site, char *user) {
-    char *local_site = site;
-    char *local_user = user;
     static char full_filename[MAX_STRING_LEN];
-
     snprintf(full_filename, sizeof(full_filename), "%s:%s", site, user);
 
     return full_filename;
@@ -161,7 +158,7 @@ int cmd_interface(int *exit) {
     printf(LOCKSMITH_PROMPT1);
 
     char command[MAX_STRING_LEN];
-    snprintf(command, MAX_STRING_LEN, ""); // make sure "command" is an empty string
+    command[0] = '\0'; // Make sure command is empty.
 
     safe_scanf(MAX_STRING_LEN, "%s", command);
 

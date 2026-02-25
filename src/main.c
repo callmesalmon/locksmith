@@ -38,7 +38,7 @@
 "/_____/\\____/\\___/_/|_/____/_/ /_/ /_/_/\\__/_/ /_/  \n\n" 
 #define LOCKSMITH_VERSION "1.1"
 
-int main(int argc, char **argv) {
+int main() {
     safe_srand();
 
     mkdirifnotexist(LOCKSMITH_DIR);

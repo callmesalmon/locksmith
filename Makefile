@@ -2,7 +2,7 @@ SOURCE_FILES = $(shell find src/ -name '*.c') $(shell find src/ -name '*.h')
 TARGET = locksmith
 
 CC     = cc
-CFLAGS = -Werror -lsodium
+CFLAGS = -Werror -Wall -Wextra -lsodium
 
 all: build
 
