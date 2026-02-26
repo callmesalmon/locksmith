@@ -7,6 +7,8 @@
 
 #define LOCKSMITH_PROMPT PURPLE "\nlocksmith> " DEFAULT_COLOR
 
+#define STR_FORMAT "%[^\n]"
+
 int cli_init();
 
 int cli_error(char *message);
