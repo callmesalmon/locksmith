@@ -44,8 +44,9 @@ int check_master_password() {
             exit(0);
         if (verify_master_password(mpa.password, mpa.hash))
             password_verified = 1;
+        else
+            printf("Wrong password!\n\n");
 
-        printf("Wrong password!\n\n");
         mpa.num_tries++;
     }
 
