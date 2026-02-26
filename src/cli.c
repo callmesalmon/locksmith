@@ -36,6 +36,17 @@ int cli_warning(char *message) {
     return 0;
 }
 
+typedef enum {
+    CMD_NEW,
+    CMD_GET,
+    CMD_DEL,
+    CMD_EXIT,
+    CMD_HELP,
+
+    EMPTY,
+    INVALID,
+} CommandList;
+
 CommandList get_cmd_value(char str[MAX_STRING_LEN]) {
     if (!strcmp(str, "new"))  return CMD_NEW;
     if (!strcmp(str, "get"))  return CMD_GET;
