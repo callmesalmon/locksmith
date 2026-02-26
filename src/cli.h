@@ -5,8 +5,7 @@
 
 #include "crypto.h"
 
-#define LOCKSMITH_PROMPT1 PURPLE "\nlocksmith> " DEFAULT_COLOR
-#define LOCKSMITH_PROMPT2 "\n> "
+#define LOCKSMITH_PROMPT PURPLE "\nlocksmith> " DEFAULT_COLOR
 
 int cli_init();
 
@@ -16,6 +15,7 @@ int cli_warning(char *message);
 int cmd_create_password();
 int cmd_get_password();
 int cmd_delete_password();
+int cmd_list_passwords();
 
 int cmd_interface(int *exit);
 

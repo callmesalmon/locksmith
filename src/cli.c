@@ -12,9 +12,10 @@
 #include "colors.h"
 
 #define LIST_OF_COMMANDS          \
-"new - create new password\n"     \
-"get - get password\n"            \
-"del - delete password\n"      \
+"new  - create new password\n"    \
+"get  - get password\n"           \
+"del  - delete password\n"        \
+"list - list passwords\n"         \
 "exit - exit command interface\n" \
 "help - show this text\n"         \
 
@@ -40,6 +41,7 @@ typedef enum {
     CMD_NEW,
     CMD_GET,
     CMD_DEL,
+    CMD_LIST,
     CMD_EXIT,
     CMD_HELP,
 
@@ -51,6 +53,7 @@ CommandList get_cmd_value(char str[MAX_STRING_LEN]) {
     if (!strcmp(str, "new"))  return CMD_NEW;
     if (!strcmp(str, "get"))  return CMD_GET;
     if (!strcmp(str, "del"))  return CMD_DEL;
+    if (!strcmp(str, "list")) return CMD_LIST;
     if (!strcmp(str, "exit")) return CMD_EXIT;
     if (!strcmp(str, "help")) return CMD_HELP;
     if (!strcmp(str, ""))     return EMPTY;
@@ -78,16 +81,13 @@ int passname_handler(char *passname) {
 int cmd_create_password() {
     char site_name[MAX_STRING_LEN], user_name[MAX_STRING_LEN], password[MAX_STRING_LEN];
 
-    printf("\nSitename: ");
-    printf(LOCKSMITH_PROMPT2);
+    printf("sitename: ");
     safe_scanf(MAX_STRING_LEN, "%s", site_name);
 
-    printf("\nUsername: ");
-    printf(LOCKSMITH_PROMPT2);
+    printf("username: ");
     safe_scanf(MAX_STRING_LEN, "%s", user_name);
 
-    printf("\nPassword: ");
-    printf(LOCKSMITH_PROMPT2);
+    printf("password: ");
     safe_scanf(MAX_STRING_LEN, "%s", password);
 
     // This is not a good implementation. In reality we should just remove
@@ -114,9 +114,7 @@ int cmd_create_password() {
 int cmd_get_password() {
     char pass_name[MAX_STRING_LEN];
 
-    printf("\nWhat password do you want to get?\n");
-    list_passwords();
-    printf(LOCKSMITH_PROMPT2);
+    printf("enter password name: ");
     safe_scanf(MAX_STRING_LEN, "%s", pass_name);
 
     if (!passname_handler(pass_name)) {
@@ -125,7 +123,7 @@ int cmd_get_password() {
         return 1;
     }
 
-    printf_color(UNDERLINE_WHITE, "Password:");
+    printf("password:");
     printf(" %s\n", get_password(pass_name, key));
 
     return 0;
@@ -134,10 +132,7 @@ int cmd_get_password() {
 int cmd_delete_password() {
     char pass_name[MAX_STRING_LEN];
 
-    printf("\nWhat password do you want to delete?\n");
-    list_passwords();
-    printf(LOCKSMITH_PROMPT2);
-    printf(">");
+    printf("enter password name: ");
     safe_scanf(MAX_STRING_LEN, "%s", pass_name);
 
     if (!passname_handler(pass_name)) {
@@ -151,8 +146,15 @@ int cmd_delete_password() {
     return 0;
 }
 
+int cmd_list_passwords() {
+    printf("list of passwords:\n");
+    list_passwords();
+
+    return 0;
+}
+
 int cmd_interface(int *exit) {
-    printf(LOCKSMITH_PROMPT1);
+    printf(LOCKSMITH_PROMPT);
 
     char command[MAX_STRING_LEN];
     command[0] = '\0'; // Make sure command is empty.
@@ -168,6 +170,9 @@ int cmd_interface(int *exit) {
             break;
         case CMD_DEL:
             cmd_delete_password();
+            break;
+        case CMD_LIST:
+            cmd_list_passwords();
             break;
         case CMD_HELP:
             printf(LIST_OF_COMMANDS);
