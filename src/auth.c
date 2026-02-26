@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "password.h"
 #include "crypto.h"
@@ -18,6 +19,13 @@ int create_master_password() {
 
     printf("Create master password:\n> ");
     safe_scanf(MAX_STRING_LEN, "%s", master_password);
+
+    // Since '0' is the exit string
+    if (!strcmp(master_password, "0")) {
+        die("'0' is a forbidden password!\n"
+            "Exiting...\n");
+    }
+
     hash_password(master_password, master_password_hash);
 
     mpa.fptr = fopen(LOCKSMITH_MASTER_PASSW_FILE, "wb");

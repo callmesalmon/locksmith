@@ -98,11 +98,7 @@ void die(char *format, ...) {
     va_start(args, format);
     va_end(args);
 
-    if(errno) {
-        perror(format);
-    } else {
-        vprintf(format, args);
-    }
+    vprintf(format, args);
 
     exit(1); // We exit, not return.
 }
