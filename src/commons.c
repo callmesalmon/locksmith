@@ -9,6 +9,7 @@
 #include <string.h>
 
 #include "commons.h"
+#include "crypto.h"
 
 char *get_home_dir() {
     return getpwuid(getuid())->pw_dir;
@@ -55,6 +56,14 @@ int safe_srand() {
     struct timeval t;
     gettimeofday(&t, NULL);
     srand(t.tv_usec ^ t.tv_sec ^ pid);
+
+    return 0;
+}
+
+// safe_scanf but for the very common use case
+// of wanting to just get a string.
+int get_string(char str[MAX_STRING_LEN]) {
+    safe_scanf(MAX_STRING_LEN, "%[^\n]", str);
 
     return 0;
 }

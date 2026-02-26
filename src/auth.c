@@ -18,7 +18,7 @@ int create_master_password() {
     char master_password[MAX_STRING_LEN];
 
     printf("Create master password:\n> ");
-    safe_scanf(MAX_STRING_LEN, "%s", master_password);
+    get_string(master_password);
 
     // Since '0' is the exit string
     if (!strcmp(master_password, "0")) {
@@ -46,7 +46,7 @@ int check_master_password() {
         }
 
         printf("Enter master password (0 to exit):\n> ");
-        safe_scanf(MAX_STRING_LEN, "%s", mpa.password);
+        get_string(mpa.password);
 
         if (!strcmp(mpa.password, "0"))
             exit(0);

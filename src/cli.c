@@ -82,13 +82,13 @@ int cmd_create_password() {
     char site_name[MAX_STRING_LEN], user_name[MAX_STRING_LEN], password[MAX_STRING_LEN];
 
     printf("sitename: ");
-    safe_scanf(MAX_STRING_LEN, STR_FORMAT, site_name);
+    get_string(site_name);
 
     printf("username: ");
-    safe_scanf(MAX_STRING_LEN, STR_FORMAT, user_name);
+    get_string(user_name);
 
     printf("password: ");
-    safe_scanf(MAX_STRING_LEN, STR_FORMAT, password);
+    get_string(password);
 
     // This is not a good implementation. In reality we should just remove
     // the automatic prepending of LOCKSMITH_DIR* to all filenames.
@@ -101,7 +101,7 @@ int cmd_create_password() {
                     "Are you sure you want to overwrite this password? [y/N] ");
 
         char overwrite_pass[MAX_STRING_LEN];
-        safe_scanf(MAX_STRING_LEN, STR_FORMAT, overwrite_pass);
+        get_string(overwrite_pass);
         
         if (strcmp(overwrite_pass, "y") != 0) return 0;
     }
@@ -115,7 +115,7 @@ int cmd_get_password() {
     char pass_name[MAX_STRING_LEN];
 
     printf("enter password name: ");
-    safe_scanf(MAX_STRING_LEN, STR_FORMAT, pass_name);
+    get_string(pass_name);
 
     if (!passname_handler(pass_name)) {
         cli_error("Password file not accessible!\n"
@@ -133,7 +133,7 @@ int cmd_delete_password() {
     char pass_name[MAX_STRING_LEN];
 
     printf("enter password name: ");
-    safe_scanf(MAX_STRING_LEN, STR_FORMAT, pass_name);
+    get_string(pass_name);
 
     if (!passname_handler(pass_name)) {
         cli_error("Password file not accessible!\n"
@@ -159,7 +159,7 @@ int cmd_interface(int *exit) {
     char command[MAX_STRING_LEN];
     command[0] = '\0'; // Make sure command is empty.
 
-    safe_scanf(MAX_STRING_LEN, STR_FORMAT, command);
+    get_string(command);
 
     switch (get_cmd_value(command)) {
         case CMD_NEW:
