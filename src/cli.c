@@ -37,6 +37,11 @@ int cli_warning(char *message) {
     return 0;
 }
 
+int cli_info(char *message) {
+    printf_color(GREEN, "INFO: %s", message);
+    return 0;
+}
+
 typedef enum {
     CMD_NEW,
     CMD_GET,
@@ -178,7 +183,7 @@ int cmd_interface(int *exit) {
             printf(LIST_OF_COMMANDS);
             break;
         case CMD_EXIT:
-            printf("Exiting...\n");
+            cli_info("Exiting...\n");
             *exit = 1;
             break;
         case EMPTY:
@@ -187,7 +192,7 @@ int cmd_interface(int *exit) {
             cli_error("Invalid command!");
             break;
         default:
-            die("Something went wrong while handling user input.");
+            die("Something went wrong while handling user input.\nYou should be worried.\n");
     }
 
     return 0;
