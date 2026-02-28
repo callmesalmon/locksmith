@@ -21,8 +21,19 @@
 " / /___/ /_/ / /__/ ,< (__  ) / / / / / / /_/ / / /    \n"   \
 "/_____/\\____/\\___/_/|_/____/_/ /_/ /_/_/\\__/_/ /_/  \n\n" 
 #define LOCKSMITH_VERSION "1.2"
+#define LOCKSMITH_HELP_MESSAGE                   \
+"-- %s: Enters the locksmith command shell --\n" \
+"Usage: %s [--help]\n",                          \
+argv[0], argv[0]
 
-int main() {
+int main(int argc, char **argv) {
+    for (int i = 1; i < argc; i++) {
+        if (!strcmp(argv[i], "--help")) {
+            printf(LOCKSMITH_HELP_MESSAGE);
+            return 0;
+        }
+    }
+
     safe_srand();
 
     mkdirifnotexist(LOCKSMITH_DIR);
