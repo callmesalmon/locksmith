@@ -11,6 +11,7 @@ int cli_init();
 
 int cli_error(char *message);
 int cli_warning(char *message);
+int cli_info(char *message);
 
 int cmd_create_password();
 int cmd_get_password();
