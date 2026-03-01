@@ -7,7 +7,8 @@ locksmith \- a simple password manager with a built\-in command shell.
 .SH DESCRIPTION
 
 locksmith (yes, it IS stylized in lowercase) is a (UNIX-like exclusive) simple, secure and blazingly
-fast password manager written entirely in C. It comes with a builtin command-shell for maximum effectivity.
+fast password manager written entirely in \fIC\fR. It comes with a builtin command-shell for
+maximum effectivity.
 
 .SH SYNOPSIS
 
@@ -19,3 +20,31 @@ fast password manager written entirely in C. It comes with a builtin command-she
 .TP
 .BR \-\-help:
 Prints the locksmith help message.
+
+.SH SHELL COMMANDS
+
+.TP
+.BR help:
+Gives you a list of all commands.
+
+.TP
+.BR new:
+Create/overwrite password.
+
+.TP
+.BR get:
+Get a password. Uses the same password name as produced by
+the \fIlist\fR command.
+
+.TP
+.BR del:
+Delete password. Uses the same password name as produced by
+the \fIlist\fR command.
+
+.TP
+.BR list:
+List password names.
+
+.TP
+.BR exit:
+Exit command shell.
