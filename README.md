@@ -31,3 +31,23 @@ cd locksmith
 make
 ./install_man.sh # OPTIONAL: this builds the locksmith manpage
 ```
+
+## Project layout
+The source code of the project is split into different files, with different
+purposes. See:
+
+```
+src
+├── auth.c      Master password authentication
+├── auth.h      Master password authentication
+├── cli.c       Interface/command shell
+├── cli.h       Interface/command shell
+├── colors.h    Colored I/O
+├── commons.c   Common functions, independent of the project
+├── commons.h   Common functions, independent of the project
+├── crypto.c    Cryptography
+├── crypto.h    Cryptography
+├── main.c      Entry point
+├── password.c  Encrypting/Decryption of passwords
+└── password.h  Encrypting/Decryption of passwords
+```
