@@ -23,16 +23,18 @@
 #define LOCKSMITH_VERSION "1.2"
 #define LOCKSMITH_HELP_MESSAGE                                      \
 "locksmith: Enters the locksmith command shell\n"                   \
-"Usage: locksmith [--help]\n"                                       \
+"Usage: locksmith [-h, --help]\n"                                   \
 "If you ran 'sudo ./install_man.sh' when compiling this program,\n" \
 "open the manual with 'man locksmith' for more advanced help.\n" 
 
 int main(int argc, char **argv) {
     for (int i = 1; i < argc; i++) {
-        if (!strcmp(argv[i], "--help")) {
+        if (!strcmp(argv[i], "--help") || !strcmp(argv[i], "-h")) {
             printf(LOCKSMITH_HELP_MESSAGE);
             return 0;
         }
+        else
+            die("ERROR: '%s' is not a valid flag!\n", argv[i]);
     }
 
     safe_srand();
