@@ -17,6 +17,5 @@ char *get_password(char name[], unsigned char key[crypto_secretstream_xchacha20p
 int delete_password(char name[]);
 int list_passwords();
 int get_key(unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]);
-int verify_master_password(char* password, unsigned char* hash);
 
 #endif

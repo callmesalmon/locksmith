@@ -13,6 +13,22 @@ typedef struct {
 
 static MasterPassword mpa;
 
+int master_password_correct(char* password, unsigned char* hash) {
+    unsigned char password_hash[MAX_HASH_LEN];
+    hash_password(password, password_hash);
+
+    if (!strcmp(password, "")) {
+        return 0;
+    }
+
+    for (int i = 0; password[i] != '\0'; i++) {
+        if (password_hash[i] != hash[i])
+            return 0;
+    }
+
+    return 1;
+}
+
 int create_master_password() {
     unsigned char master_password_hash[MAX_HASH_LEN];
     char master_password[MAX_STRING_LEN];
@@ -50,7 +66,7 @@ int check_master_password() {
 
         if (!strcmp(mpa.password, "0"))
             exit(0);
-        if (verify_master_password(mpa.password, mpa.hash))
+        if (master_password_correct(mpa.password, mpa.hash))
             password_verified = 1;
         else
             printf("Wrong password!\n\n");
