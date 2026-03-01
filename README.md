@@ -18,7 +18,8 @@ If you want to build locksmith from source, you need:
 - [libsodium](https://github.com/jedisct1/libsodium)
 ### Optional requirements
 Additionally, if you want the best experience, you need:
-- A coloured terminal
+- A terminal supporting ANSI color escape codes (locksmith uses these for colored I/O)
+- A monospaced font (the title will look really weird otherwise)
 
 ## Install
 ```sh
