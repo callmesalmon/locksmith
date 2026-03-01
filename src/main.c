@@ -21,10 +21,10 @@
 " / /___/ /_/ / /__/ ,< (__  ) / / / / / / /_/ / / /    \n"   \
 "/_____/\\____/\\___/_/|_/____/_/ /_/ /_/_/\\__/_/ /_/  \n\n" 
 #define LOCKSMITH_VERSION "1.2"
-#define LOCKSMITH_HELP_MESSAGE                                  \
-"locksmith: Enters the locksmith command shell\n"               \
-"Usage: locksmith [--help]\n"                                   \
-"If you ran './install_man.sh' when compiling this program,\n"  \
+#define LOCKSMITH_HELP_MESSAGE                                      \
+"locksmith: Enters the locksmith command shell\n"                   \
+"Usage: locksmith [--help]\n"                                       \
+"If you ran 'sudo ./install_man.sh' when compiling this program,\n" \
 "open the manual with 'man locksmith' for more advanced help.\n" 
 
 int main(int argc, char **argv) {

@@ -29,7 +29,7 @@ cd locksmith
 ## ``sudo make install`` to install binary
 ## to /usr/local/bin
 make
-./install_man.sh # OPTIONAL: this builds the locksmith manpage
+sudo ./install_man.sh # OPTIONAL: this builds the locksmith manpage
 ```
 
 ## Project layout
