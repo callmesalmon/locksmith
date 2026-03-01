@@ -9,6 +9,7 @@
 #include <string.h>
 
 #include "commons.h"
+#include "colors.h"
 #include "crypto.h"
 
 char *get_home_dir() {
@@ -60,14 +61,6 @@ int safe_srand() {
     return 0;
 }
 
-// safe_scanf but for the very common use case
-// of wanting to just get a string.
-int get_string(char str[MAX_STRING_LEN]) {
-    safe_scanf(MAX_STRING_LEN, "%[^\n]", str);
-
-    return 0;
-}
-
 int strip_ext(char *fname) {
     char *end = fname + strlen(fname);
 
@@ -92,6 +85,22 @@ int printf_color(char *color, const char *format, ...) {
     printf("%s", color);
     vprintf(format, args);
     printf("%s", DEFAULT_COLOR);
+
+    return 0;
+}
+
+// safe_scanf but for the very common use case
+// of wanting to just get a string.
+int get_string(char str[MAX_STRING_LEN]) {
+    safe_scanf(MAX_STRING_LEN, "%[^\n]", str);
+
+    return 0;
+}
+
+int get_string_color(char *color, char str[MAX_STRING_LEN]) {
+    printf("%s", color);
+    get_string(str);
+    printf(DEFAULT_COLOR);
 
     return 0;
 }

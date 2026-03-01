@@ -106,7 +106,7 @@ int cmd_create_password() {
                     "Are you sure you want to overwrite this password? [y/N] ");
 
         char overwrite_pass[MAX_STRING_LEN];
-        get_string(overwrite_pass);
+        get_string_color(YELLOW, overwrite_pass);
         
         if (strcmp(overwrite_pass, "y") != 0) return 0;
     }
