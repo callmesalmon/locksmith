@@ -33,8 +33,9 @@ int main(int argc, char **argv) {
             printf(LOCKSMITH_HELP_MESSAGE);
             return 0;
         }
-        else
-            die("ERROR: '%s' is not a valid flag!\n", argv[i]);
+        else {
+            printf("WARNING: '%s' is not a valid flag! Skipping...\n", argv[i]);
+        }
     }
 
     safe_srand();
