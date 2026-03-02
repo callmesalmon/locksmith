@@ -4,6 +4,7 @@
 #include <sodium.h>
 
 #include "crypto.h"
+#include "colors.h"
 
 #define LOCKSMITH_PROMPT PURPLE "\nlocksmith> " DEFAULT_COLOR
 
