@@ -28,17 +28,17 @@ int cli_init() {
 }
 
 int cli_error(char *message) {
-    printf_color(RED, "ERROR: %s", message);
+    printf_color(RED, "ERROR: %s\n", message);
     return 0;
 }
 
 int cli_warning(char *message) {
-    printf_color(YELLOW, "WARNING: %s", message);
+    printf_color(YELLOW, "WARNING: %s\n", message);
     return 0;
 }
 
 int cli_info(char *message) {
-    printf_color(GREEN, "INFO: %s", message);
+    printf_color(GREEN, "INFO: %s\n", message);
     return 0;
 }
 

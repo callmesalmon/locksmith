@@ -6,7 +6,7 @@
 #include "crypto.h"
 #include "colors.h"
 
-#define LOCKSMITH_PROMPT PURPLE "\nlocksmith> " DEFAULT_COLOR
+#define LOCKSMITH_PROMPT PURPLE "locksmith> " DEFAULT_COLOR
 
 int cli_init();
 
