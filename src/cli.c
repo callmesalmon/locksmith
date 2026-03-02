@@ -127,6 +127,14 @@ int cmd_delete_password() {
         return 1;
     }
 
+    cli_warning("This will DELETE YOUR STORED PASSWORD PERMANENTLY!\n"
+                "Are you sure you want to proceed? [y/N] ");
+
+    char overwrite_pass[MAX_STRING_LEN];
+    get_string_color(YELLOW, overwrite_pass);
+
+    if (strcmp(overwrite_pass, "y") != 0) return 0;
+
     delete_password(pass_name);
     
     return 0;
