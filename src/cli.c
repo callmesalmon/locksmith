@@ -65,24 +65,6 @@ CommandList get_cmd_value(char str[MAX_STRING_LEN]) {
     return INVALID;
 }
 
-char *format_password_filename(char *site, char *user) {
-    static char full_filename[MAX_STRING_LEN];
-    snprintf(full_filename, sizeof(full_filename), "%s:%s", site, user);
-
-    return full_filename;
-}
-
-// We need to check if passname + .txt exists
-int passname_handler(char *passname) {
-    static char full_filename[MAX_STRING_LEN];
-    snprintf(full_filename, MAX_STRING_LEN, "%s%s.enc", LOCKSMITH_PASSW_DIR, passname);
-
-    if (fexists(full_filename)) {
-        return 1;
-    }
-    return 0;
-}
-
 int cmd_create_password() {
     char site_name[MAX_STRING_LEN], user_name[MAX_STRING_LEN], password[MAX_STRING_LEN];
 
@@ -97,9 +79,8 @@ int cmd_create_password() {
 
     // This is not a good implementation. In reality we should just remove
     // the automatic prepending of LOCKSMITH_DIR* to all filenames.
-    char *full_filename = format_password_filename(site_name, user_name);
-    char full_filename_with_dir[MAX_STRING_LEN];
-    snprintf(full_filename_with_dir, MAX_STRING_LEN, "%s%s.enc", LOCKSMITH_PASSW_DIR, full_filename);
+    char *full_filename          = format_password_filename(site_name, user_name);
+    char *full_filename_with_dir = password_file(full_filename);
     
     if (fexists(full_filename_with_dir)) {
         cli_warning("Password file already exists!\n"
@@ -122,7 +103,7 @@ int cmd_get_password() {
     printf("enter password name: ");
     get_string(pass_name);
 
-    if (!passname_handler(pass_name)) {
+    if (!password_exists(pass_name)) {
         cli_error("Password file not accessible!\n"
                   "Returning to command interface...\n");
         return 1;
@@ -140,7 +121,7 @@ int cmd_delete_password() {
     printf("enter password name: ");
     get_string(pass_name);
 
-    if (!passname_handler(pass_name)) {
+    if (!password_exists(pass_name)) {
         cli_error("Password file not accessible!\n"
                   "Returning to command interface...\n");
         return 1;

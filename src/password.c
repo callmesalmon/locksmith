@@ -3,14 +3,37 @@
 #include <dirent.h>
 #include <stdarg.h>
 #include <stdio.h>
-#include <errno.h>
 #include <string.h>
 
 #include "password.h"
 #include "crypto.h"
 
+char *password_file(char *passname) {
+    static char full_filename[MAX_STRING_LEN];
+    snprintf(full_filename, MAX_STRING_LEN, "%s%s.enc", LOCKSMITH_PASSW_DIR, passname);
+
+    return full_filename;
+}
+
+int password_exists(char *passname) {
+    static char full_filename[MAX_STRING_LEN];
+    snprintf(full_filename, MAX_STRING_LEN, "%s%s.enc", LOCKSMITH_PASSW_DIR, passname);
+
+    if (fexists(full_filename)) {
+        return 1;
+    }
+    return 0;
+}
+
+char *format_password_filename(char *site, char *user) {
+    static char full_filename[MAX_STRING_LEN];
+    snprintf(full_filename, sizeof(full_filename), "%s:%s", site, user);
+
+    return full_filename;
+}
+
 int create_password(char name[], char password[], unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
-    char *fname = GET_LOCKSMITH_PASSW_DIR_FILEPATH(name);
+    char *fname = password_file(name);
 
     FILE *fptr;
 
@@ -27,7 +50,7 @@ int create_password(char name[], char password[], unsigned char key[crypto_secre
 }
 
 char *get_password(char name[], unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
-    char *fname = GET_LOCKSMITH_PASSW_DIR_FILEPATH(name);
+    char *fname = password_file(name);
 
     unsigned char *buf = decrypt(fname, key);
 
@@ -37,7 +60,7 @@ char *get_password(char name[], unsigned char key[crypto_secretstream_xchacha20p
 }
 
 int delete_password(char name[]) {
-    char *fname = GET_LOCKSMITH_PASSW_DIR_FILEPATH(name);
+    char *fname = password_file(name);
     remove(fname);
 
     return 0;
@@ -68,7 +91,7 @@ int list_passwords() {
 int get_key(unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
     FILE *key_fd = fopen(LOCKSMITH_KEY_FILE, "r");
     if (key_fd == NULL) {
-        errno = 2;
+        die("ERROR: Couldn't get key.\n");
         exit(2);
     }
 
