@@ -11,40 +11,43 @@
 #include "password.h"
 #include "colors.h"
 
-#define LIST_OF_COMMANDS          \
-"new  - create new password\n"    \
-"get  - get password\n"           \
-"del  - delete password\n"        \
-"list - list passwords\n"         \
-"exit - exit command interface\n" \
-"help - show this text\n"         \
+#define LIST_OF_COMMANDS                \
+"new        create new password\n"      \
+"get        get password\n"             \
+"recover    recover password\n"         \
+"del        delete password\n"          \
+"list       list passwords\n"           \
+"exit       exit command interface\n"   \
+"help       show this text\n"           \
 
 static unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES];
 
 int cli_init() {
     get_key(key);
+    clean_backups();
 
     return 0;
 }
 
 int cli_error(char *message) {
-    printf_color(RED, "ERROR: %s\n", message);
+    printf_color(RED, "ERROR: %s", message);
     return 0;
 }
 
 int cli_warning(char *message) {
-    printf_color(YELLOW, "WARNING: %s\n", message);
+    printf_color(YELLOW, "WARNING: %s", message);
     return 0;
 }
 
 int cli_info(char *message) {
-    printf_color(GREEN, "INFO: %s\n", message);
+    printf_color(GREEN, "INFO: %s", message);
     return 0;
 }
 
 typedef enum {
     CMD_NEW,
     CMD_GET,
+    CMD_RECOVER,
     CMD_DEL,
     CMD_LIST,
     CMD_EXIT,
@@ -55,13 +58,14 @@ typedef enum {
 } CommandList;
 
 CommandList get_cmd_value(char str[MAX_STRING_LEN]) {
-    if (!strcmp(str, "new"))  return CMD_NEW;
-    if (!strcmp(str, "get"))  return CMD_GET;
-    if (!strcmp(str, "del"))  return CMD_DEL;
-    if (!strcmp(str, "list")) return CMD_LIST;
-    if (!strcmp(str, "exit")) return CMD_EXIT;
-    if (!strcmp(str, "help")) return CMD_HELP;
-    if (!strcmp(str, ""))     return EMPTY;
+    if (!strcmp(str, "new"))        return CMD_NEW;
+    if (!strcmp(str, "get"))        return CMD_GET;
+    if (!strcmp(str, "recover"))    return CMD_RECOVER;
+    if (!strcmp(str, "del"))        return CMD_DEL;
+    if (!strcmp(str, "list"))       return CMD_LIST;
+    if (!strcmp(str, "exit"))       return CMD_EXIT;
+    if (!strcmp(str, "help"))       return CMD_HELP;
+    if (!strcmp(str, ""))           return EMPTY;
     return INVALID;
 }
 
@@ -93,6 +97,7 @@ int cmd_create_password() {
     }
 
     create_password(full_filename, password, key);
+    backup_password(full_filename, password, key);
 
     return 0;
 }
@@ -111,6 +116,27 @@ int cmd_get_password() {
 
     printf("password:");
     printf(" %s\n", get_password(pass_name, key));
+
+    return 0;
+}
+
+int cmd_recover_password() {
+    char bak_name[MAX_STRING_LEN];
+
+    printf("enter password name: ");
+    get_string(bak_name);
+
+    if (password_exists(password_file(bak_name))) {
+        cli_warning("A password file matching your input query already exists\n"
+                    "Are you sure you want to overwrite this password with the backup? [y/N] ");
+
+        char overwrite_pass[MAX_STRING_LEN];
+        get_string_color(YELLOW, overwrite_pass);
+        
+        if (strcmp(overwrite_pass, "y") != 0) return 0;
+    }
+
+    recover_password(bak_name);
 
     return 0;
 }
@@ -135,8 +161,10 @@ int cmd_delete_password() {
 
     if (strcmp(overwrite_pass, "y") != 0) return 0;
 
+    cli_info("(Until you've closed the program, you can still recover the password with 'recover')\n");
+
     delete_password(pass_name);
-    
+
     return 0;
 }
 
@@ -162,6 +190,9 @@ int cmd_interface(int *exit) {
         case CMD_GET:
             cmd_get_password();
             break;
+        case CMD_RECOVER:
+            cmd_recover_password();
+            break;
         case CMD_DEL:
             cmd_delete_password();
             break;
@@ -178,7 +209,7 @@ int cmd_interface(int *exit) {
         case EMPTY:
             break;
         case INVALID:
-            cli_error("Invalid command!");
+            cli_error("Invalid command!\n");
             break;
         default:
             die("Something went wrong while handling user input.\nYou should be worried.\n");

@@ -3,7 +3,8 @@
 
 #include <sodium.h>
 
-#define MAX_HASH_LEN 8192
+#define MAX_HASH_LEN   8192
+#define MAX_ENC_LEN    8192
 #define MAX_STRING_LEN 128
 
 int encrypt(const char *fname, const char *password, const unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]);

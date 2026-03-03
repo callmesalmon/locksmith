@@ -16,6 +16,7 @@ int cli_info(char *message);
 
 int cmd_create_password();
 int cmd_get_password();
+int cmd_recover_password();
 int cmd_delete_password();
 int cmd_list_passwords();
 

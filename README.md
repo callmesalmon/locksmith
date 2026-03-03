@@ -9,6 +9,7 @@ Locksmith in action! _(screenshot may be outdated)_
 Locksmith comes with many features, such as:
 - Password encryption
 - Master password authentication (w/ hashing)
+- Atleast a somewhat functional implementation of password backups
 - A full "locksmith shell" to handle passwords in.
 
 ## Requirements

@@ -9,7 +9,7 @@ locksmith \- a simple password manager with a built\-in command shell.
 locksmith (yes, it IS stylized in lowercase) is a (UNIX-like exclusive) simple, secure and blazingly
 fast password manager written entirely in \fIC\fR. It comes with a builtin command-shell for
 maximum effectivity. The encrypted key and the hashed master password are stored in \fI~/.locksmith\fR,
-and all passwords are encrypted and stored in \fI~/.locksmith/passwords\fR.
+and all passwords are encrypted and stored in \fI~/.locksmith/passwords\fR. It also has password backups!
 
 .SH SYNOPSIS
 
@@ -36,6 +36,12 @@ Create/overwrite password.
 .BR get:
 Get a password. Uses the same password name as produced by
 the \fIlist\fR command.
+
+.TP
+.BR recover:
+Recover a password which has a \fI.bak\fR file. It can only be used in the same instance as the \fIdel\fR command
+for said password has been ran, as locksmith deletes all backup files which do not have a file on startup, for
+security reasons. Uses the same password name as produced by the \fIlist\fR command.
 
 .TP
 .BR del:

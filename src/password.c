@@ -15,6 +15,13 @@ char *password_file(char *passname) {
     return full_filename;
 }
 
+char *backup_file(char *passname) {
+    static char full_filename[MAX_STRING_LEN];
+    snprintf(full_filename, MAX_STRING_LEN, "%s%s.bak", LOCKSMITH_BACKUP_DIR, passname);
+
+    return full_filename;
+}
+
 int password_exists(char *passname) {
     static char full_filename[MAX_STRING_LEN];
     snprintf(full_filename, MAX_STRING_LEN, "%s%s.enc", LOCKSMITH_PASSW_DIR, passname);
@@ -39,7 +46,24 @@ int create_password(char name[], char password[], unsigned char key[crypto_secre
 
     fptr = fopen(fname, "w");
     if (fptr == NULL) {
-        die("Couldn't create password. Failed to write to file.");
+        die("Couldn't create password. Failed to write to file '%s'.\n", fname);
+    }
+    fprintf(fptr, "%s", password);
+    fclose(fptr); 
+
+    encrypt(fname, password, key);
+
+    return 0;
+}
+
+int backup_password(char name[], char password[], unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
+    char *fname = backup_file(name);
+
+    FILE *fptr;
+
+    fptr = fopen(fname, "w");
+    if (fptr == NULL) {
+        die("Couldn't backup password. Failed to write to file '%s'.\n", fname);
     }
     fprintf(fptr, "%s", password);
     fclose(fptr); 
@@ -51,12 +75,35 @@ int create_password(char name[], char password[], unsigned char key[crypto_secre
 
 char *get_password(char name[], unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
     char *fname = password_file(name);
-
     unsigned char *buf = decrypt(fname, key);
 
     encrypt(fname, (char *)buf, key);
 
     return (char *)buf;
+}
+
+int recover_password(char name[]) {
+    char *bak_fname = backup_file(name);
+    char *enc_fname = password_file(name);
+
+    FILE *bak_fptr = fopen(bak_fname, "r");
+    if (bak_fptr == NULL) {
+        die("ERROR: Couldn't get backup file '%s'.\n", bak_fname);
+        exit(2);
+    }
+    char bak_buff[MAX_ENC_LEN];
+    fgets(bak_buff, MAX_ENC_LEN, bak_fptr);
+    fclose(bak_fptr);
+
+    FILE *fptr;
+    fptr = fopen(enc_fname, "w");
+    if (fptr == NULL) {
+        die("ERROR: Couldn't get target file '%s'.\n", enc_fname);
+    }
+    fprintf(fptr, "%s", bak_buff);
+    fclose(fptr); 
+
+    return 0;
 }
 
 int delete_password(char name[]) {
@@ -84,6 +131,30 @@ int list_passwords() {
     }
 
     closedir(dir);    
+
+    return 0;
+}
+
+int clean_backups() {
+    struct dirent *de;
+
+    DIR *dir = opendir(LOCKSMITH_BACKUP_DIR);
+
+    if (dir == NULL) {
+        die("ERROR: Couldn't clean backups.");
+    }
+
+    while ((de = readdir(dir)) != NULL) {
+        char *fname = de->d_name;
+        strip_ext(fname);
+
+        int not_dirfile = ((strcmp(fname, ".") != 0) && (strcmp(fname, "..") != 0));
+        if (!password_exists(password_file(fname)) && not_dirfile) {
+            remove(backup_file(fname));
+        }
+    }
+
+    closedir(dir);
 
     return 0;
 }

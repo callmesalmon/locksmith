@@ -42,6 +42,7 @@ int main(int argc, char **argv) {
 
     mkdirifnotexist(LOCKSMITH_DIR);
     mkdirifnotexist(LOCKSMITH_PASSW_DIR);
+    mkdirifnotexist(LOCKSMITH_BACKUP_DIR);
 
     create_key(LOCKSMITH_KEY_FILE);
 
