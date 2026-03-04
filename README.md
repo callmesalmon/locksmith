@@ -44,6 +44,8 @@ src
 ├── auth.h      Master password authentication
 ├── cli.c       Interface/command shell
 ├── cli.h       Interface/command shell
+├── cli_msg.c   Interface Error/Warning/Info messages
+├── cli_msg.h   Interface Error/Warning/Info messages
 ├── colors.h    Colored I/O
 ├── commons.c   Common functions, independent of the project
 ├── commons.h   Common functions, independent of the project

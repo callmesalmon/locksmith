@@ -6,10 +6,10 @@
 #include <stdarg.h>
 
 #include "cli.h"
+#include "cli_msg.h"
 #include "commons.h"
 #include "crypto.h"
 #include "password.h"
-#include "colors.h"
 
 #define LIST_OF_COMMANDS                \
 "new        create new password\n"      \
@@ -25,21 +25,6 @@ static unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES];
 int cli_init() {
     get_key(key);
 
-    return 0;
-}
-
-int cli_error(char *message) {
-    printf_color(RED, "ERROR: %s", message);
-    return 0;
-}
-
-int cli_warning(char *message) {
-    printf_color(YELLOW, "WARNING: %s", message);
-    return 0;
-}
-
-int cli_info(char *message) {
-    printf_color(GREEN, "INFO: %s", message);
     return 0;
 }
 
@@ -86,13 +71,11 @@ int cmd_create_password() {
     char *full_filename_with_dir = password_file(full_filename);
     
     if (fexists(full_filename_with_dir)) {
-        cli_warning("Password file already exists!\n"
-                    "Are you sure you want to overwrite this password? [y/N] ");
-
-        char overwrite_pass[MAX_STRING_LEN];
-        get_string_color(YELLOW, overwrite_pass);
-        
-        if (strcmp(overwrite_pass, "y") != 0) return 0;
+        int answer = cli_warn_yes_no(
+            "Password file already exists!\n"
+            "Are you sure you want to overwrite this password? [y/N] "
+        );
+        if (!answer) return 0;
     }
 
     create_password(full_filename, password, key);
@@ -126,13 +109,11 @@ int cmd_recover_password() {
     get_string(bak_name);
 
     if (password_exists(password_file(bak_name))) {
-        cli_warning("A password file matching your input query already exists\n"
-                    "Are you sure you want to overwrite this password with the backup? [y/N] ");
-
-        char overwrite_pass[MAX_STRING_LEN];
-        get_string_color(YELLOW, overwrite_pass);
-        
-        if (strcmp(overwrite_pass, "y") != 0) return 0;
+        int answer = cli_warn_yes_no(
+            "A password file matching your input query already exists\n"
+            "Are you sure you want to overwrite this password with the backup? [y/N] "
+        );
+        if (!answer) return 0;
     }
 
     recover_password(bak_name);
@@ -152,14 +133,13 @@ int cmd_delete_password() {
         return 1;
     }
 
-    cli_warning("This will DELETE YOUR STORED PASSWORD!\n"
-                "(Until you've closed the program, you can still recover the password with 'recover')\n"
-                "Are you sure you want to proceed? [y/N] ");
-
-    char overwrite_pass[MAX_STRING_LEN];
-    get_string_color(YELLOW, overwrite_pass);
-
-    if (strcmp(overwrite_pass, "y") != 0) return 0;
+    int answer = cli_warn_yes_no(
+        "This will DELETE YOUR STORED PASSWORD!\n"
+        "(Until you've closed the program, you can still recover the password with 'recover')\n"
+        "Are you sure you want to proceed? [y/N] "
+        
+    );
+    if (!answer) return 0;
 
     delete_password(pass_name);
 
