@@ -5,10 +5,10 @@
 #include "crypto.h"
 
 typedef struct {
-    char           password[MAX_STRING_LEN];
-    unsigned char  hash[MAX_HASH_LEN];
-    FILE          *fptr;
-    int            num_tries;
+    char            password[MAX_STRING_LEN];
+    unsigned char   hash[MAX_HASH_LEN];
+    FILE*           fptr;
+    int             num_tries;
 } MasterPassword;
 
 static MasterPassword mpa;

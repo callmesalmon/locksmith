@@ -23,8 +23,7 @@ char *backup_file(char *passname) {
 }
 
 int password_exists(char *passname) {
-    static char full_filename[MAX_STRING_LEN];
-    snprintf(full_filename, MAX_STRING_LEN, "%s%s.enc", LOCKSMITH_PASSW_DIR, passname);
+    char *full_filename = password_file(passname);
 
     if (fexists(full_filename)) {
         return 1;

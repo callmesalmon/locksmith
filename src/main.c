@@ -47,6 +47,7 @@ int main(int argc, char **argv) {
     create_key(LOCKSMITH_KEY_FILE);
 
     cli_init();
+    clean_backups();
     auth_master_password();
 
     printf_color(CYAN, LOCKSMITH_TITLE);
