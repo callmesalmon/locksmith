@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "password.h"
+#include "cli_msg.h"
 #include "crypto.h"
 
 typedef struct {
@@ -38,7 +39,7 @@ int create_master_password() {
 
     // Since '0' is the exit string
     if (!strcmp(master_password, "0")) {
-        die("'0' is a forbidden password!\n"
+        cli_error_die(-1, "'0' is a forbidden password!\n"
             "Exiting...\n");
     }
 
@@ -57,7 +58,7 @@ int check_master_password() {
     int password_verified = 0;
     while (!password_verified) {
         if (mpa.num_tries >= 5) {
-            die("Exceeded number of tries allowed for master password!\n"
+            cli_error_die(-1, "Exceeded number of tries allowed for master password!\n"
                 "Please try again later.\n");
         }
 
@@ -68,8 +69,9 @@ int check_master_password() {
             exit(0);
         if (master_password_correct(mpa.password, mpa.hash))
             password_verified = 1;
-        else
-            printf("Wrong password!\n\n");
+        else {
+            cli_error("Wrong password!\n\n");
+        }
 
         mpa.num_tries++;
     }

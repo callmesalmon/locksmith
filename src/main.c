@@ -7,12 +7,14 @@
 #include <stdarg.h>
 #include <sodium.h>
 
-#include "auth.h"
 #include "colors.h"
 #include "commons.h"
 #include "password.h"
-#include "cli.h"
 #include "crypto.h"
+
+#include "cli.h"
+#include "cli_msg.h"
+#include "auth.h"
 
 #define LOCKSMITH_TITLE "\n"                                  \
 "    __               __                  _ __  __      \n"   \
@@ -34,7 +36,7 @@ int main(int argc, char **argv) {
             return 0;
         }
         else {
-            printf("WARNING: '%s' is not a valid flag! Skipping...\n", argv[i]);
+            cli_warn("'%s' is not a valid flag! Skipping...\n", argv[i]);
         }
     }
 

@@ -89,6 +89,14 @@ int printf_color(char *color, const char *format, ...) {
     return 0;
 }
 
+int vprintf_color(char *color, const char *format, va_list args) {
+    printf("%s", color);
+    vprintf(format, args);
+    printf("%s", DEFAULT_COLOR);
+
+    return 0;
+}
+
 // safe_scanf but for the very common use case
 // of wanting to just get a string.
 int get_string(char str[MAX_STRING_LEN]) {
