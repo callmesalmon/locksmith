@@ -91,9 +91,8 @@ int cmd_get_password() {
     get_string(pass_name);
 
     if (!password_exists(pass_name)) {
-        cli_error("Password file not accessible!\n"
+        return cli_error("Password file not accessible!\n"
                   "Returning to command interface...\n");
-        return 1;
     }
 
     printf("password:");
@@ -128,9 +127,8 @@ int cmd_delete_password() {
     get_string(pass_name);
 
     if (!password_exists(pass_name)) {
-        cli_error("Password file not accessible!\n"
+        return cli_error("Password file not accessible!\n"
                   "Returning to command interface...\n");
-        return 1;
     }
 
     int answer = cli_warn_yes_no(

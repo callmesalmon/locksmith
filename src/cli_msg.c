@@ -13,6 +13,7 @@ int cli_error(const char *format, ...) {
 
     printf_color(RED, "ERROR: ");
     vprintf_color(RED, format, args);
+
     return 0;
 }
 
