@@ -55,9 +55,8 @@ int main(int argc, char **argv) {
            "BSD2-Clause license <https://opensource.org/license/bsd-2-clause> (password encryption)\n");
     printf("Type 'help' for a list of commands.\n");
 
-    int exit_cmd = 0;
-    while (!exit_cmd) {
-        cmd_interface(&exit_cmd);
+    while (1) {
+        cmd_interface();
     }
 
     return 0;

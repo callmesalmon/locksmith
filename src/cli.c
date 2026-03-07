@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "cli.h"
 #include "cli_msg.h"
@@ -146,7 +147,7 @@ int cmd_list_passwords() {
     return 0;
 }
 
-int cmd_interface(int *exit) {
+int cmd_interface() {
     printf(LOCKSMITH_PROMPT);
 
     char command[MAX_STRING_LEN];
@@ -175,8 +176,7 @@ int cmd_interface(int *exit) {
             break;
         case CMD_EXIT:
             cli_info("Exiting...\n");
-            *exit = 1;
-            break;
+            exit(0);
         case EMPTY:
             break;
         case INVALID:

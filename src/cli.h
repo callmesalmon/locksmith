@@ -14,6 +14,6 @@ int cmd_recover_password();
 int cmd_delete_password();
 int cmd_list_passwords();
 
-int cmd_interface(int *exit);
+int cmd_interface();
 
 #endif
