@@ -3,7 +3,6 @@
 
 #include <stdio.h>
 
-#include "colors.h"
 #include "crypto.h"
 
 char *get_home_dir();

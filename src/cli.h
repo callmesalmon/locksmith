@@ -1,8 +1,6 @@
 #ifndef CLI_H
 #define CLI_H
 
-#include <sodium.h>
-
 #include "crypto.h"
 #include "colors.h"
 

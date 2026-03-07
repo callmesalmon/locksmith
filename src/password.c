@@ -1,9 +1,5 @@
-#include <unistd.h>
-#include <pwd.h>
 #include <dirent.h>
-#include <stdarg.h>
 #include <stdio.h>
-#include <string.h>
 
 #include "password.h"
 #include "crypto.h"

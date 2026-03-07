@@ -4,6 +4,7 @@
 #include "cli_msg.h"
 #include "commons.h"
 #include "crypto.h"
+#include "colors.h"
 
 int cli_error(const char *format, ...) {
     va_list args;

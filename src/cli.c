@@ -1,9 +1,4 @@
 #include <stdio.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <pwd.h>
-#include <sys/time.h>
-#include <stdarg.h>
 
 #include "cli.h"
 #include "cli_msg.h"

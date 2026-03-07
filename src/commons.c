@@ -4,7 +4,6 @@
 #include <pwd.h>
 #include <stdlib.h>
 #include <sys/time.h>
-#include <errno.h>
 #include <stdarg.h>
 #include <string.h>
 
@@ -41,7 +40,6 @@ int safe_scanf(int limit, const char *format, ...) {
     char buff[limit];
 
     if (!fgets(buff, limit, stdin)) {
-        errno = 2;
         return -1;
     }
     fflush(stdin); // fgets() doesn't flush excess chars

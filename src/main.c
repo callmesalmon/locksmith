@@ -1,11 +1,5 @@
 #include <stdio.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <pwd.h>
-#include <sys/time.h>
-#include <dirent.h>
-#include <stdarg.h>
-#include <sodium.h>
+#include <string.h>
 
 #include "colors.h"
 #include "commons.h"
