@@ -16,6 +16,10 @@
 #include "cli_msg.h"
 #include "auth.h"
 
+#if defined(_WIN32) || defined(__CYGWIN__)
+#error "Locksmith does not run on windows-like platforms."
+#endif
+
 #define LOCKSMITH_TITLE "\n"                                  \
 "    __               __                  _ __  __      \n"   \
 "   / /   ____  _____/ /___________ ___  (_) /_/ /_     \n"   \
