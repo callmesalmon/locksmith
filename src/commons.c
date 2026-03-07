@@ -52,15 +52,6 @@ int safe_scanf(int limit, const char *format, ...) {
     return 0;
 }
 
-int safe_srand() {
-    int pid = getpid();
-    struct timeval t;
-    gettimeofday(&t, NULL);
-    srand(t.tv_usec ^ t.tv_sec ^ pid);
-
-    return 0;
-}
-
 int strip_ext(char *fname) {
     char *end = fname + strlen(fname);
 

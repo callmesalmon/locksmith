@@ -44,8 +44,6 @@ int main(int argc, char **argv) {
         }
     }
 
-    safe_srand();
-
     mkdirifnotexist(LOCKSMITH_DIR);
     mkdirifnotexist(LOCKSMITH_PASSW_DIR);
     mkdirifnotexist(LOCKSMITH_BACKUP_DIR);
