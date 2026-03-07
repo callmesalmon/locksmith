@@ -1,29 +1,23 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "auth.h"
 #include "password.h"
 #include "cli_msg.h"
 #include "crypto.h"
 
-typedef struct {
-    char            password[MAX_STRING_LEN];
-    unsigned char   hash[MAX_HASH_LEN];
-    FILE*           fptr;
-    int             num_tries;
-} MasterPassword;
-
 static MasterPassword mpa;
 
-int master_password_correct(char* password, unsigned char* hash) {
+int master_password_correct(MasterPassword master_pass) {
     unsigned char password_hash[MAX_HASH_LEN];
-    hash_password(password, password_hash);
+    hash_password(master_pass.password, password_hash);
 
-    if (!strcmp(password, "")) {
+    if (!strcmp(master_pass.password, "")) {
         return 0;
     }
 
-    for (int i = 0; password[i] != '\0'; i++) {
-        if (password_hash[i] != hash[i])
+    for (int i = 0; master_pass.password[i] != '\0'; i++) {
+        if (password_hash[i] != master_pass.hash[i])
             return 0;
     }
 
@@ -67,7 +61,7 @@ int check_master_password() {
 
         if (!strcmp(mpa.password, "0"))
             exit(0);
-        if (master_password_correct(mpa.password, mpa.hash))
+        if (master_password_correct(mpa))
             password_verified = 1;
         else {
             cli_error("Wrong password!\n\n");
