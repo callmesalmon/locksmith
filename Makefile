@@ -4,7 +4,7 @@ TARGET = locksmith
 MAN_FILE = man/locksmith.1
 
 CC     = cc
-CFLAGS = -Werror -Wall -Wextra -lsodium
+CFLAGS = -std=c99 -Werror -Wall -Wextra -lsodium
 
 all: build
 
