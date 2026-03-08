@@ -84,7 +84,7 @@ int recover_password(char name[]) {
 
     FILE *bak_fptr = fopen(bak_fname, "r");
     if (bak_fptr == NULL) {
-        cli_error_die(-1, "ERROR: Couldn't get backup file '%s'.\n", bak_fname);
+        cli_error_die(-1, "Couldn't get backup file '%s'.\n", bak_fname);
         exit(2);
     }
     char bak_buff[MAX_ENC_LEN];
@@ -94,7 +94,7 @@ int recover_password(char name[]) {
     FILE *fptr;
     fptr = fopen(enc_fname, "w");
     if (fptr == NULL) {
-        cli_error_die(-1, "ERROR: Couldn't get target file '%s'.\n", enc_fname);
+        cli_error_die(-1, "Couldn't get target file '%s'.\n", enc_fname);
     }
     fprintf(fptr, "%s", bak_buff);
     fclose(fptr); 
@@ -137,7 +137,7 @@ int clean_backups() {
     DIR *dir = opendir(LOCKSMITH_BACKUP_DIR);
 
     if (dir == NULL) {
-        cli_error_die(-1, "ERROR: Couldn't clean backups.");
+        cli_error_die(-1, "Couldn't clean backups.");
     }
 
     while ((de = readdir(dir)) != NULL) {
@@ -145,7 +145,7 @@ int clean_backups() {
         strip_ext(fname);
 
         int not_dirfile = ((strcmp(fname, ".") != 0) && (strcmp(fname, "..") != 0));
-        if (!password_exists(password_file(fname)) && not_dirfile) {
+        if (!password_exists(fname) && not_dirfile) {
             remove(backup_file(fname));
         }
     }
@@ -158,7 +158,7 @@ int clean_backups() {
 int get_key(unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
     FILE *key_fd = fopen(LOCKSMITH_KEY_FILE, "r");
     if (key_fd == NULL) {
-        cli_error_die(-1, "ERROR: Couldn't get key.\n");
+        cli_error_die(-1, "Couldn't get key.\n");
         exit(2);
     }
 
