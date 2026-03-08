@@ -5,6 +5,11 @@ no unnessecary bloat.
 [![Locksmith image](https://github.com/callmesalmon/locksmith/raw/main/screenshot.png)](https://github.com/callmesalmon/locksmith)  
 Locksmith in action! _(screenshot may be outdated)_
 
+> [!WARNING]
+> THIS SOFTWARE CAN AND WILL NOT GUARANTEE TOTAL SAFETY OF STORED INFORMATION,
+> AND ITS CREATORS WILL NOT BE HELD LIABLE FOR ANY SECURITY BREACHES CAUSED BY
+> THIS SOFTWARE.
+
 ## Features
 Locksmith comes with many features, such as:
 - Password encryption
