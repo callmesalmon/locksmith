@@ -1,7 +1,7 @@
 #ifndef COMMONS_H
 #define COMMONS_H
 
-#include <stdio.h>
+#include <stdarg.h>
 
 #include "crypto.h"
 

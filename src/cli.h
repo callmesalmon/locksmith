@@ -1,7 +1,6 @@
 #ifndef CLI_H
 #define CLI_H
 
-#include "crypto.h"
 #include "colors.h"
 
 #define LOCKSMITH_PROMPT PURPLE "locksmith> " DEFAULT_COLOR
