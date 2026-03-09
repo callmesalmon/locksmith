@@ -24,12 +24,8 @@ int master_password_correct(MasterPassword master_pass) {
     return 1;
 }
 
-int create_master_password() {
+int create_master_password(char master_password[MAX_STRING_LEN]) {
     unsigned char master_password_hash[MAX_HASH_LEN];
-    char master_password[MAX_STRING_LEN];
-
-    printf("Create master password:\n> ");
-    get_string(master_password);
 
     // Since '0' is the exit string
     if (!strcmp(master_password, "0")) {
@@ -78,7 +74,12 @@ int check_master_password() {
 int auth_master_password() {
     mpa.fptr = fopen(LOCKSMITH_MASTER_PASSW_FILE, "rb");
     if (mpa.fptr == NULL) {
-        create_master_password();
+        char master_password[MAX_STRING_LEN];
+
+        printf("Create master password:\n> ");
+        get_string(master_password);
+
+        create_master_password(master_password);
         return 0;
     }
     
