@@ -15,6 +15,7 @@ int strip_ext(char *fname);
 int printf_color(char *color, const char *format, ...);
 int vprintf_color(char *color, const char *format, va_list args);
 int get_string(char str[MAX_STRING_LEN]);
+int get_string_secret(char str[MAX_STRING_LEN]);
 int get_string_color(char *color, char str[MAX_STRING_LEN]);
 
 int fexists(char *fname);

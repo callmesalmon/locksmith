@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
+#include <termios.h>
 
 #include "commons.h"
 #include "colors.h"
@@ -89,6 +90,21 @@ int vprintf_color(char *color, const char *format, va_list args) {
 // of wanting to just get a string.
 int get_string(char str[MAX_STRING_LEN]) {
     safe_scanf(MAX_STRING_LEN, "%[^\n]", str);
+
+    return 0;
+}
+
+int get_string_secret(char str[MAX_STRING_LEN]) {
+    struct termios t_new, t_old;
+    tcgetattr(STDIN_FILENO, &t_new);
+    tcgetattr(STDIN_FILENO, &t_old);
+
+    t_new.c_lflag &= ~ECHO;
+    tcsetattr(STDIN_FILENO, TCSAFLUSH, &t_new);
+
+    get_string(str);
+
+    tcsetattr(STDIN_FILENO, TCSAFLUSH, &t_old);
 
     return 0;
 }

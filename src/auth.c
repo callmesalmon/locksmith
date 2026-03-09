@@ -53,7 +53,8 @@ int check_master_password() {
         }
 
         printf("Enter master password (0 to exit):\n> ");
-        get_string(mpa.password);
+        get_string_secret(mpa.password);
+        printf("\n");
 
         if (!strcmp(mpa.password, "0"))
             exit(0);
@@ -77,7 +78,8 @@ int auth_master_password() {
         char master_password[MAX_STRING_LEN];
 
         printf("Create master password:\n> ");
-        get_string(master_password);
+        get_string_secret(master_password);
+        printf("\n");
 
         create_master_password(master_password);
         return 0;
