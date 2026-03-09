@@ -106,6 +106,8 @@ int get_string_secret(char str[MAX_STRING_LEN]) {
 
     tcsetattr(STDIN_FILENO, TCSAFLUSH, &t_old);
 
+    printf("\n"); // to simulate the user entering input... we need this to look pretty
+
     return 0;
 }
 

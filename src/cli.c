@@ -158,7 +158,7 @@ int cmd_change_master_password() {
     fread(mpa.hash, 1, MAX_HASH_LEN, mpa.fptr);
 
     printf("old master password: ");
-    get_string(mpa.password);
+    get_string_secret(mpa.password);
 
     if (!master_password_correct(mpa)) {
         cli_error("Wrong master password!\n");
@@ -168,7 +168,7 @@ int cmd_change_master_password() {
     char new_master_password[MAX_STRING_LEN];
 
     printf("new master password: ");
-    get_string(new_master_password);
+    get_string_secret(new_master_password);
 
     create_master_password(new_master_password);
     return 0;
