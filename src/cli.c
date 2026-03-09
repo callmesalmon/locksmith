@@ -3,6 +3,7 @@
 
 #include "cli.h"
 #include "cli_msg.h"
+#include "auth.h"
 #include "commons.h"
 #include "crypto.h"
 #include "password.h"
@@ -13,6 +14,7 @@
 "recover    recover password\n"         \
 "del        delete password\n"          \
 "list       list passwords\n"           \
+"chmpass    change master password\n"   \
 "exit       exit command interface\n"   \
 "help       show this text\n"           \
 
@@ -30,6 +32,7 @@ typedef enum {
     CMD_RECOVER,
     CMD_DEL,
     CMD_LIST,
+    CMD_CHMPASS,
     CMD_EXIT,
     CMD_HELP,
 
@@ -43,6 +46,7 @@ CommandList get_cmd_value(char str[MAX_STRING_LEN]) {
     if (!strcmp(str, "recover"))    return CMD_RECOVER;
     if (!strcmp(str, "del"))        return CMD_DEL;
     if (!strcmp(str, "list"))       return CMD_LIST;
+    if (!strcmp(str, "chmpass"))    return CMD_CHMPASS;
     if (!strcmp(str, "exit"))       return CMD_EXIT;
     if (!strcmp(str, "help"))       return CMD_HELP;
     if (!strcmp(str, ""))           return EMPTY;
@@ -147,6 +151,29 @@ int cmd_list_passwords() {
     return 0;
 }
 
+int cmd_change_master_password() {
+    MasterPassword mpa;
+    mpa.fptr = fopen(LOCKSMITH_MASTER_PASSW_FILE, "rb");
+
+    fread(mpa.hash, 1, MAX_HASH_LEN, mpa.fptr);
+
+    printf("old master password: ");
+    get_string(mpa.password);
+
+    if (!master_password_correct(mpa)) {
+        cli_error("Wrong master password!\n");
+        return 0;
+    }
+
+    char new_master_password[MAX_STRING_LEN];
+
+    printf("new master password: ");
+    get_string(new_master_password);
+
+    create_master_password(new_master_password);
+    return 0;
+}
+
 int cmd_interface() {
     printf(LOCKSMITH_PROMPT);
 
@@ -170,6 +197,9 @@ int cmd_interface() {
             break;
         case CMD_LIST:
             cmd_list_passwords();
+            break;
+        case CMD_CHMPASS:
+            cmd_change_master_password();
             break;
         case CMD_HELP:
             printf(LIST_OF_COMMANDS);

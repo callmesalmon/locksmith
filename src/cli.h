@@ -12,6 +12,7 @@ int cmd_get_password();
 int cmd_recover_password();
 int cmd_delete_password();
 int cmd_list_passwords();
+int cmd_change_master_password();
 
 int cmd_interface();
 
