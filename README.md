@@ -28,6 +28,7 @@ Additionally, if you want the best experience, you need:
 - A monospaced font (the title will look really weird otherwise)
 
 ## Install
+Locksmith will not compile on spyware such as Windows.
 ```sh
 git clone https://github.com/callmesalmon/locksmith
 cd locksmith
