@@ -113,6 +113,30 @@ int backup_password(char name[], char password[], unsigned char key[crypto_secre
     return 0;
 }
 
+int recover_password(char name[]) {
+    char *bak_fname = backup_file(name);
+    char *enc_fname = password_file(name);
+
+    FILE *bak_fptr = fopen(bak_fname, "r");
+    if (bak_fptr == NULL) {
+        cli_error_die(-1, "Couldn't get backup file '%s'.\n", bak_fname);
+        exit(2);
+    }
+    char bak_buff[MAX_ENC_LEN];
+    fgets(bak_buff, MAX_ENC_LEN, bak_fptr);
+    fclose(bak_fptr);
+
+    FILE *fptr;
+    fptr = fopen(enc_fname, "w");
+    if (fptr == NULL) {
+        cli_error_die(-1, "Couldn't get target file '%s'.\n", enc_fname);
+    }
+    fprintf(fptr, "%s", bak_buff);
+    fclose(fptr); 
+
+    return 0;
+}
+
 int clean_backups() {
     struct dirent *de;
 
