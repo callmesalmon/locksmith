@@ -53,23 +53,11 @@ int create_master_password_input() {
 int verify_master_password_input() {
     fread(mpa.hash, 1, MAX_HASH_LEN, mpa.fptr);
 
-    int password_verified = 0;
-    while (!password_verified) {
-        if (mpa.num_tries >= 5) {
-            cli_error_die(-1, "Exceeded number of tries allowed for master password!\n"
-                "Please try again later.\n");
-        }
+    printf("Master password: ");
+    get_string_secret(mpa.password);
 
-        printf("Master password: ");
-        get_string_secret(mpa.password);
-
-        if (master_password_correct(mpa))
-            password_verified = 1;
-        else {
-            cli_error("Wrong password!\n\n");
-        }
-
-        mpa.num_tries++;
+    if (!master_password_correct(mpa)) {
+        cli_error_die(-1, "Wrong password!\n");
     }
 
     fclose(mpa.fptr);
