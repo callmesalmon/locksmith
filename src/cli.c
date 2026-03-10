@@ -212,7 +212,7 @@ int cmd_interface() {
             cli_error("Invalid command!\n");
             break;
         default:
-            die("Something went wrong while handling user input.\nYou should be worried.\n");
+            cli_error_die(-1, "Unhandled case!\n");
     }
 
     return 0;
