@@ -10,7 +10,7 @@
 
 /**** Initialization ****/
 
-static unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES];
+static unsigned char key[KEY_LEN];
 
 int cli_init() {
     get_key(key);

@@ -31,7 +31,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-int encrypt(const char *fname, const char *password, const unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
+int encrypt(const char *fname, const char *password, const unsigned char key[KEY_LEN]) {
     unsigned char buf_out[MAX_STRING_LEN + crypto_secretstream_xchacha20poly1305_ABYTES];
     unsigned char header[crypto_secretstream_xchacha20poly1305_HEADERBYTES];
 
@@ -59,7 +59,7 @@ int encrypt(const char *fname, const char *password, const unsigned char key[cry
     return 0;
 }
 
-unsigned char *decrypt(const char *source_file, const unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
+unsigned char *decrypt(const char *source_file, const unsigned char key[KEY_LEN]) {
     unsigned char buf_in[MAX_STRING_LEN + crypto_secretstream_xchacha20poly1305_ABYTES];
     static unsigned char buf_out[MAX_STRING_LEN];
     unsigned char header[crypto_secretstream_xchacha20poly1305_HEADERBYTES];
@@ -98,7 +98,7 @@ unsigned char *decrypt(const char *source_file, const unsigned char key[crypto_s
 }
 
 int create_key(const char *key_file)  {
-    unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES];
+    unsigned char key[KEY_LEN];
     crypto_secretstream_xchacha20poly1305_keygen(key);
 
     FILE *f = fopen(key_file, "w");
@@ -106,7 +106,7 @@ int create_key(const char *key_file)  {
         return 1;
     }
 
-    fwrite(key, 1, crypto_secretstream_xchacha20poly1305_KEYBYTES, f);
+    fwrite(key, 1, KEY_LEN, f);
     fclose(f);
 
     return 0;

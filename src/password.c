@@ -39,7 +39,7 @@ char *format_password_filename(char *site, char *user) {
 
 /**** Main password interface ****/
 
-int create_password(char name[], char password[], unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
+int create_password(char name[], char password[], unsigned char key[KEY_LEN]) {
     char *fname = password_file(name);
 
     FILE *fptr;
@@ -56,7 +56,7 @@ int create_password(char name[], char password[], unsigned char key[crypto_secre
     return 0;
 }
 
-char *get_password(char name[], unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
+char *get_password(char name[], unsigned char key[KEY_LEN]) {
     char *fname = password_file(name);
     unsigned char *buf = decrypt(fname, key);
 
@@ -96,7 +96,7 @@ int list_passwords() {
 
 /**** Backups ****/
 
-int backup_password(char name[], char password[], unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
+int backup_password(char name[], char password[], unsigned char key[KEY_LEN]) {
     char *fname = backup_file(name);
 
     FILE *fptr;
@@ -163,14 +163,14 @@ int clean_backups() {
 
 /**** Key-related ****/
 
-int get_key(unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
+int get_key(unsigned char key[KEY_LEN]) {
     FILE *key_fd = fopen(LOCKSMITH_KEY_FILE, "r");
     if (key_fd == NULL) {
         cli_error_die(-1, "Couldn't get key.\n");
         exit(2);
     }
 
-    fread(&key, crypto_secretstream_xchacha20poly1305_KEYBYTES, 1, key_fd);
+    fread(&key, KEY_LEN, 1, key_fd);
 
     return 0;
 }
