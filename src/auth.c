@@ -27,12 +27,6 @@ int master_password_correct(MasterPassword master_pass) {
 int create_master_password(char master_password[MAX_STRING_LEN]) {
     unsigned char master_password_hash[MAX_HASH_LEN];
 
-    // Since '0' is the exit string
-    if (!strcmp(master_password, "0")) {
-        cli_error_die(-1, "'0' is a forbidden password!\n"
-            "Exiting...\n");
-    }
-
     hash_password(master_password, master_password_hash);
 
     mpa.fptr = fopen(LOCKSMITH_MASTER_PASSW_FILE, "wb");
@@ -52,11 +46,9 @@ int check_master_password() {
                 "Please try again later.\n");
         }
 
-        printf("Enter master password (0 to exit):\n> ");
+        printf("Master password: ");
         get_string_secret(mpa.password);
 
-        if (!strcmp(mpa.password, "0"))
-            exit(0);
         if (master_password_correct(mpa))
             password_verified = 1;
         else {
@@ -76,7 +68,7 @@ int auth_master_password() {
     if (mpa.fptr == NULL) {
         char master_password[MAX_STRING_LEN];
 
-        printf("Create master password:\n> ");
+        printf("Create master password: ");
         get_string_secret(master_password);
 
         create_master_password(master_password);
