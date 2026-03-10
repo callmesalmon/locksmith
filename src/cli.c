@@ -109,7 +109,7 @@ int cmd_recover_password() {
 
     if (password_exists(password_file(bak_name))) {
         int answer = cli_warn_yes_no(
-            "A password file matching your input query already exists\n"
+            "A password file matching your input query already exists!\n"
             "Are you sure you want to overwrite this password with the backup? [y/N] "
         );
         if (!answer) return 0;
@@ -133,7 +133,6 @@ int cmd_delete_password() {
 
     int answer = cli_warn_yes_no(
         "This will DELETE YOUR STORED PASSWORD!\n"
-        "(Until you've closed the program, you can still recover the password with 'recover')\n"
         "Are you sure you want to proceed? [y/N] "
         
     );
