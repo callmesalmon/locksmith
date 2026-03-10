@@ -8,6 +8,8 @@
 
 static MasterPassword mpa;
 
+/**** Lower level creation/verification functions ****/
+
 int master_password_correct(MasterPassword master_pass) {
     unsigned char password_hash[MAX_HASH_LEN];
     hash_password(master_pass.password, password_hash);
@@ -35,6 +37,8 @@ int create_master_password(char master_password[MAX_STRING_LEN]) {
 
     return 0;
 }
+
+/**** Creation/Verification input functions ****/
 
 int create_master_password_input() {
     char master_password[MAX_STRING_LEN];
@@ -72,6 +76,8 @@ int verify_master_password_input() {
 
     return 0;
 }
+
+/**** Authentication entry point ****/
 
 int auth_master_password() {
     mpa.fptr = fopen(LOCKSMITH_MASTER_PASSW_FILE, "rb");

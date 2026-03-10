@@ -8,6 +8,18 @@
 #include "crypto.h"
 #include "password.h"
 
+/**** Initialization ****/
+
+static unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES];
+
+int cli_init() {
+    get_key(key);
+
+    return 0;
+}
+
+/**** Command framework ****/
+
 #define LIST_OF_COMMANDS                \
 "new        create new password\n"      \
 "get        get password\n"             \
@@ -17,14 +29,6 @@
 "chmpass    change master password\n"   \
 "exit       exit command interface\n"   \
 "help       show this text\n"           \
-
-static unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES];
-
-int cli_init() {
-    get_key(key);
-
-    return 0;
-}
 
 typedef enum {
     CMD_NEW,
@@ -52,6 +56,8 @@ CommandList get_cmd_value(char str[MAX_STRING_LEN]) {
     if (!strcmp(str, ""))           return EMPTY;
     return INVALID;
 }
+
+/**** Shell commands ****/
 
 int cmd_create_password() {
     char site_name[MAX_STRING_LEN], user_name[MAX_STRING_LEN], password[MAX_STRING_LEN];
@@ -172,6 +178,8 @@ int cmd_change_master_password() {
     create_master_password(new_master_password);
     return 0;
 }
+
+/**** Main shell entrypoint ****/
 
 int cmd_interface() {
     printf(LOCKSMITH_PROMPT);

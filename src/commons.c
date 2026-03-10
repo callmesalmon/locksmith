@@ -11,6 +11,8 @@
 #include "colors.h"
 #include "crypto.h"
 
+/**** Directory-related ****/
+
 char *get_home_dir() {
     return getpwuid(getuid())->pw_dir;
 }
@@ -30,6 +32,15 @@ int mkdirifnotexist(char *dirname) {
 
     return 0;
 }
+
+/**** File-related ****/
+
+int fexists(char *fname) {
+  struct stat   buffer;   
+  return (stat (fname, &buffer) == 0);
+}
+
+/**** String-related ****/
 
 int safe_scanf(int limit, const char *format, ...) {
     va_list args;
@@ -119,10 +130,7 @@ int get_string_color(char *color, char str[MAX_STRING_LEN]) {
     return 0;
 }
 
-int fexists(char *fname) {
-  struct stat   buffer;   
-  return (stat (fname, &buffer) == 0);
-}
+/**** Misc. ****/
 
 void die(char *format, ...) {
     va_list args;

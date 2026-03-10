@@ -6,6 +6,8 @@
 #include "crypto.h"
 #include "colors.h"
 
+/**** Error ****/
+
 int cli_error(const char *format, ...) {
     va_list args;
 
@@ -28,6 +30,8 @@ void cli_error_die(int exit_code, const char *format, ...) {
     exit(exit_code);
 }
 
+/**** Warning ****/
+
 int cli_warn(const char *format, ...) {
     va_list args;
 
@@ -36,18 +40,6 @@ int cli_warn(const char *format, ...) {
 
     printf_color(YELLOW, "WARNING: ");
     vprintf_color(YELLOW, format, args);
-
-    return 0;
-}
-
-int cli_info(const char *format, ...) {
-    va_list args;
-
-    va_start(args, format);
-    va_end(args);
-
-    printf_color(GREEN, "INFO: ");
-    printf_color(GREEN, format, args);
 
     return 0;
 }
@@ -66,4 +58,18 @@ int cli_warn_yes_no(const char *format, ...) {
     // assumes N
     if (strcmp(answer, "y") != 0) return 0;
     return 1;
+}
+
+/**** Info ****/
+
+int cli_info(const char *format, ...) {
+    va_list args;
+
+    va_start(args, format);
+    va_end(args);
+
+    printf_color(GREEN, "INFO: ");
+    printf_color(GREEN, format, args);
+
+    return 0;
 }

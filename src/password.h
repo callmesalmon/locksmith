@@ -21,11 +21,12 @@ int password_exists(char *passname);
 char *format_password_filename(char *site, char *user);
 
 int create_password(char name[], char password[], unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]);
-int backup_password(char name[], char password[], unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]);
 char *get_password(char name[], unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]);
-int recover_password(char name[]);
 int delete_password(char name[]);
 int list_passwords();
+
+int backup_password(char name[], char password[], unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]);
+int recover_password(char name[]);
 int clean_backups();
 
 int get_key(unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]);

@@ -10,7 +10,6 @@ int directory_exists(char *dirname);
 int mkdirifnotexist(char *dirname);
 
 int safe_scanf(int limit, const char *format, ...);
-
 int strip_ext(char *fname);
 int printf_color(char *color, const char *format, ...);
 int vprintf_color(char *color, const char *format, va_list args);

@@ -5,6 +5,8 @@
 #include "crypto.h"
 #include "cli_msg.h"
 
+/**** Password utility functions ****/
+
 char *password_file(char *passname) {
     static char full_filename[MAX_STRING_LEN];
     snprintf(full_filename, MAX_STRING_LEN, "%s%s.enc", LOCKSMITH_PASSW_DIR, passname);
@@ -35,6 +37,8 @@ char *format_password_filename(char *site, char *user) {
     return full_filename;
 }
 
+/**** Main password interface ****/
+
 int create_password(char name[], char password[], unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
     char *fname = password_file(name);
 
@@ -52,23 +56,6 @@ int create_password(char name[], char password[], unsigned char key[crypto_secre
     return 0;
 }
 
-int backup_password(char name[], char password[], unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
-    char *fname = backup_file(name);
-
-    FILE *fptr;
-
-    fptr = fopen(fname, "w");
-    if (fptr == NULL) {
-        cli_error_die(-1, "Couldn't backup password. Failed to write to file '%s'.\n", fname);
-    }
-    fprintf(fptr, "%s", password);
-    fclose(fptr); 
-
-    encrypt(fname, password, key);
-
-    return 0;
-}
-
 char *get_password(char name[], unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
     char *fname = password_file(name);
     unsigned char *buf = decrypt(fname, key);
@@ -76,30 +63,6 @@ char *get_password(char name[], unsigned char key[crypto_secretstream_xchacha20p
     encrypt(fname, (char *)buf, key);
 
     return (char *)buf;
-}
-
-int recover_password(char name[]) {
-    char *bak_fname = backup_file(name);
-    char *enc_fname = password_file(name);
-
-    FILE *bak_fptr = fopen(bak_fname, "r");
-    if (bak_fptr == NULL) {
-        cli_error_die(-1, "Couldn't get backup file '%s'.\n", bak_fname);
-        exit(2);
-    }
-    char bak_buff[MAX_ENC_LEN];
-    fgets(bak_buff, MAX_ENC_LEN, bak_fptr);
-    fclose(bak_fptr);
-
-    FILE *fptr;
-    fptr = fopen(enc_fname, "w");
-    if (fptr == NULL) {
-        cli_error_die(-1, "Couldn't get target file '%s'.\n", enc_fname);
-    }
-    fprintf(fptr, "%s", bak_buff);
-    fclose(fptr); 
-
-    return 0;
 }
 
 int delete_password(char name[]) {
@@ -131,6 +94,25 @@ int list_passwords() {
     return 0;
 }
 
+/**** Backups ****/
+
+int backup_password(char name[], char password[], unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
+    char *fname = backup_file(name);
+
+    FILE *fptr;
+
+    fptr = fopen(fname, "w");
+    if (fptr == NULL) {
+        cli_error_die(-1, "Couldn't backup password. Failed to write to file '%s'.\n", fname);
+    }
+    fprintf(fptr, "%s", password);
+    fclose(fptr); 
+
+    encrypt(fname, password, key);
+
+    return 0;
+}
+
 int clean_backups() {
     struct dirent *de;
 
@@ -154,6 +136,8 @@ int clean_backups() {
 
     return 0;
 }
+
+/**** Key-related ****/
 
 int get_key(unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES]) {
     FILE *key_fd = fopen(LOCKSMITH_KEY_FILE, "r");
