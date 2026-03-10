@@ -36,7 +36,17 @@ int create_master_password(char master_password[MAX_STRING_LEN]) {
     return 0;
 }
 
-int check_master_password() {
+int create_master_password_input() {
+    char master_password[MAX_STRING_LEN];
+
+    printf("Create master password: ");
+    get_string_secret(master_password);
+
+    create_master_password(master_password);
+    return 0;
+}
+
+int verify_master_password_input() {
     fread(mpa.hash, 1, MAX_HASH_LEN, mpa.fptr);
 
     int password_verified = 0;
@@ -66,16 +76,8 @@ int check_master_password() {
 int auth_master_password() {
     mpa.fptr = fopen(LOCKSMITH_MASTER_PASSW_FILE, "rb");
     if (mpa.fptr == NULL) {
-        char master_password[MAX_STRING_LEN];
-
-        printf("Create master password: ");
-        get_string_secret(master_password);
-
-        create_master_password(master_password);
-        return 0;
+        return create_master_password_input();
     }
     
-    check_master_password();
-
-    return 0;
+    return verify_master_password_input();
 }
