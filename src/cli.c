@@ -20,15 +20,15 @@ int cli_init() {
 
 /**** Command framework ****/
 
-#define LIST_OF_COMMANDS                \
-"new        create new password\n"      \
-"get        get password\n"             \
-"recover    recover password\n"         \
-"del        delete password\n"          \
-"list       list passwords\n"           \
-"chmpass    change master password\n"   \
-"exit       exit command interface\n"   \
-"help       show this text\n"           \
+#define LIST_OF_COMMANDS                    \
+"new            create new password\n"      \
+"get            get password\n"             \
+"recover        recover password\n"         \
+"del            delete password\n"          \
+"list           list passwords\n"           \
+"masterpasswd   change master password\n"   \
+"exit           exit command interface\n"   \
+"help           show this text\n"           \
 
 typedef enum {
     CMD_NEW,
@@ -45,15 +45,15 @@ typedef enum {
 } CommandList;
 
 CommandList get_cmd_value(char str[MAX_STRING_LEN]) {
-    if (!strcmp(str, "new"))        return CMD_NEW;
-    if (!strcmp(str, "get"))        return CMD_GET;
-    if (!strcmp(str, "recover"))    return CMD_RECOVER;
-    if (!strcmp(str, "del"))        return CMD_DEL;
-    if (!strcmp(str, "list"))       return CMD_LIST;
-    if (!strcmp(str, "chmpass"))    return CMD_CHMPASS;
-    if (!strcmp(str, "exit"))       return CMD_EXIT;
-    if (!strcmp(str, "help"))       return CMD_HELP;
-    if (!strcmp(str, ""))           return EMPTY;
+    if (!strcmp(str, "new"))            return CMD_NEW;
+    if (!strcmp(str, "get"))            return CMD_GET;
+    if (!strcmp(str, "recover"))        return CMD_RECOVER;
+    if (!strcmp(str, "del"))            return CMD_DEL;
+    if (!strcmp(str, "list"))           return CMD_LIST;
+    if (!strcmp(str, "masterpasswd"))   return CMD_CHMPASS;
+    if (!strcmp(str, "exit"))           return CMD_EXIT;
+    if (!strcmp(str, "help"))           return CMD_HELP;
+    if (!strcmp(str, ""))               return EMPTY;
     return INVALID;
 }
 
