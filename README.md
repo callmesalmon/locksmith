@@ -19,13 +19,14 @@ Locksmith comes with many features, such as:
 
 ## Requirements
 If you want to build locksmith from source, you need:
-- [cc/gcc](https://gcc.gnu.org/)
+- [cc/gcc](https://gcc.gnu.org/) (alternatively any other C compiler that compiles my code, but gcc is the
+only one on which I can guarantee that it compiles)
 - [make](https://www.gnu.org/software/make/)
 - [libsodium](https://github.com/jedisct1/libsodium)
 ### Optional requirements
 Additionally, if you want the best experience, you need:
 - A terminal supporting ANSI color escape codes (locksmith uses these for colored I/O)
-- A monospaced font (the title will look really weird otherwise)
+- A monospaced font (a lot will look kinda strange otherwise)
 
 ## Install
 Locksmith will not compile on spyware such as Windows.
