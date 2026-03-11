@@ -171,11 +171,20 @@ int cmd_change_master_password() {
     }
 
     char new_master_password[MAX_STRING_LEN];
+    char new_master_password_retype[MAX_STRING_LEN];
 
     printf("new master password: ");
     get_string_secret(new_master_password);
 
-    create_master_password(new_master_password);
+    printf("retype master password: ");
+    get_string_secret(new_master_password_retype);
+
+    int result = create_master_password(new_master_password, new_master_password_retype);
+    if (result == -1) {
+        cli_error("Passwords don't match!\n");
+        return -1;
+    }
+
     return 0;
 }
 

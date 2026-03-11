@@ -26,7 +26,10 @@ int master_password_correct(MasterPassword master_pass) {
     return 1;
 }
 
-int create_master_password(char master_password[MAX_STRING_LEN]) {
+int create_master_password(char master_password[MAX_STRING_LEN], char master_password_retype[MAX_STRING_LEN]) {
+    if (strcmp(master_password, master_password_retype) != 0)
+        return -1;
+
     unsigned char master_password_hash[MAX_HASH_LEN];
 
     hash_password(master_password, master_password_hash);
@@ -42,11 +45,19 @@ int create_master_password(char master_password[MAX_STRING_LEN]) {
 
 int create_master_password_input() {
     char master_password[MAX_STRING_LEN];
+    char master_password_retype[MAX_STRING_LEN];
 
     printf("Create master password: ");
     get_string_secret(master_password);
 
-    create_master_password(master_password);
+    printf("Retype master password: ");
+    get_string_secret(master_password_retype);
+
+    int result = create_master_password(master_password, master_password_retype);
+    if (result == -1) {
+        cli_error_die(result, "Passwords don't match!\n");
+    }
+
     return 0;
 }
 
