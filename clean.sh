@@ -8,3 +8,8 @@ if [ -d "$config_dir" ]; then
         exit -1
     fi
 fi
+
+man_file="/usr/local/share/man/man1"
+if [ -f $man_file ]; then
+    rm $man_file
+fi

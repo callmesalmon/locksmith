@@ -41,6 +41,12 @@ make
 sudo ./install_man.sh # OPTIONAL: this builds the locksmith manpage
 ```
 
+## Uninstall
+```sh
+./clean.sh  ## NOTE: Depending on your write access to certain directories,
+            ## you may need to run ``sudo ./clean.sh`` instead
+```
+
 ## Project layout
 The source code of the project is split into different files, with different
 purposes. See:
