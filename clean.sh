@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/sh
 
 config_dir="$HOME/.locksmith"
 
