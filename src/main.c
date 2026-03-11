@@ -24,15 +24,20 @@
 #define LOCKSMITH_VERSION "1.3"
 #define LOCKSMITH_HELP_MESSAGE                                      \
 "locksmith: Enters the locksmith command shell\n"                   \
-"Usage: locksmith [-h, --help]\n"                                   \
+"Usage: locksmith [-h, --help] [-sb --save-backups]\n"              \
 "If you ran 'sudo ./install_man.sh' when compiling this program,\n" \
 "open the manual with 'man locksmith' for more advanced help.\n" 
 
 int main(int argc, char **argv) {
+    int save_backups_flag = 0;
+
     for (int i = 1; i < argc; i++) {
         if (!strcmp(argv[i], "--help") || !strcmp(argv[i], "-h")) {
             printf(LOCKSMITH_HELP_MESSAGE);
             return 0;
+        }
+        if (!strcmp(argv[i], "--save-backups") || !strcmp(argv[i], "-sb")) {
+            save_backups_flag = 1;
         }
         else {
             cli_warn("'%s' is not a valid flag! Skipping...\n", argv[i]);
@@ -46,7 +51,10 @@ int main(int argc, char **argv) {
     create_key(LOCKSMITH_KEY_FILE);
 
     cli_init();
-    clean_backups();
+    
+    if (!save_backups_flag)
+        clean_backups();
+    
     auth_master_password();
 
     printf_color(CYAN, LOCKSMITH_TITLE);
