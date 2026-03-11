@@ -3,10 +3,7 @@ TARGET = locksmith
 
 MAN_FILE = man/locksmith.1
 
-ifeq (,$(shell which $(CC)))
-$(error "$(CC) is not installed. Cannot compile.")
-endif
-
+CC     = cc
 CFLAGS = -std=c99 -Werror -Wall -Wextra -lsodium
 
 all: build
