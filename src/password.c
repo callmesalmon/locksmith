@@ -49,7 +49,7 @@ int create_password(char name[], char password[], unsigned char key[KEY_LEN]) {
         cli_error_die(-1, "Couldn't create password. Failed to write to file '%s'.\n", fname);
     }
     fprintf(fptr, "%s", password);
-    fclose(fptr); 
+    fclose(fptr);
 
     encrypt(fname, password, key);
 
@@ -89,7 +89,7 @@ int list_passwords() {
         if (fname != NULL && strcmp(fname, ".") != 0) printf("%s\n", fname);
     }
 
-    closedir(dir);    
+    closedir(dir);
 
     return 0;
 }
@@ -106,7 +106,7 @@ int backup_password(char name[], char password[], unsigned char key[KEY_LEN]) {
         cli_error_die(-1, "Couldn't backup password. Failed to write to file '%s'.\n", fname);
     }
     fprintf(fptr, "%s", password);
-    fclose(fptr); 
+    fclose(fptr);
 
     encrypt(fname, password, key);
 
@@ -132,7 +132,7 @@ int recover_password(char name[]) {
         cli_error_die(-1, "Couldn't get target file '%s'.\n", enc_fname);
     }
     fprintf(fptr, "%s", bak_buff);
-    fclose(fptr); 
+    fclose(fptr);
 
     return 0;
 }

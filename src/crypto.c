@@ -8,18 +8,18 @@
  * functions are taken from pass's source code
  * (https://github.com/briandowns/pass)
  * License:
- * 
+ *
  * Copyright 2022 <Brian J. Downs>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this list of
  * conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice, this list
  * of conditions and the following disclaimer in the documentation and/or other materials
  * provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
@@ -39,11 +39,11 @@ int encrypt(const char *fname, const char *password, const unsigned char key[KEY
 
     unsigned long long out_len;
     unsigned char tag;
-    
+
     FILE *fptr = fopen(fname, "wb");
 
     crypto_secretstream_xchacha20poly1305_init_push(&st, header, key);
-    
+
     fwrite(header, 1, sizeof header, fptr);
 
     size_t pass_len = strlen(password);
@@ -72,16 +72,16 @@ unsigned char *decrypt(const char *source_file, const unsigned char key[KEY_LEN]
 
     FILE *fp_s = fopen(source_file, "rb");
     fread(header, 1, sizeof(header), fp_s);
-    
+
     if (crypto_secretstream_xchacha20poly1305_init_pull(&st, header, key) != 0) {
         return NULL;
     }
 
     do {
         size_t rlen = fread(buf_in, 1, sizeof buf_in, fp_s);
-        
+
         eof = feof(fp_s);
-        
+
         if (crypto_secretstream_xchacha20poly1305_pull(&st, buf_out, &out_len, &tag, buf_in, rlen, NULL, 0) != 0) {
             return NULL;
         }
@@ -93,7 +93,7 @@ unsigned char *decrypt(const char *source_file, const unsigned char key[KEY_LEN]
     } while (!eof);
 
     fclose(fp_s);
-    
+
     return buf_out;
 }
 

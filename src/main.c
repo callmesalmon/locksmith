@@ -20,13 +20,13 @@
 "   / /   ____  _____/ /___________ ___  (_) /_/ /_     \n"   \
 "  / /   / __ \\/ ___/ //_/ ___/ __ `__ \\/ / __/ __ \\ \n"   \
 " / /___/ /_/ / /__/ ,< (__  ) / / / / / / /_/ / / /    \n"   \
-"/_____/\\____/\\___/_/|_/____/_/ /_/ /_/_/\\__/_/ /_/  \n\n" 
+"/_____/\\____/\\___/_/|_/____/_/ /_/ /_/_/\\__/_/ /_/  \n\n"
 #define LOCKSMITH_VERSION "1.3"
 #define LOCKSMITH_HELP_MESSAGE                                      \
 "locksmith: Enters the locksmith command shell\n"                   \
 "Usage: locksmith [-h, --help] [-sb --save-backups]\n"              \
 "If you ran 'sudo ./install_man.sh' when compiling this program,\n" \
-"open the manual with 'man locksmith' for more advanced help.\n" 
+"open the manual with 'man locksmith' for more advanced help.\n"
 
 int main(int argc, char **argv) {
     int save_backups_flag = 0;
@@ -51,10 +51,10 @@ int main(int argc, char **argv) {
     create_key(LOCKSMITH_KEY_FILE);
 
     cli_init();
-    
+
     if (!save_backups_flag)
         clean_backups();
-    
+
     auth_master_password();
 
     printf_color(CYAN, LOCKSMITH_TITLE);

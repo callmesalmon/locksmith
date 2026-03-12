@@ -36,7 +36,7 @@ int mkdirifnotexist(char *dirname) {
 /**** File-related ****/
 
 int fexists(char *fname) {
-  struct stat   buffer;   
+  struct stat   buffer;
   return (stat (fname, &buffer) == 0);
 }
 
@@ -81,7 +81,6 @@ int printf_color(char *color, const char *format, ...) {
     va_start(args, format);
     va_end(args);
 
-    
     printf("%s", color);
     vprintf(format, args);
     printf("%s", DEFAULT_COLOR);

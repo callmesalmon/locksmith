@@ -83,6 +83,6 @@ int auth_master_password() {
     if (mpa.fptr == NULL) {
         return create_master_password_input();
     }
-    
+
     return verify_master_password_input();
 }

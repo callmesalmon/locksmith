@@ -75,7 +75,7 @@ int cmd_create_password() {
     // the automatic prepending of LOCKSMITH_DIR* to all filenames.
     char *full_filename          = format_password_filename(site_name, user_name);
     char *full_filename_with_dir = password_file(full_filename);
-    
+
     if (fexists(full_filename_with_dir)) {
         int answer = cli_warn_yes_no(
             "Password file already exists!\n"
@@ -140,7 +140,6 @@ int cmd_delete_password() {
     int answer = cli_warn_yes_no(
         "This will DELETE YOUR STORED PASSWORD!\n"
         "Are you sure you want to proceed? [y/N] "
-        
     );
     if (!answer) return 0;
 
