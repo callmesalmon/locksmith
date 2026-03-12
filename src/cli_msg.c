@@ -17,7 +17,7 @@ int cli_error(const char *format, ...) {
     printf_color(RED, "ERROR: ");
     vprintf_color(RED, format, args);
 
-    return 0;
+    return -1;
 }
 
 void cli_error_die(int exit_code, const char *format, ...) {
