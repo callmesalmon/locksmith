@@ -7,7 +7,7 @@
 
 char *get_home_dir();
 int directory_exists(char *dirname);
-int mkdirifnotexist(char *dirname);
+int mkdir_if_not_exist(char *dirname);
 
 int safe_scanf(int limit, const char *format, ...);
 int strip_ext(char *fname);

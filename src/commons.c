@@ -25,7 +25,7 @@ int directory_exists(char *dirname) {
     return 0;
 }
 
-int mkdirifnotexist(char *dirname) {
+int mkdir_if_not_exist(char *dirname) {
     if (directory_exists(dirname) == 0) {
         mkdir(dirname, 0755);
     }

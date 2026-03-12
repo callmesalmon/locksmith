@@ -44,9 +44,9 @@ int main(int argc, char **argv) {
         }
     }
 
-    mkdirifnotexist(LOCKSMITH_DIR);
-    mkdirifnotexist(LOCKSMITH_PASSW_DIR);
-    mkdirifnotexist(LOCKSMITH_BACKUP_DIR);
+    mkdir_if_not_exist(LOCKSMITH_DIR);
+    mkdir_if_not_exist(LOCKSMITH_PASSW_DIR);
+    mkdir_if_not_exist(LOCKSMITH_BACKUP_DIR);
 
     create_key(LOCKSMITH_KEY_FILE);
 
