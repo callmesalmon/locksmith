@@ -24,7 +24,7 @@
 #define LOCKSMITH_VERSION "1.3"
 #define LOCKSMITH_HELP_MESSAGE                                      \
 "locksmith: Enters the locksmith command shell\n"                   \
-"Usage: locksmith [-h, --help] [-sb --save-backups]\n"              \
+"Usage: locksmith [-h, --help] [-s --save-backups]\n"              \
 "If you ran 'sudo ./install_man.sh' when compiling this program,\n" \
 "open the manual with 'man locksmith' for more advanced help.\n"
 
@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
             printf(LOCKSMITH_HELP_MESSAGE);
             return 0;
         }
-        if (!strcmp(argv[i], "--save-backups") || !strcmp(argv[i], "-sb")) {
+        if (!strcmp(argv[i], "--save-backups") || !strcmp(argv[i], "-s")) {
             save_backups_flag = 1;
         }
         else {
