@@ -11,7 +11,7 @@
 #define KEY_LEN crypto_secretstream_xchacha20poly1305_KEYBYTES
 
 int encrypt(const char *fname, const char *password, const unsigned char key[KEY_LEN]);
-unsigned char *decrypt(const char *source_file, const unsigned char key[KEY_LEN]);
+char *decrypt(const char *source_file, const unsigned char key[KEY_LEN]);
 int create_key(const char *key_file);
 int hash_password(char *password, unsigned char *hash);
 

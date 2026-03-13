@@ -59,7 +59,7 @@ int encrypt(const char *fname, const char *password, const unsigned char key[KEY
     return 0;
 }
 
-unsigned char *decrypt(const char *source_file, const unsigned char key[KEY_LEN]) {
+char *decrypt(const char *source_file, const unsigned char key[KEY_LEN]) {
     unsigned char buf_in[MAX_STRING_LEN + crypto_secretstream_xchacha20poly1305_ABYTES];
     static unsigned char buf_out[MAX_STRING_LEN];
     unsigned char header[crypto_secretstream_xchacha20poly1305_HEADERBYTES];
@@ -94,7 +94,7 @@ unsigned char *decrypt(const char *source_file, const unsigned char key[KEY_LEN]
 
     fclose(fp_s);
 
-    return buf_out;
+    return (char *)buf_out;
 }
 
 int create_key(const char *key_file)  {

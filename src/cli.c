@@ -60,24 +60,25 @@ CommandList get_cmd_value(char str[MAX_STRING_LEN]) {
 /**** Shell commands ****/
 
 int cmd_create_password() {
-    char name[MAX_STRING_LEN];
-    //char user_name[MAX_STRING_LEN];
-    char password[MAX_STRING_LEN];
+    Password pass;
 
-    printf("name: ");
-    get_string(name);
+    printf("Title: ");
+    get_string(pass.title);
 
-    /*printf("username: ");
-    get_string(user_name);*/
+    printf("Username: ");
+    get_string(pass.username);
 
-    printf("password: ");
-    get_string(password);
+    printf("URL: ");
+    get_string(pass.url);
+
+    printf("Password: ");
+    get_string(pass.password);
 
     // This is not a good implementation. In reality we should just remove
     // the automatic prepending of LOCKSMITH_DIR* to all filenames.
-    char *name_with_dir = password_file(name);
+    char *title_with_dir = password_file(pass.title);
 
-    if (fexists(name_with_dir)) {
+    if (fexists(title_with_dir)) {
         int answer = cli_warn_yes_no(
             "Password file already exists!\n"
             "Are you sure you want to overwrite this password? [y/N] "
@@ -85,8 +86,8 @@ int cmd_create_password() {
         if (!answer) return 0;
     }
 
-    create_password(name, password, key);
-    backup_password(name, password, key);
+    create_password(pass, key);
+    backup_password(pass);
 
     return 0;
 }
@@ -94,7 +95,7 @@ int cmd_create_password() {
 int cmd_get_password() {
     char pass_name[MAX_STRING_LEN];
 
-    printf("enter password name: ");
+    printf("Title: ");
     get_string(pass_name);
 
     if (!password_exists(pass_name)) {
@@ -102,8 +103,11 @@ int cmd_get_password() {
                   "Returning to command interface...\n");
     }
 
-    printf("password:");
-    printf(" %s\n", get_password(pass_name, key));
+    Password pass = get_password(pass_name, key);
+
+    printf("Username: %s\n", pass.username);
+    printf("URL: %s", pass.url); // praying that this always works
+    printf("Password: %s\n", pass.password);
 
     return 0;
 }
@@ -111,7 +115,7 @@ int cmd_get_password() {
 int cmd_recover_password() {
     char bak_name[MAX_STRING_LEN];
 
-    printf("enter password name: ");
+    printf("Title: ");
     get_string(bak_name);
 
     if (password_exists(password_file(bak_name))) {
@@ -130,7 +134,7 @@ int cmd_recover_password() {
 int cmd_delete_password() {
     char pass_name[MAX_STRING_LEN];
 
-    printf("enter password name: ");
+    printf("Title: ");
     get_string(pass_name);
 
     if (!password_exists(pass_name)) {
@@ -150,7 +154,7 @@ int cmd_delete_password() {
 }
 
 int cmd_list_passwords() {
-    printf("list of passwords:\n");
+    printf("List of passwords:\n");
     list_passwords();
 
     return 0;
@@ -162,7 +166,7 @@ int cmd_change_master_password() {
 
     fread(mpa.hash, 1, MAX_HASH_LEN, mpa.fptr);
 
-    printf("old master password: ");
+    printf("Old master password: ");
     get_string_secret(mpa.password);
 
     if (!master_password_correct(mpa)) {
@@ -173,10 +177,10 @@ int cmd_change_master_password() {
     char new_master_password[MAX_STRING_LEN];
     char new_master_password_retype[MAX_STRING_LEN];
 
-    printf("new master password: ");
+    printf("New master password: ");
     get_string_secret(new_master_password);
 
-    printf("retype master password: ");
+    printf("Retype master password: ");
     get_string_secret(new_master_password_retype);
 
     int result = create_master_password(new_master_password, new_master_password_retype);

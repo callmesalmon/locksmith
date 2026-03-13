@@ -28,12 +28,45 @@ int directory_exists(char *dirname) {
 int mkdir_if_not_exist(char *dirname) {
     if (directory_exists(dirname) == 0) {
         mkdir(dirname, 0755);
+        return 0;
     }
+
+    return -1;
+}
+
+/**** File-related ****/
+
+int file_write(char *path, char content[]) {
+    FILE *fptr = fopen(path, "w");
+    if (fptr == NULL)
+        return -1;
+
+    fprintf(fptr, "%s", content);
+    fclose(fptr);
 
     return 0;
 }
 
-/**** File-related ****/
+int file_copy(char *dest, char *src) {
+    FILE *fptr = fopen(src, "rb");
+    if (fptr == NULL)
+        return -1;
+
+    char buf[MAX_STRING_LEN * 2];
+    fread(buf, 1, MAX_STRING_LEN, fptr);
+    
+    fclose(fptr);
+
+    fptr = fopen(dest, "w");
+    if (fptr == NULL)
+        return -1;
+
+    fprintf(fptr, "%s", buf);
+
+    fclose(fptr);
+
+    return 0;
+}
 
 int fexists(char *fname) {
   struct stat   buffer;

@@ -21,7 +21,7 @@
 "  / /   / __ \\/ ___/ //_/ ___/ __ `__ \\/ / __/ __ \\ \n"   \
 " / /___/ /_/ / /__/ ,< (__  ) / / / / / / /_/ / / /    \n"   \
 "/_____/\\____/\\___/_/|_/____/_/ /_/ /_/_/\\__/_/ /_/  \n\n"
-#define LOCKSMITH_VERSION "1.3"
+#define LOCKSMITH_VERSION "1.4"
 #define LOCKSMITH_HELP_MESSAGE                                      \
 "locksmith: Enters the locksmith command shell\n"                   \
 "Usage: locksmith [-h, --help] [-s --save-backups]\n"              \
