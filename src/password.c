@@ -30,13 +30,6 @@ int password_exists(char *passname) {
     return 0;
 }
 
-char *format_password_filename(char *site, char *user) {
-    static char full_filename[MAX_STRING_LEN];
-    snprintf(full_filename, sizeof(full_filename), "%s:%s", site, user);
-
-    return full_filename;
-}
-
 /**** Main password interface ****/
 
 int create_password(char name[], char password[], unsigned char key[KEY_LEN]) {

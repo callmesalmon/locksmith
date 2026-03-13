@@ -18,7 +18,6 @@
 char *password_file(char *passname);
 char *backup_file(char *passname);
 int password_exists(char *passname);
-char *format_password_filename(char *site, char *user);
 
 int create_password(char name[], char password[], unsigned char key[KEY_LEN]);
 char *get_password(char name[], unsigned char key[KEY_LEN]);

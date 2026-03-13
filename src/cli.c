@@ -60,23 +60,24 @@ CommandList get_cmd_value(char str[MAX_STRING_LEN]) {
 /**** Shell commands ****/
 
 int cmd_create_password() {
-    char site_name[MAX_STRING_LEN], user_name[MAX_STRING_LEN], password[MAX_STRING_LEN];
+    char name[MAX_STRING_LEN];
+    //char user_name[MAX_STRING_LEN];
+    char password[MAX_STRING_LEN];
 
-    printf("sitename: ");
-    get_string(site_name);
+    printf("name: ");
+    get_string(name);
 
-    printf("username: ");
-    get_string(user_name);
+    /*printf("username: ");
+    get_string(user_name);*/
 
     printf("password: ");
     get_string(password);
 
     // This is not a good implementation. In reality we should just remove
     // the automatic prepending of LOCKSMITH_DIR* to all filenames.
-    char *full_filename          = format_password_filename(site_name, user_name);
-    char *full_filename_with_dir = password_file(full_filename);
+    char *name_with_dir = password_file(name);
 
-    if (fexists(full_filename_with_dir)) {
+    if (fexists(name_with_dir)) {
         int answer = cli_warn_yes_no(
             "Password file already exists!\n"
             "Are you sure you want to overwrite this password? [y/N] "
@@ -84,8 +85,8 @@ int cmd_create_password() {
         if (!answer) return 0;
     }
 
-    create_password(full_filename, password, key);
-    backup_password(full_filename, password, key);
+    create_password(name, password, key);
+    backup_password(name, password, key);
 
     return 0;
 }
