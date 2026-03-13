@@ -61,6 +61,7 @@ CommandList get_cmd_value(char str[MAX_STRING_LEN]) {
 
 int cmd_create_password() {
     Password pass;
+    char retype[MAX_STRING_LEN];
 
     printf("Title: ");
     get_string(pass.title);
@@ -73,6 +74,13 @@ int cmd_create_password() {
 
     printf("Password: ");
     get_string(pass.password);
+
+    printf("Retype: ");
+    get_string(retype);
+
+    if (strcmp(pass.password, retype) != 0) {
+        return cli_error("Passwords don't match!\n");
+    }
 
     // This is not a good implementation. In reality we should just remove
     // the automatic prepending of LOCKSMITH_DIR* to all filenames.
