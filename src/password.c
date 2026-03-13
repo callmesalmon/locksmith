@@ -144,6 +144,11 @@ Password get_password(char name[], unsigned char key[KEY_LEN]) {
 
     char **data = get_info_from_file(infofile);
 
+    if (data == NULL) {
+        cli_error("Couldn't get password info from '%s'!", infofile);
+        return PASSWORD_ERROR;
+    }
+
     strncpy(pass.url, data[0], MAX_STRING_LEN);
     strncpy(pass.username, data[1], MAX_STRING_LEN);
 

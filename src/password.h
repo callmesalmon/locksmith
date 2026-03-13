@@ -14,6 +14,10 @@ typedef struct {
     char password[MAX_STRING_LEN];
 } Password;
 
+// For when we need to return an error in a function which
+// returns ``Password``
+#define PASSWORD_ERROR (Password){0}
+
 // This is why we have macros, kid.
 
 #define LOCKSMITH_DIR                   strcat(get_home_dir(), "/.locksmith/")          // ~/.locksmith

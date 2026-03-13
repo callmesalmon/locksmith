@@ -113,6 +113,11 @@ int cmd_get_password() {
 
     Password pass = get_password(pass_name, key);
 
+    // This... should work...
+    if (pass.title == (char *)NULL) {
+        return cli_error("Couldn't get password!\n");
+    }
+
     printf("Username: %s\n", pass.username);
     printf("URL: %s", pass.url); // praying that this always works
     printf("Password: %s\n", pass.password);
@@ -156,7 +161,10 @@ int cmd_delete_password() {
     );
     if (!answer) return 0;
 
-    delete_password(pass_name);
+    int result = delete_password(pass_name);
+    if (result == -1) {
+        return cli_error("Couldn't delete password!\n");
+    }
 
     return 0;
 }
