@@ -34,17 +34,7 @@ int password_exists(char *path) {
 
 /**** Main password interface ****/
 
-int create_password_file(Password pass, unsigned char key[KEY_LEN], char setting) {
-    char *fname;
-
-    if (setting == 'p') {
-        fname = password_file(pass.title);
-    } else if (setting == 'b') {
-        fname = backup_password_file(pass.title);
-    } else {
-        return -1;
-    }
-
+int create_password_file(Password pass, unsigned char key[KEY_LEN], char *fname) {
     int result = file_write(fname, pass.password);
     if (result == -1) {
         return result;
@@ -55,17 +45,7 @@ int create_password_file(Password pass, unsigned char key[KEY_LEN], char setting
     return 0;
 }
 
-int create_info_file(Password pass, char setting) {
-    char *fname;
-
-    if (setting == 'p') {
-        fname = info_file(pass.title);
-    } else if (setting == 'b') {
-        fname = backup_info_file(pass.title);
-    } else {
-        return -1;
-    }
-
+int create_info_file(Password pass, char *fname) {
     char buf[MAX_STRING_LEN * 2];
     snprintf(buf, MAX_STRING_LEN * 2, "%s\n%s", pass.url, pass.username);
 
@@ -85,12 +65,12 @@ int create_password(Password pass, unsigned char key[KEY_LEN]) {
         return -1;
     }
 
-    result = create_password_file(pass, key, 'p');
+    result = create_password_file(pass, key, password_file(pass.title));
     if (result == -1) {
         return cli_error("Couldn't create file '%s'!\n", password_file(pass.title));
     }
 
-    result = create_info_file(pass, 'p');
+    result = create_info_file(pass, info_file(pass.title));
     if (result == -1) {
         return cli_error("Couldn't create file '%s'!\n", info_file(pass.title));
     }
@@ -182,7 +162,6 @@ int list_passwords() {
 
     while ((de = readdir(dir)) != NULL) {
         char *fname = de->d_name;
-        //strip_ext(fname);
         
         int special = (!strcmp(fname, ".") || !strcmp(fname, ".."));
 
@@ -214,7 +193,7 @@ int backup_password(Password pass) {
         return cli_error("Couldn't create file '%s'!\n", backup_password_file(pass.title));
     }
 
-    result = create_info_file(pass, 'b');
+    result = create_info_file(pass, backup_info_file(pass.title));
     if (result == -1) {
         return cli_error("Couldn't create file '%s'!\n", backup_info_file(pass.title));
     }

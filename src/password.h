@@ -37,9 +37,6 @@ char *backup_dir(char *path);
 int password_exists(char *path);
 
 // setting: 'p': password, 'b': backup
-int create_password_file(Password pass, unsigned char key[KEY_LEN], char setting);
-int create_info_file(Password pass, char setting);
-
 int create_password(Password pass, unsigned char key[KEY_LEN]);
 
 Password get_password(char name[], unsigned char key[KEY_LEN]);
