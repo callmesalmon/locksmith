@@ -73,10 +73,10 @@ int cmd_create_password() {
     get_string(pass.url);
 
     printf("Password: ");
-    get_string(pass.password);
+    get_string_secret(pass.password);
 
     printf("Retype: ");
-    get_string(retype);
+    get_string_secret(retype);
 
     if (strcmp(pass.password, retype) != 0) {
         return cli_error("Passwords don't match!\n");
