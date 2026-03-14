@@ -222,23 +222,14 @@ int clean_backups() {
     while ((de = readdir(dir)) != NULL) {
         char *fname = de->d_name;
 
-        struct dirent *inner_de;
+        // This better be a dir or else...
         DIR *inner_dir = opendir(strcat(LOCKSMITH_BACKUP_DIR, fname));
 
         if (dir == NULL)
             cli_error_die(-1, "Couldn't clean backups.");
 
-        while ((inner_de = readdir(inner_dir)) != NULL) {
-            if (fexists(password_dir(fname)))
-                break;
-
-            char *inner_fname = inner_de->d_name;
-
-            int special = (!strcmp(inner_fname, ".") || !strcmp(inner_fname, "."));
-
-            if (!special)
-                remove(inner_fname);
-        }
+        if (!fexists(password_dir(fname)))
+            delete_all_in_dir(inner_dir);
 
         closedir(inner_dir);
     }

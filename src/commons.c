@@ -34,6 +34,21 @@ int mkdir_if_not_exist(char *dirname) {
     return -1;
 }
 
+int delete_all_in_dir(DIR *dir) {
+    struct dirent *de;
+
+    while ((de = readdir(dir)) != NULL) {
+        char *fname = de->d_name;
+
+        int special = (!strcmp(fname, ".") || !strcmp(fname, "."));
+
+        if (!special)
+            remove(fname);
+    }
+
+    return 0;
+}
+
 /**** File-related ****/
 
 int file_write(char *path, char content[]) {

@@ -1,6 +1,7 @@
 #ifndef COMMONS_H
 #define COMMONS_H
 
+#include <dirent.h>
 #include <stdarg.h>
 
 #include "crypto.h"
@@ -8,6 +9,7 @@
 char *get_home_dir();
 int directory_exists(char *dirname);
 int mkdir_if_not_exist(char *dirname);
+int delete_all_in_dir(DIR *dir);
 
 int file_write(char *path, char content[]);
 int file_copy(char *dest, char *src);
