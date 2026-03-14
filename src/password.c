@@ -162,7 +162,7 @@ int list_passwords() {
 
     while ((de = readdir(dir)) != NULL) {
         char *fname = de->d_name;
-        
+
         int special = (!strcmp(fname, ".") || !strcmp(fname, ".."));
 
         // fname != "." is for the "." (cwd) and ".." ""files""
@@ -233,7 +233,7 @@ int clean_backups() {
                 break;
 
             char *inner_fname = inner_de->d_name;
-            
+
             int special = (!strcmp(inner_fname, ".") || !strcmp(inner_fname, "."));
 
             if (!special)
