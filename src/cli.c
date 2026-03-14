@@ -218,6 +218,9 @@ int cmd_interface() {
 
     get_string(command);
 
+    // There is probably a prettier way to go about this
+    // but switch statements are BLAZINGLY FAST so it's ok
+    // I think
     switch (get_cmd_value(command)) {
         case CMD_NEW:
             cmd_create_password();

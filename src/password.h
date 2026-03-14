@@ -27,6 +27,7 @@ typedef struct {
 #define LOCKSMITH_MASTER_PASSW_FILE     strcat(LOCKSMITH_DIR, "master_password.hash")   // ~/.locksmith/master_password.hash
 #define LOCKSMITH_KEY_FILE              strcat(LOCKSMITH_DIR, "locksmith.key")          // ~/.locksmith/locksmith.key
 
+// utility macros for getting path of different important files.
 #define password_file(name)         strcat(password_dir(name), "/password.enc")
 #define info_file(name)             strcat(password_dir(name), "/info.txt")
 #define backup_password_file(name)  strcat(backup_dir(name), "/password.enc")
@@ -36,9 +37,7 @@ char *password_dir(char *path);
 char *backup_dir(char *path);
 int password_exists(char *path);
 
-// setting: 'p': password, 'b': backup
 int create_password(Password pass, unsigned char key[KEY_LEN]);
-
 Password get_password(char name[], unsigned char key[KEY_LEN]);
 int delete_password(char name[]);
 int list_passwords();
