@@ -18,7 +18,7 @@ int master_password_correct(MasterPassword master_pass) {
         return 0;
     }
 
-    for (int i = 0; master_pass.password[i] != '\0'; i++) {
+    for (int i = 0; master_pass.hash[i] != '\0'; i++) {
         if (password_hash[i] != master_pass.hash[i])
             return 0;
     }
