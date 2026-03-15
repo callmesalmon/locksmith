@@ -25,5 +25,6 @@ int get_string_secret(char str[MAX_STRING_LEN]);
 int get_string_color(char *color, char str[MAX_STRING_LEN]);
 
 void die(char *format, ...);
+void safe_srand();
 
 #endif

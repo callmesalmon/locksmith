@@ -42,6 +42,8 @@ Password get_password(char name[], unsigned char key[KEY_LEN]);
 int delete_password(char name[]);
 int list_passwords();
 
+char *gen_password(int len);
+
 int backup_password(Password pass);
 int recover_password(char name[]);
 int clean_backups();

@@ -161,6 +161,25 @@ int list_passwords() {
     return 0;
 }
 
+/**** Password generation ****/
+char *gen_password(int len) {
+    char buf[len];
+
+    char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    int charset_len = sizeof(charset) / sizeof(char);
+
+    for (int i = 0; i < len; i++) {
+        buf[i] = charset[rand() % charset_len];
+    }
+    buf[len] = 0;
+
+    // Since we need a static size for a return value
+    static char return_buf[128];
+    strncpy(return_buf, buf, len);
+
+    return return_buf;
+}
+
 /**** Backups ****/
 
 int backup_password(Password pass) {

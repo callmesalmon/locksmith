@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <sys/stat.h>
+#include <sys/time.h>
 #include <unistd.h>
 #include <pwd.h>
 #include <stdarg.h>
@@ -132,8 +133,8 @@ int safe_scanf(int limit, const char *format, ...) {
         return -1;
     }
     fflush(stdin); // fgets() doesn't flush excess chars
-
     buff[strcspn(buff, "\n")] = 0; // Remove newline
+
     vsscanf(buff, format, args);
 
     return 0;
@@ -218,4 +219,11 @@ void die(char *format, ...) {
     vprintf(format, args);
 
     exit(1); // We exit, not return.
+}
+
+void safe_srand() {
+    int pid = getpid();
+    struct timeval t;
+    gettimeofday(&t, NULL);
+    srand(t.tv_usec ^ t.tv_sec ^ pid);
 }

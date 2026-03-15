@@ -25,6 +25,7 @@ int cli_init() {
 "get            get password\n"             \
 "recover        recover password\n"         \
 "del            delete password\n"          \
+"gen            generate password\n"        \
 "list           list passwords\n"           \
 "listbak        list backups\n"             \
 "masterpasswd   change master password\n"   \
@@ -36,6 +37,7 @@ typedef enum {
     CMD_GET,
     CMD_RECOVER,
     CMD_DEL,
+    CMD_GEN,
     CMD_LIST,
     CMD_LISTBAK,
     CMD_CHMPASS,
@@ -52,6 +54,7 @@ CommandList get_cmd_value(char str[MAX_STRING_LEN]) {
     if (!strcmp(str, "recover"))        return CMD_RECOVER;
     if (!strcmp(str, "del"))            return CMD_DEL;
     if (!strcmp(str, "list"))           return CMD_LIST;
+    if (!strcmp(str, "gen"))            return CMD_GEN;
     if (!strcmp(str, "listbak"))        return CMD_LISTBAK;
     if (!strcmp(str, "masterpasswd"))   return CMD_CHMPASS;
     if (!strcmp(str, "exit"))           return CMD_EXIT;
@@ -172,6 +175,20 @@ int cmd_delete_password() {
     return 0;
 }
 
+int cmd_gen_password() {
+    int pass_len = 0;
+
+    printf("Password length: ");
+    safe_scanf(MAX_STRING_LEN, "%d", &pass_len);
+
+    char *generated_pass = gen_password(pass_len);
+
+    printf("Generated password:\n");
+    printf("%s\n", generated_pass);
+
+    return 0;
+}
+
 int cmd_list_passwords() {
     printf("List of passwords:\n");
     list_passwords();
@@ -246,6 +263,9 @@ int cmd_interface() {
             break;
         case CMD_LIST:
             cmd_list_passwords();
+            break;
+        case CMD_GEN:
+            cmd_gen_password();
             break;
         case CMD_LISTBAK:
             cmd_list_backups();
