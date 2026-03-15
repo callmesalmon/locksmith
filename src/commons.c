@@ -2,10 +2,10 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <pwd.h>
-#include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
 #include <termios.h>
+#include <stdlib.h>
 
 #include "commons.h"
 #include "colors.h"
@@ -34,17 +34,47 @@ int mkdir_if_not_exist(char *dirname) {
     return -1;
 }
 
-int delete_all_in_dir(DIR *dir) {
+int delete_all_in_dir(char *dirname) {
+    DIR *dir = opendir(dirname);
     struct dirent *de;
 
     while ((de = readdir(dir)) != NULL) {
         char *fname = de->d_name;
 
-        int special = (!strcmp(fname, ".") || !strcmp(fname, "."));
+        char full_fname[(MAX_STRING_LEN * 2) + 1];
+        snprintf(full_fname, sizeof(full_fname), "%s/%s", dirname, fname);
+        
+        int special = (!strcmp(fname, ".") || !strcmp(fname, ".."));
 
-        if (!special)
-            remove(fname);
+        if (!special) {
+            int result = remove(full_fname);
+            if (result != 0)
+                return -1;
+        }
     }
+
+    return 0;
+}
+
+int list_dir(char *dirname) {
+    struct dirent *de;
+
+    DIR *dir = opendir(dirname);
+
+    if (dir == NULL) {
+        return -1;
+    }
+
+    while ((de = readdir(dir)) != NULL) {
+        char *fname = de->d_name;
+
+        int special = (!strcmp(fname, ".") || !strcmp(fname, ".."));
+
+        // fname != "." is for the "." (cwd) and ".." ""files""
+        if (fname != NULL && !special) printf("%s\n", fname);
+    }
+
+    closedir(dir);
 
     return 0;
 }

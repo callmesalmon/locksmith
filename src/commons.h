@@ -9,7 +9,8 @@
 char *get_home_dir();
 int directory_exists(char *dirname);
 int mkdir_if_not_exist(char *dirname);
-int delete_all_in_dir(DIR *dir);
+int delete_all_in_dir(char *dirname);
+int list_dir(char *dirname);
 
 int file_write(char *path, char content[]);
 int file_copy(char *dest, char *src);

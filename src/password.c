@@ -152,24 +152,11 @@ int delete_password(char name[]) {
 }
 
 int list_passwords() {
-    struct dirent *de;
+    int result = list_dir(LOCKSMITH_PASSW_DIR);
 
-    DIR *dir = opendir(LOCKSMITH_PASSW_DIR);
-
-    if (dir == NULL) {
+    if (result == -1) {
         cli_error_die(-1, "Couldn't list passwords.");
     }
-
-    while ((de = readdir(dir)) != NULL) {
-        char *fname = de->d_name;
-
-        int special = (!strcmp(fname, ".") || !strcmp(fname, ".."));
-
-        // fname != "." is for the "." (cwd) and ".." ""files""
-        if (fname != NULL && !special) printf("%s\n", fname);
-    }
-
-    closedir(dir);
 
     return 0;
 }
@@ -216,25 +203,34 @@ int clean_backups() {
     DIR *dir = opendir(LOCKSMITH_BACKUP_DIR);
 
     if (dir == NULL) {
-        cli_error_die(-1, "Couldn't clean backups.");
+        cli_error_die(-1, "Couldn't clean backups.\n");
     }
 
     while ((de = readdir(dir)) != NULL) {
         char *fname = de->d_name;
 
-        // This better be a dir or else...
-        DIR *inner_dir = opendir(strcat(LOCKSMITH_BACKUP_DIR, fname));
-
         if (dir == NULL)
-            cli_error_die(-1, "Couldn't clean backups.");
+            cli_error_die(-1, "Couldn't clean backups.\n");
 
-        if (!fexists(password_dir(fname)))
-            delete_all_in_dir(inner_dir);
-
-        closedir(inner_dir);
+        if (!fexists(password_dir(fname))) {
+            int result = delete_all_in_dir(backup_dir(fname));
+            if (result == -1)
+                cli_error_die(-1, "Couldn't clean backups.\n");
+            rmdir(backup_dir(fname));
+        }
     }
 
     closedir(dir);
+
+    return 0;
+}
+
+int list_backups() {
+    int result = list_dir(LOCKSMITH_BACKUP_DIR);
+
+    if (result == -1) {
+        cli_error_die(-1, "Couldn't list password backups.");
+    }
 
     return 0;
 }

@@ -26,6 +26,7 @@ int cli_init() {
 "recover        recover password\n"         \
 "del            delete password\n"          \
 "list           list passwords\n"           \
+"listbak        list backups\n"             \
 "masterpasswd   change master password\n"   \
 "exit           exit command interface\n"   \
 "help           show this text\n"           \
@@ -36,6 +37,7 @@ typedef enum {
     CMD_RECOVER,
     CMD_DEL,
     CMD_LIST,
+    CMD_LISTBAK,
     CMD_CHMPASS,
     CMD_EXIT,
     CMD_HELP,
@@ -50,6 +52,7 @@ CommandList get_cmd_value(char str[MAX_STRING_LEN]) {
     if (!strcmp(str, "recover"))        return CMD_RECOVER;
     if (!strcmp(str, "del"))            return CMD_DEL;
     if (!strcmp(str, "list"))           return CMD_LIST;
+    if (!strcmp(str, "listbak"))        return CMD_LISTBAK;
     if (!strcmp(str, "masterpasswd"))   return CMD_CHMPASS;
     if (!strcmp(str, "exit"))           return CMD_EXIT;
     if (!strcmp(str, "help"))           return CMD_HELP;
@@ -176,6 +179,13 @@ int cmd_list_passwords() {
     return 0;
 }
 
+int cmd_list_backups() {
+    printf("List of backups:\n");
+    list_backups();
+
+    return 0;
+}
+
 int cmd_change_master_password() {
     MasterPassword mpa;
     mpa.fptr = fopen(LOCKSMITH_MASTER_PASSW_FILE, "rb");
@@ -236,6 +246,9 @@ int cmd_interface() {
             break;
         case CMD_LIST:
             cmd_list_passwords();
+            break;
+        case CMD_LISTBAK:
+            cmd_list_backups();
             break;
         case CMD_CHMPASS:
             cmd_change_master_password();
