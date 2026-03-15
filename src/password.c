@@ -182,7 +182,7 @@ char *gen_password(int len) {
 }
 
 PasswordChecks check_password(char password[MAX_STRING_LEN]) {
-    static PasswordChecks checks = {0};
+    PasswordChecks checks = {0};
 
     for (size_t i = 0; i < strlen(password); i++) {
         if (strchr(SPECIAL_CHARS, password[i])) checks.has_special = 1;

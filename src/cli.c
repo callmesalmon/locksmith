@@ -8,7 +8,7 @@
 #include "crypto.h"
 #include "password.h"
 
-#define yes_no(i) (i) ? GREEN "y" DEFAULT_COLOR : RED "n" DEFAULT_COLOR
+#define yes_no(i) (i) ? GREEN "yes" DEFAULT_COLOR : RED "no" DEFAULT_COLOR
 
 /**** Initialization ****/
 
@@ -207,6 +207,22 @@ int cmd_check_password() {
     printf("Has lowercase characters: %s\n", yes_no(checks.has_lower));
     printf("Has digits: %s\n", yes_no(checks.has_digits));
     printf("Has good length: %s\n", yes_no(checks.has_good_length));
+
+    // weird implementation but it works
+    int score = 0;
+    score += checks.has_special + checks.has_upper +
+        checks.has_lower + checks.has_digits + checks.has_good_length;
+
+    char *grade = "[Not found]";
+    switch (score) {
+        case 5: grade = CYAN    "A" DEFAULT_COLOR; break;
+        case 4: grade = BLUE    "B" DEFAULT_COLOR; break;
+        case 3: grade = GREEN   "C" DEFAULT_COLOR; break;
+        case 2: grade = YELLOW  "D" DEFAULT_COLOR; break;
+        case 1: grade = RED     "E" DEFAULT_COLOR; break;
+    }
+
+    printf("Grade: %s (%d/5)\n", grade, score);
 
     return 0;
 }
