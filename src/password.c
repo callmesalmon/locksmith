@@ -161,7 +161,8 @@ int list_passwords() {
     return 0;
 }
 
-/**** Password generation ****/
+/**** Password generation and checking ****/
+
 char *gen_password(int len) {
     char buf[len];
 
@@ -178,6 +179,22 @@ char *gen_password(int len) {
     strncpy(return_buf, buf, len);
 
     return return_buf;
+}
+
+PasswordChecks check_password(char password[MAX_STRING_LEN]) {
+    static PasswordChecks checks = {0};
+
+    for (size_t i = 0; i < strlen(password); i++) {
+        if (strchr(SPECIAL_CHARS, password[i])) checks.has_special = 1;
+        if (strchr(NUMBER_CHARS, password[i]))  checks.has_digits = 1;
+        if (strchr(UPPER_CHARS, password[i]))   checks.has_upper = 1;
+        if (strchr(LOWER_CHARS, password[i]))   checks.has_lower = 1;
+    }
+
+    size_t good_length = 8;
+    if (strlen(password) >= good_length) checks.has_good_length = 1;
+
+    return checks;
 }
 
 /**** Backups ****/

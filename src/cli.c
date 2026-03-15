@@ -8,6 +8,8 @@
 #include "crypto.h"
 #include "password.h"
 
+#define yes_no(i) (i) ? GREEN "y" DEFAULT_COLOR : RED "n" DEFAULT_COLOR
+
 /**** Initialization ****/
 
 static unsigned char key[KEY_LEN];
@@ -26,6 +28,7 @@ int cli_init() {
 "recover        recover password\n"         \
 "del            delete password\n"          \
 "gen            generate password\n"        \
+"check          check password safety\n"    \
 "list           list passwords\n"           \
 "listbak        list backups\n"             \
 "masterpasswd   change master password\n"   \
@@ -38,6 +41,7 @@ typedef enum {
     CMD_RECOVER,
     CMD_DEL,
     CMD_GEN,
+    CMD_CHECK,
     CMD_LIST,
     CMD_LISTBAK,
     CMD_CHMPASS,
@@ -55,6 +59,7 @@ CommandList get_cmd_value(char str[MAX_STRING_LEN]) {
     if (!strcmp(str, "del"))            return CMD_DEL;
     if (!strcmp(str, "list"))           return CMD_LIST;
     if (!strcmp(str, "gen"))            return CMD_GEN;
+    if (!strcmp(str, "check"))          return CMD_CHECK;
     if (!strcmp(str, "listbak"))        return CMD_LISTBAK;
     if (!strcmp(str, "masterpasswd"))   return CMD_CHMPASS;
     if (!strcmp(str, "exit"))           return CMD_EXIT;
@@ -189,6 +194,23 @@ int cmd_gen_password() {
     return 0;
 }
 
+int cmd_check_password() {
+    char password[MAX_STRING_LEN];
+
+    printf("Password: ");
+    get_string(password);
+
+    PasswordChecks checks = check_password(password);
+
+    printf("Has special characters: %s\n", yes_no(checks.has_special));
+    printf("Has uppercase characters: %s\n", yes_no(checks.has_upper));
+    printf("Has lowercase characters: %s\n", yes_no(checks.has_lower));
+    printf("Has digits: %s\n", yes_no(checks.has_digits));
+    printf("Has good length: %s\n", yes_no(checks.has_good_length));
+
+    return 0;
+}
+
 int cmd_list_passwords() {
     printf("List of passwords:\n");
     list_passwords();
@@ -266,6 +288,9 @@ int cmd_interface() {
             break;
         case CMD_GEN:
             cmd_gen_password();
+            break;
+        case CMD_CHECK:
+            cmd_check_password();
             break;
         case CMD_LISTBAK:
             cmd_list_backups();

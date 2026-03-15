@@ -8,11 +8,20 @@
 #include "crypto.h"
 
 typedef struct {
+    int has_lower;
+    int has_upper;
+    int has_digits;
+    int has_special;
+    int has_good_length;
+} PasswordChecks;
+
+typedef struct {
     char title[MAX_STRING_LEN];
     char url[MAX_STRING_LEN];
     char username[MAX_STRING_LEN];
     char password[MAX_STRING_LEN];
 } Password;
+
 
 // For when we need to return an error in a function which
 // returns ``Password``
@@ -33,6 +42,11 @@ typedef struct {
 #define backup_password_file(name)  strcat(backup_dir(name), "/password.enc")
 #define backup_info_file(name)      strcat(backup_dir(name), "/info.txt")
 
+#define SPECIAL_CHARS "!@#$%^&*()-_=+,.?/:;{}[]~"
+#define NUMBER_CHARS "0123456789"
+#define UPPER_CHARS "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+#define LOWER_CHARS "abcdefghijklmnopqrstuvwxyz"
+
 char *password_dir(char *path);
 char *backup_dir(char *path);
 int password_exists(char *path);
@@ -43,6 +57,7 @@ int delete_password(char name[]);
 int list_passwords();
 
 char *gen_password(int len);
+PasswordChecks check_password(char password[MAX_STRING_LEN]);
 
 int backup_password(Password pass);
 int recover_password(char name[]);
