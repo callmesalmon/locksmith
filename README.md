@@ -5,17 +5,15 @@ no unnessecary bloat.
 [![Locksmith image](https://github.com/callmesalmon/locksmith/raw/main/screenshot.png)](https://github.com/callmesalmon/locksmith)  
 Locksmith in action! _(screenshot may be outdated)_
 
-> [!WARNING]
-> THIS SOFTWARE CAN AND WILL NOT GUARANTEE TOTAL SAFETY OF STORED INFORMATION,
-> AND ITS CREATORS WILL NOT BE HELD LIABLE FOR ANY SECURITY BREACHES CAUSED BY
-> THIS SOFTWARE.
+Naturally, since I am not a good programmer, one can expect locksmith to break at any moment. Do not
+actually use locksmith for any important business, it is just a passion project.
 
 ## Features
 Locksmith comes with many features, such as:
 - Password encryption
 - Password generation
 - (Possibly broken) Password safety checking
-- Master password authentication (w/ hashing)
+- Master password authentication (w/ (questionable?) hashing)
 - Atleast a somewhat functional implementation of password backups
 - A full "locksmith shell" to handle passwords in.
 
